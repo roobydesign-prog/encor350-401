@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flashcards · ENCOR 350-401</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0B1220;--panel:#101A2E;--panel2:#0E1626;--bord:#1E2A44;--txt:#D7E2F4;--dim:#7E8DA8;--acc:#3FD8C2;--amb:#F0A429;--rouge:#E5484D;--vert:#46C08A}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);font-family:'IBM Plex Sans',sans-serif;line-height:1.55;min-height:100vh}
+.wrap{max-width:760px;margin:0 auto;padding:22px 18px 70px}
+a.back{color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:.85rem;text-decoration:none}
+h1{font-family:'IBM Plex Sans Condensed',sans-serif;font-size:1.6rem;margin:10px 0 2px}
+.sub{color:var(--dim);font-size:.9rem;margin-bottom:16px}
+.filtres{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.chip{font-family:'IBM Plex Mono',monospace;font-size:.75rem;background:var(--panel);border:1px solid var(--bord);color:var(--txt);padding:6px 12px;border-radius:16px;cursor:pointer}
+.chip.on{border-color:var(--acc);color:var(--acc)}
+.stats{display:flex;gap:10px;margin:0 0 16px;font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:var(--dim);flex-wrap:wrap}
+.stats b{color:var(--txt)}
+.stats .s1 b{color:var(--rouge)}.stats .s2 b{color:var(--amb)}.stats .s3 b{color:var(--vert)}
+.carte{background:var(--panel);border:1px solid var(--bord);border-radius:14px;min-height:240px;padding:26px 26px 20px;cursor:pointer;position:relative;display:flex;flex-direction:column;justify-content:center;transition:border-color .15s}
+.carte:hover{border-color:#2A3A5C}
+.carte .dom{position:absolute;top:12px;left:16px;font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--acc)}
+.carte .boite{position:absolute;top:12px;right:16px;font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--dim)}
+.carte .face{font-size:1.05rem;text-align:center}
+.carte .face.reponse{color:var(--txt)}
+.carte .face.reponse b{color:var(--acc)}
+.carte .hint{position:absolute;bottom:10px;left:0;right:0;text-align:center;color:var(--dim);font-size:.72rem;font-family:'IBM Plex Mono',monospace}
+.actions{display:flex;gap:10px;margin-top:14px}
+.actions button{flex:1;font-family:'IBM Plex Sans Condensed',sans-serif;font-size:1rem;padding:13px;border-radius:10px;border:1px solid var(--bord);cursor:pointer;background:var(--panel)}
+.actions .non{color:var(--rouge);border-color:#5C2A2E}
+.actions .oui{color:var(--vert);border-color:#245C42}
+.actions button:hover{filter:brightness(1.25)}
+.actions button:disabled{opacity:.35;cursor:default}
+.fin{background:var(--panel);border:1px solid var(--bord);border-left:3px solid var(--vert);border-radius:10px;padding:20px;margin-top:16px;display:none}
+.pbar{height:8px;background:var(--panel2);border-radius:4px;overflow:hidden;margin:12px 0 4px}
+.pbar div{height:100%;background:var(--acc);width:0;transition:width .25s}
+.plab{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--dim)}
+.reset{margin-top:26px;font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--dim);background:none;border:none;cursor:pointer;text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="back" href="../">&larr; ENCOR# cd ..</a>
+<h1>⚡ Flashcards — mémorisation active</h1>
+<p class="sub">Système Leitner 3 boîtes : ❌ renvoie la carte en boîte 1, ✅ la fait monter. Objectif avant le jour J : tout en boîte 3.</p>
+<div class="filtres" id="filtres"></div>
+<div class="stats">
+<span class="s1">Boîte 1 (à travailler) : <b id="s1">0</b></span>
+<span class="s2">Boîte 2 (en cours) : <b id="s2">0</b></span>
+<span class="s3">Boîte 3 (acquises) : <b id="s3">0</b></span>
+</div>
+<div class="pbar"><div id="pfill"></div></div>
+<div class="plab" id="plab"></div>
+<div class="carte" id="carte" style="margin-top:12px">
+<span class="dom" id="c-dom"></span><span class="boite" id="c-boite"></span>
+<div class="face" id="c-face"></div>
+<div class="hint" id="c-hint">clique pour retourner</div>
+</div>
+<div class="actions">
+<button class="non" id="b-non" disabled>❌ À revoir</button>
+<button class="oui" id="b-oui" disabled>✅ Je savais</button>
+</div>
+<div class="fin" id="fin"></div>
+<button class="reset" onclick="if(confirm('Remettre toutes les cartes en boîte 1 ?')){try{localStorage.removeItem(KEY)}catch(e){};location.reload()}">réinitialiser ma progression flashcards</button>
+</div>
+<script>
+const CARTES=[
+// ─── ARCHITECTURE ───
+{d:"arch",q:"Rôles des 3 couches du campus hiérarchique ?",r:"<b>Accès</b> = connexion des terminaux (PoE, sécurité de port) · <b>Distribution</b> = agrégation + politiques + frontière L2/L3 · <b>Cœur</b> = transport rapide et résilient, zéro complexité"},
+{d:"arch",q:"SSO vs NSF — qui fait quoi ?",r:"<b>SSO</b> synchronise l'état vers le superviseur de secours (bascule L2 transparente) · <b>NSF</b> continue de commuter avec la FIB pendant le graceful restart des protocoles de routage"},
+{d:"arch",q:"StackWise Virtual vs StackWise classique ?",r:"<b>Virtual</b> : 2 châssis reliés par liens Ethernet/fibre standard (séparation géographique possible) · <b>classique</b> : jusqu'à 8 switches, câbles de stack dédiés"},
+{d:"arch",q:"Spine-leaf : combien de sauts entre deux leafs ?",r:"Toujours <b>2</b> (leaf → spine → leaf) : latence prévisible. Scalabilité horizontale : ajouter un spine = plus de bande passante"},
+{d:"arch",q:"Underlay vs overlay ?",r:"<b>Underlay</b> = transport IP simple et stable (IS-IS/OSPF, ECMP) · <b>Overlay</b> = tunnels virtuels portant segmentation, politique et mobilité (VXLAN, LISP, tunnels SD-WAN)"},
+{d:"arch",q:"SD-Access : plan de contrôle, de données, de politique ?",r:"Contrôle = <b>LISP</b> (qui est où) · Données = <b>VXLAN</b> (transport + SGT embarqué) · Politique = <b>TrustSec/SGT</b> · Gestion = Catalyst Center + ISE"},
+{d:"arch",q:"Anycast gateway en SD-Access ?",r:"<b>Même IP/MAC de passerelle sur tous les edge nodes</b> → l'hôte se déplace sans re-apprentissage, plus besoin de FHRP dans le fabric"},
+{d:"arch",q:"Northbound vs southbound API ?",r:"<b>Northbound</b> = applications → contrôleur (intent, REST) · <b>Southbound</b> = contrôleur → équipements (NETCONF, RESTCONF, SNMP, OMP)"},
+{d:"arch",q:"Cibles RF pour la voix Wi-Fi ?",r:"RSSI ≥ <b>−67 dBm</b> · SNR ≥ <b>25 dB</b> · recouvrement de cellules 15–20 %"},
+{d:"arch",q:"SNR si signal −67 dBm et bruit −92 dBm ?",r:"SNR = signal − bruit = −67 − (−92) = <b>25 dB</b>"},
+{d:"arch",q:"3 types de site survey ?",r:"<b>Prédictif</b> (simulation logicielle sur plans) · <b>passif</b> (écoute RF réelle) · <b>actif</b> (association + tests de débit)"},
+{d:"arch",q:"Apport clé d'OFDMA en Wi-Fi 6 ?",r:"Le canal est découpé en <b>resource units</b> servant <b>plusieurs clients simultanément</b> → efficacité en environnement dense"},
+{d:"arch",q:"WLC HA SSO vs N+1 ?",r:"<b>HA SSO</b> : état AP/clients partagé, bascule sans re-join CAPWAP · <b>N+1</b> : secours froid, les AP doivent redécouvrir et rejoindre (coupure)"},
+{d:"arch",q:"CAM vs TCAM ?",r:"<b>CAM</b> = correspondances exactes (MAC→port) · <b>TCAM</b> = correspondances avec masques en un cycle (ACL, QoS, préfixes)"},
+{d:"arch",q:"SDM template : rôle et contrainte ?",r:"Répartit la <b>TCAM</b> entre fonctions selon le rôle du switch · changement = <b>reload</b> obligatoire"},
+{d:"arch",q:"LLQ = ?",r:"CBWFQ + <b>file prioritaire stricte</b> (voix) avec <b>policer implicite</b> qui empêche d'affamer les autres classes"},
+{d:"arch",q:"WRED vs tail drop ?",r:"<b>WRED</b> jette sélectivement AVANT saturation (évite la synchronisation TCP globale) · <b>tail drop</b> jette tout en bloc quand la file est pleine"},
+{d:"arch",q:"Frontière de confiance QoS recommandée ?",r:"Au <b>téléphone IP</b> : on accepte ses marquages (voix EF), le trafic du PC est remis à zéro. Le cœur ne re-marque pas"},
+// ─── VIRTUALISATION ───
+{d:"virt",q:"Hyperviseur type 1 vs type 2 ?",r:"<b>Type 1</b> = bare-metal, directement sur le matériel (ESXi, KVM, Hyper-V) · <b>Type 2</b> = application sur un OS hôte (VirtualBox, VMware Workstation)"},
+{d:"virt",q:"Conteneur vs VM ?",r:"Conteneur = partage le <b>noyau</b> de l'hôte, léger, démarrage en secondes · VM = OS invité complet, plus lourde, isolation matérielle plus forte"},
+{d:"virt",q:"3 commandes vrf-aware essentielles ?",r:"<b>show ip route vrf X</b> · <b>ping vrf X</b> · <b>traceroute vrf X</b> — sans le mot-clé vrf, on regarde la table globale !"},
+{d:"virt",q:"GRE : protocole IP et MTU ?",r:"Protocole <b>47</b> · overhead 24 octets → MTU 1476 ; avec IPsec ≈ <b>1400</b> + tcp adjust-mss 1360"},
+{d:"virt",q:"DMVPN = quels composants ?",r:"<b>mGRE</b> (tunnel multipoint) + <b>NHRP</b> (résolution tunnel→NBMA, « l'ARP du DMVPN ») + <b>IPsec</b> optionnel"},
+{d:"virt",q:"DMVPN phase 1 vs 2/3 ?",r:"Phase 1 = tout via le hub · Phases 2/3 = tunnels <b>spoke-à-spoke dynamiques</b> (phase 3 optimise avec NHRP redirect/shortcut)"},
+{d:"virt",q:"ESP vs AH ?",r:"<b>ESP (50)</b> = chiffrement + intégrité, compatible NAT-T · <b>AH (51)</b> = intégrité seule, incluant l'en-tête IP → cassé par le NAT"},
+{d:"virt",q:"IPsec transport vs tunnel mode ?",r:"<b>Transport</b> = charge utile chiffrée, en-tête IP conservé (GRE over IPsec) · <b>Tunnel</b> = paquet entier encapsulé dans un nouvel en-tête (site-à-site)"},
+{d:"virt",q:"3 avantages d'IKEv2 sur IKEv1 ?",r:"Négociation plus courte · <b>EAP intégré</b> (accès distant) · anti-DoS (cookies) + keepalives/MOBIKE natifs · base de <b>FlexVPN</b>"},
+{d:"virt",q:"LISP : EID vs RLOC ?",r:"<b>EID</b> = identité de l'hôte (ne change pas en cas de déplacement) · <b>RLOC</b> = localisation (l'adresse du routeur qui le dessert)"},
+{d:"virt",q:"LISP : ITR vs ETR ?",r:"<b>ITR</b> = entrée : interroge le Map Resolver et <b>encapsule</b> · <b>ETR</b> = sortie : désencapsule et <b>enregistre</b> ses EID au Map Server"},
+{d:"virt",q:"PITR / PETR ?",r:"Passerelles <b>proxy</b> entre monde LISP et non-LISP (Internet) — rôle typique du border node SD-Access"},
+{d:"virt",q:"VXLAN : VNI et port ?",r:"VNI = <b>24 bits</b> (16 M de segments vs 4096 VLAN) · transport <b>UDP 4789</b> · l'équipement d'extrémité = <b>VTEP</b>"},
+{d:"virt",q:"Plan de contrôle VXLAN moderne en data center ?",r:"<b>BGP EVPN</b> : les VTEP s'annoncent les MAC/IP en BGP → plus de flood-and-learn (en SD-Access, c'est LISP)"},
+{d:"virt",q:"Route leaking : définition ?",r:"Partage <b>sélectif</b> de routes entre VRF isolées (route-targets ou statiques inter-VRF) — cas type : bloc de services partagés (DNS, ISE) joignable de tous les VN"},
+{d:"virt",q:"GRE keepalive : pourquoi ?",r:"GRE est <b>sans état</b> : l'interface reste up même si l'autre bout est mort. Le keepalive détecte la panne et descend le protocole de ligne"},
+{d:"virt",q:"Pourquoi vMotion exigeait du L2 étendu, et la solution moderne ?",r:"La VM garde son IP → même segment L2 requis · <b>VXLAN</b> étend le L2 par-dessus un réseau routé"},
+// ─── INFRASTRUCTURE ───
+{d:"infra",q:"Plages VLAN normal / étendu ?",r:"Normal <b>1–1005</b> (1002-1005 réservés) · étendu <b>1006–4094</b> · natif et gestion ≠ VLAN 1"},
+{d:"infra",q:"DTP : auto+auto donne quoi ? Et la bonne pratique ?",r:"<b>Accès</b> (personne n'initie) · bonne pratique : trunk statique + <b>switchport nonegotiate</b>"},
+{d:"infra",q:"Timers STP 802.1D ?",r:"Hello <b>2 s</b> · forward delay <b>15 s</b> (listening + learning) · max age <b>20 s</b> → convergence 30-50 s"},
+{d:"infra",q:"MST : les 3 paramètres de région ?",r:"<b>Nom + révision + table VLAN→instance</b> strictement identiques, sinon régions séparées. Instance 0 = <b>IST</b>"},
+{d:"infra",q:"spanning-tree root primary = quelle priorité ?",r:"<b>24576</b> (ou root actuel − 4096) · secondary = <b>28672</b> · défaut = 32768 + VLAN ID"},
+{d:"infra",q:"BPDU Guard vs BPDU Filter vs Loop Guard vs UDLD ?",r:"<b>Guard</b> : err-disable si BPDU reçu (accès) · <b>Filter</b> : ignore les BPDU (danger !) · <b>Loop Guard</b> : bloque si les BPDU cessent · <b>UDLD aggressive</b> : err-disable les liens unidirectionnels (fibre)"},
+{d:"infra",q:"Combinaisons LACP qui montent un bundle ?",r:"<b>active+active</b> ✔ · <b>active+passive</b> ✔ · passive+passive ✘ · on+on ✔ (statique, sans négociation) · on+active ✘"},
+{d:"infra",q:"Flags EtherChannel sains et malades ?",r:"<b>(SU)+(P)</b> = opérationnel · <b>(s)</b> = suspended (mismatch membre) · <b>(I)</b> = standalone · <b>(SD)</b> = down"},
+{d:"infra",q:"HSRP : timers, versions, multicast ?",r:"Hello <b>3 s</b> / hold <b>10 s</b> · v1 : groupes 0-255, 224.0.0.2 · v2 : groupes 0-4095, <b>224.0.0.102</b>, IPv6, timers msec"},
+{d:"infra",q:"Les 3 vMAC FHRP ?",r:"HSRPv1 <b>0000.0c07.acXX</b> · HSRPv2 <b>0000.0c9f.fXXX</b> · VRRP <b>0000.5e00.01XX</b> · GLBP <b>0007.b400.XXYY</b>"},
+{d:"infra",q:"VRRP vs HSRP : différences clés ?",r:"VRRP = <b>standard ouvert</b>, advertisement <b>1 s</b> (converge plus vite), preempt <b>activé par défaut</b>, l'IP virtuelle peut être l'IP réelle du master"},
+{d:"infra",q:"GLBP : 3 méthodes de load-balancing ?",r:"<b>Round-robin</b> (défaut) · <b>weighted</b> · <b>host-dependent</b> (un hôte garde le même AVF). AVG répond aux ARP avec des vMAC différentes"},
+{d:"infra",q:"OSPF : sélection du router-ID ?",r:"1. <b>router-id manuel</b> · 2. loopback la plus haute · 3. interface active la plus haute · appliquer : clear ip ospf process"},
+{d:"infra",q:"Timers OSPF par type de réseau ?",r:"Broadcast / P2P : <b>10/40</b> · NBMA / P2MP : <b>30/120</b> · mismatch = pas d'adjacence (contrairement à EIGRP !)"},
+{d:"infra",q:"Stub / totally stubby / NSSA : qui bloque quoi ?",r:"<b>Stub</b> : bloque type 5 (E) · <b>totally stubby</b> (no-summary sur l'ABR seul) : bloque aussi type 3 → défaut unique · <b>NSSA</b> : type 7 autorisé, converti en 5 par l'ABR"},
+{d:"infra",q:"O E1 vs O E2 ?",r:"<b>E2</b> (défaut) = métrique de redistribution fixe · <b>E1</b> = métrique + coût interne → choisit l'ASBR le plus proche"},
+{d:"infra",q:"Types de LSA 1/2/3/4/5/7 ?",r:"1 Router · 2 Network (DR) · 3 Summary (ABR) · 4 ASBR-Summary · 5 External · 7 NSSA-External"},
+{d:"infra",q:"États BGP dans l'ordre ?",r:"<b>Idle → Connect → Active → OpenSent → OpenConfirm → Established</b> · bloqué Idle = pas de route vers le voisin · Active = TCP en échec"},
+{d:"infra",q:"BGP best-path : le début de l'ordre ?",r:"<b>Weight</b> (Cisco, local) → <b>Local Preference</b> → local (network/aggregate) → <b>AS-path le plus court</b> → Origin → <b>MED</b> → eBGP&gt;iBGP → IGP le plus proche"},
+{d:"infra",q:"Le piège de la commande network en BGP ?",r:"Correspondance <b>EXACTE préfixe+masque</b> requise dans la table de routage, sinon rien n'est annoncé"},
+{d:"infra",q:"eBGP entre loopbacks : les 3 ingrédients ?",r:"<b>ebgp-multihop 2</b> (TTL par défaut = 1) + <b>update-source Loopback0</b> + route vers la loopback distante"},
+{d:"infra",q:"EIGRP : conditions d'adjacence ?",r:"Même <b>AS</b>, mêmes <b>K-values</b>, auth concordante, même sous-réseau · les timers différents N'empêchent PAS l'adjacence · hello/hold : 5/15"},
+{d:"infra",q:"EIGRP variance 2 : effet ?",r:"Équilibrage à coût inégal : tout <b>feasible successor</b> dont la métrique &lt; 2 × FD du successor entre en jeu (condition de faisabilité toujours requise)"},
+{d:"infra",q:"Querier IGMP vs DR PIM : élections ?",r:"Querier IGMP = IP la plus <b>BASSE</b> · DR PIM = priorité puis IP la plus <b>HAUTE</b> — deux critères opposés sur le même segment !"},
+{d:"infra",q:"(*,G) vs (S,G) ?",r:"<b>(*,G)</b> = arbre partagé via le RP (toute source) · <b>(S,G)</b> = arbre source optimal (SPT switchover) · SSM (232/8, IGMPv3) = directement (S,G) sans RP"},
+{d:"infra",q:"NTP stratum 16 = ?",r:"Source <b>invalide</b> / non synchronisée · ntp master [n] = se déclarer source (lab) · toujours authentifier NTP en production"},
+{d:"infra",q:"ip helper-address : où et pourquoi ?",r:"Sur l'<b>interface qui reçoit le broadcast</b> (la passerelle du VLAN) → relaie DHCP en unicast vers le serveur (giaddr = le pool à servir)"},
+{d:"infra",q:"États CAPWAP d'un AP qui rejoint ?",r:"DHCP → <b>Discovery → Join → Image download → Config download → Run</b> (l'AP peut rebooter à l'étape image)"},
+{d:"infra",q:"Catalyst 9800 : les 3 tags d'un AP ?",r:"<b>Policy tag</b> (WLAN + politiques) · <b>site tag</b> (local/Flex) · <b>RF tag</b> (profils radio)"},
+{d:"infra",q:"Flux de connexion d'un client 802.1X sans fil ?",r:"Probe → auth 802.11 → association → <b>EAP/802.1X</b> (RADIUS) → <b>4-way handshake</b> (clés) → DHCP — savoir situer la panne dans la chaîne"},
+{d:"infra",q:"NAT : ordre des opérations inside→outside ?",r:"<b>ACL entrante d'abord</b> (sur l'IP privée) → routage → <b>NAT</b> · sens inverse : NAT d'abord, puis ACL"},
+// ─── ASSURANCE ───
+{d:"assur",q:"Niveaux syslog 0→7 ?",r:"0 Emergency · 1 Alert · 2 Critical · 3 Error · 4 Warning · 5 Notification · 6 Informational · 7 Debugging (« Every Awesome Cisco Engineer Will Need Ice-cream Daily »)"},
+{d:"assur",q:"logging trap 4 envoie quoi au serveur ?",r:"Les sévérités <b>0 à 4</b> (le niveau indiqué ET plus graves). Chaque destination (console/buffer/monitor/host) a son propre seuil"},
+{d:"assur",q:"NetFlow v5 vs v9 ?",r:"<b>v5</b> = format fixe, IPv4 seulement · <b>v9</b> = gabarits extensibles (IPv6, MPLS) → base de Flexible NetFlow et d'IPFIX"},
+{d:"assur",q:"Flexible NetFlow : les 3 blocs ?",r:"<b>flow record</b> (match + collect) → <b>flow exporter</b> (destination) → <b>flow monitor</b> (lie les deux) → appliqué à l'interface (ip flow monitor X input)"},
+{d:"assur",q:"SPAN vs RSPAN vs ERSPAN ?",r:"<b>SPAN</b> = local · <b>RSPAN</b> = via un VLAN dédié remote-span (L2) · <b>ERSPAN</b> = encapsulé <b>GRE</b> (traverse le L3)"},
+{d:"assur",q:"Limites du port destination SPAN ?",r:"Il cesse d'être un port normal : pas d'apprentissage MAC, pas de STP, trafic entrant ignoré par défaut"},
+{d:"assur",q:"IP SLA udp-jitter : prérequis distant ?",r:"<b>ip sla responder</b> sur l'équipement distant (horodatage des deux sens) · icmp-echo n'en a pas besoin"},
+{d:"assur",q:"Traceroute : mécanisme ?",r:"Sondes avec <b>TTL croissant</b> (1,2,3…) → chaque saut renvoie <b>ICMP Time Exceeded</b> · IOS = sondes UDP · les * = filtrage ICMP ou CoPP, pas forcément une panne"},
+{d:"assur",q:"Codes de ping IOS : ! . U M ?",r:"<b>!</b> succès · <b>.</b> timeout · <b>U</b> unreachable · <b>M</b> could not fragment (DF + MTU trop petit sur le chemin)"},
+{d:"assur",q:"Debug en production : les règles ?",r:"Cibler (ACL, <b>debug platform condition</b>) · sortie vers le buffer, pas la console · vérifier le CPU avant · <b>u all</b> toujours prêt"},
+{d:"assur",q:"SNMPv3 : ordre de configuration ?",r:"(Vue) → <b>groupe</b> avec niveau noauth/auth/<b>priv</b> → <b>utilisateur</b> rattaché (auth sha + priv aes) · v3 = auth + chiffrement, fini les communautés"},
+{d:"assur",q:"Trap vs inform ?",r:"<b>Inform</b> = acquitté (retransmis si pas d'ACK) · <b>trap</b> = envoyé une fois sans garantie · les deux vers UDP <b>162</b> (agent écoute sur 161)"},
+{d:"assur",q:"NETCONF get vs get-config ?",r:"<b>get-config</b> = configuration d'un datastore · <b>get</b> = config + état opérationnel"},
+{d:"assur",q:"Télémétrie dial-in vs dial-out ?",r:"<b>Dial-out</b> = l'équipement initie vers le collecteur · <b>dial-in</b> = le collecteur s'abonne (gRPC/gNMI, NETCONF) · données YANG poussées en continu ou sur changement"},
+{d:"assur",q:"Capteurs (sensors) Catalyst Center ?",r:"Des AP/capteurs qui <b>simulent un client</b> : association, 802.1X, DHCP, DNS, tests applicatifs — détection proactive avant les plaintes"},
+{d:"assur",q:"Montage dual-WAN automatique classique ?",r:"<b>IP SLA</b> (icmp-echo) → <b>track</b> → route statique trackée + <b>route flottante AD 250</b> → bascule automatique"},
+{d:"assur",q:"Pourquoi NTP est-il critique pour le troubleshooting ?",r:"Sans horloge commune + <b>service timestamps msec</b>, impossible de corréler les logs multi-équipements pendant un incident"},
+// ─── SÉCURITÉ ───
+{d:"sec",q:"Types de mots de passe IOS par force ?",r:"<b>9 (scrypt)</b> &gt; 8 (SHA-256) &gt; 5 (MD5) &gt;&gt; <b>7 (réversible !)</b> &gt; 0 (clair) · service password-encryption = type 7 seulement"},
+{d:"sec",q:"Prérequis SSH ?",r:"<b>hostname</b> + <b>ip domain name</b> + <b>crypto key generate rsa</b> (≥2048) + login local/AAA + <b>transport input ssh</b> + ip ssh version 2"},
+{d:"sec",q:"ACL sur ligne VTY : quelle commande ?",r:"<b>access-class X in</b> (PAS ip access-group, réservé aux interfaces !)"},
+{d:"sec",q:"AAA : les 3 fonctions ?",r:"<b>Authentication</b> = qui tu es · <b>Authorization</b> = ce que tu peux faire · <b>Accounting</b> = ce que tu as fait (start-stop)"},
+{d:"sec",q:"TACACS+ vs RADIUS ?",r:"<b>TACACS+</b> : TCP 49, tout chiffré, AAA séparés, <b>autorisation par commande</b> → admin. <b>RADIUS</b> : UDP 1812/1813, mot de passe seul chiffré, authN+authZ combinées → accès réseau (802.1X)"},
+{d:"sec",q:"RADIUS CoA : à quoi ça sert ?",r:"ISE modifie ou termine une <b>session en cours</b> sans attendre la ré-authentification (quarantaine, nouveau SGT, portail invité validé)"},
+{d:"sec",q:"802.1X : les 3 rôles ?",r:"<b>Supplicant</b> (client) · <b>Authenticator</b> (switch/WLC — relais EAPOL↔RADIUS) · <b>Authentication Server</b> (ISE/RADIUS)"},
+{d:"sec",q:"Host modes 802.1X ?",r:"<b>single-host</b> · <b>multi-domain</b> (1 PC + 1 téléphone) · <b>multi-auth</b> (chacun authentifié) · <b>multi-host</b> (le 1er ouvre pour tous — le moins sûr)"},
+{d:"sec",q:"Critical / guest / auth-fail VLAN ?",r:"<b>Critical</b> = RADIUS injoignable (survie) · <b>guest</b> = pas de supplicant · <b>auth-fail</b> = mauvais identifiants"},
+{d:"sec",q:"VLAN dynamique par RADIUS : quels attributs ?",r:"<b>Tunnel-Type (13)</b> + <b>Tunnel-Medium-Type (6)</b> + <b>Tunnel-Private-Group-ID</b> (le VLAN) dans l'Access-Accept"},
+{d:"sec",q:"WPA3-Personal : les 2 apports ?",r:"<b>SAE</b> (fini l'attaque par dictionnaire hors-ligne du 4-way handshake, forward secrecy) + <b>PMF obligatoire</b> (anti-deauth)"},
+{d:"sec",q:"PEAP vs EAP-TLS vs EAP-FAST ?",r:"<b>EAP-TLS</b> = certificats des DEUX côtés (le plus sûr) · <b>PEAP</b> = certificat serveur + MS-CHAPv2 · <b>EAP-FAST</b> = tunnel via <b>PAC</b> (Cisco, sans PKI)"},
+{d:"sec",q:"Mot-clé established dans une ACL ?",r:"Matche <b>ACK/RST</b> → laisse revenir les réponses TCP sans autoriser les SYN entrants (pseudo-stateful, contournable)"},
+{d:"sec",q:"Astuce wildcard ?",r:"Wildcard = <b>taille du bloc − 1</b> · ex. bloc /22 (4 valeurs au 3e octet) → 0.0.<b>3</b>.255"},
+{d:"sec",q:"uRPF strict vs loose ?",r:"<b>Strict</b> : la route retour doit sortir par l'interface d'arrivée (casse l'asymétrique) · <b>loose</b> : la source doit juste exister dans la table"},
+{d:"sec",q:"CoPP : structure d'une bonne politique ?",r:"Classes séparées : <b>routage</b> (jamais étranglé) · <b>gestion</b> (rate-limit) · <b>ICMP</b> (petit débit) · <b>class-default</b> policé — appliquée input sur control-plane"},
+{d:"sec",q:"MPP (Management Plane Protection) ?",r:"<b>control-plane host</b> + management-interface : les protocoles de gestion ne sont écoutés QUE sur les interfaces désignées"},
+{d:"sec",q:"SGT / SGACL / SXP ?",r:"<b>SGT</b> = tag d'identité attribué à l'auth · <b>SGACL</b> = politique source-SGT → dest-SGT (indépendante des IP) · <b>SXP</b> = propage IP↔SGT là où le tagging inline est impossible"},
+{d:"sec",q:"MACsec : portée et protocole de clés ?",r:"Chiffrement <b>par saut L2</b> (déchiffré à chaque switch), AES-GCM à vitesse de ligne · clés négociées par <b>MKA</b> · bout en bout à travers un WAN routé = IPsec"},
+{d:"sec",q:"IPS vs IDS ?",r:"<b>IPS</b> = inline, peut <b>bloquer</b> en temps réel · <b>IDS</b> = sur copie (SPAN/TAP), <b>alerte</b> seulement"},
+{d:"sec",q:"Sécurité rétrospective (AMP) ?",r:"Trajectoire des fichiers tracée en continu → un fichier requalifié malveillant est mis en <b>quarantaine partout après coup</b> · renseignement : <b>Talos</b>"},
+{d:"sec",q:"Vulnérabilité / exploit / menace / risque ?",r:"<b>Vulnérabilité</b> = faiblesse · <b>exploit</b> = le moyen d'en abuser · <b>menace</b> = l'acteur potentiel · <b>risque</b> = probabilité × impact"},
+{d:"sec",q:"Les 4 paires attaque L2 → parade ?",r:"MAC flooding → <b>port security</b> · DHCP spoofing → <b>snooping</b> · ARP poisoning → <b>DAI</b> (s'appuie sur la table snooping) · VLAN hopping → natif dédié + nonegotiate"},
+{d:"sec",q:"DHCP snooping : où mettre trust ?",r:"Uniquement sur les <b>uplinks vers le vrai serveur</b> · les ports d'accès restent untrusted (OFFER/ACK bloqués)"},
+// ─── AUTOMATION ───
+{d:"auto",q:"JSON → Python : correspondance des types ?",r:"object {} → <b>dict</b> · array [] → <b>list</b> · true/false → True/False · null → <b>None</b> · number → int/float"},
+{d:"auto",q:"3 erreurs de syntaxe JSON classiques ?",r:"<b>Virgule finale</b> · apostrophes simples · commentaires · (clés non citées) — booléens en minuscules et null sont valides"},
+{d:"auto",q:"Reconnaître YAML / JSON / XML en un coup d'œil ?",r:"<b>YAML</b> = indentation + tirets (Ansible) · <b>JSON</b> = accolades + \"clé\": valeur (REST) · <b>XML</b> = balises &lt;&gt; (NETCONF)"},
+{d:"auto",q:"Verbes REST → CRUD ?",r:"POST = <b>Create</b> · GET = <b>Read</b> · PUT = <b>Replace complet</b> · PATCH = <b>modification partielle</b> · DELETE = Delete"},
+{d:"auto",q:"Codes HTTP à connaître ?",r:"200 OK · 201 Created · 400 Bad Request · <b>401</b> Unauthorized (token !) · 403 Forbidden · 404 Not Found · <b>429</b> Too Many Requests · 500 Server Error"},
+{d:"auto",q:"NETCONF : port et opérations ?",r:"SSH <b>830</b> · hello/capabilities → get, get-config, <b>edit-config</b>, copy-config, lock/unlock, commit (candidate), close-session"},
+{d:"auto",q:"Datastore candidate : intérêt ?",r:"Préparer les changements <b>sans toucher running</b> → validate → <b>commit</b> atomique (rollback possible) · capacité annoncée dans le hello"},
+{d:"auto",q:"RESTCONF : URI et en-tête ?",r:"https://device/restconf/data/<b>module:conteneur</b>/liste=clé · <b>Accept: application/yang-data+json</b>"},
+{d:"auto",q:"Bibliothèques Python par usage ?",r:"<b>requests</b> = REST/RESTCONF · <b>ncclient</b> = NETCONF · <b>netmiko</b> = CLI over SSH"},
+{d:"auto",q:"Flux d'authentification Catalyst Center API ?",r:"POST .../auth/token (Basic) → token JWT (~1 h) → chaque appel avec <b>X-Auth-Token</b> · expiré = 401 → se ré-authentifier"},
+{d:"auto",q:"Intent API vs Integration API ?",r:"<b>Intent</b> = piloter le réseau (northbound REST) · <b>Integration</b> = connecter aux systèmes IT (ITSM/ServiceNow, events, webhooks)"},
+{d:"auto",q:"API vManage : signature ?",r:"Endpoints <b>/dataservice/...</b> · session par cookie (j_security_check) · ex. GET /dataservice/device = inventaire SD-WAN"},
+{d:"auto",q:"EEM : détecteurs d'événements courants ?",r:"<b>syslog</b> (motif) · <b>timer watchdog/cron</b> · <b>cli</b> (commande tapée) · <b>snmp</b> (seuil d'OID) · track — puis actions (cli, syslog, mail)"},
+{d:"auto",q:"Guest Shell ?",r:"Conteneur <b>Linux embarqué</b> sur IOS-XE : Python on-box + accès CLI → automatisation locale sans serveur"},
+{d:"auto",q:"Idempotence ?",r:"Ré-exécuter donne le <b>même état final</b> : Ansible ne modifie que si nécessaire (changed=0 sinon) → automatisation sûre à répéter"},
+{d:"auto",q:"Ansible vs Terraform ?",r:"<b>Ansible</b> = playbooks YAML, sans agent (SSH), gestion de <b>configuration</b> · <b>Terraform</b> = HCL déclaratif, <b>plan → apply</b>, provisionnement, fichier d'<b>état</b>"},
+{d:"auto",q:"Puppet / Chef : modèle ?",r:"<b>Agent installé</b> sur la cible qui <b>tire (pull)</b> sa config du serveur (manifests/recipes) — vs Ansible sans agent en push"},
+{d:"auto",q:"gNMI ?",r:"Protocole <b>gRPC</b> : Get / Set / <b>Subscribe</b> (télémétrie streaming) sur des chemins <b>YANG</b> — la famille model-driven avec NETCONF/RESTCONF"},
+{d:"auto",q:"dict.get('clé','défaut') vs dict['clé'] ?",r:"<b>.get()</b> renvoie le défaut si la clé manque · <b>[...]</b> lève <b>KeyError</b> — réflexe de code robuste face aux réponses d'API"},
+{d:"auto",q:"liste[1:3] renvoie quoi ?",r:"Les indices <b>1 et 2</b> (borne haute exclue) · indexation à partir de 0 — les deux règles qui piègent la lecture de code"},
+];
+const DOMS={arch:"Architecture",virt:"Virtualisation",infra:"Infrastructure",assur:"Assurance",sec:"Sécurité",auto:"Automation"};
+const KEY='encor-flashcards-v1';
+function lsGet(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return{}}}
+function lsSet(o){try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
+let boxes=lsGet(), filtre='tous', pile=[], cur=-1, face=0;
+const $=id=>document.getElementById(id);
+// filtres
+const fbox=$('filtres');
+[['tous','TOUTES'],['due','🔁 à réviser'],...Object.entries(DOMS)].forEach(([k,v])=>{
+ const b=document.createElement('button');b.className='chip'+(k===filtre?' on':'');b.textContent=v;
+ b.onclick=()=>{filtre=k;document.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));b.classList.add('on');demarrer()};
+ fbox.appendChild(b);
+});
+function melanger(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+function demarrer(){
+ let idxs=CARTES.map((_,i)=>i);
+ if(filtre==='due') idxs=idxs.filter(i=>(boxes[i]||0)<2);
+ else if(filtre!=='tous') idxs=idxs.filter(i=>CARTES[i].d===filtre);
+ pile=melanger(idxs); cur=-1; $('fin').style.display='none'; $('carte').style.display='flex';
+ document.querySelector('.actions').style.display='flex';
+ suivante();
+}
+function stats(){
+ const c={0:0,1:0,2:0};
+ CARTES.forEach((_,i)=>c[boxes[i]||0]++);
+ $('s1').textContent=c[0];$('s2').textContent=c[1];$('s3').textContent=c[2];
+ const pct=Math.round(c[2]/CARTES.length*100);
+ $('pfill').style.width=pct+'%';
+ $('plab').textContent=pct+' % des '+CARTES.length+' cartes acquises (boîte 3)';
+}
+function suivante(){
+ cur++;
+ if(cur>=pile.length){
+  $('carte').style.display='none';document.querySelector('.actions').style.display='none';
+  const f=$('fin');f.style.display='block';
+  f.innerHTML='<b>Session terminée ! 🎉</b><br>'+pile.length+' cartes passées. '+($('s1').textContent>0?'Il reste '+$('s1').textContent+' cartes en boîte 1 — refais un tour « à réviser ».':'Boîte 1 vide — beau travail, continue vers 100 % en boîte 3.');
+  return;
+ }
+ face=0;const q=CARTES[pile[cur]];
+ $('c-dom').textContent=DOMS[q.d];
+ $('c-boite').textContent='boîte '+((boxes[pile[cur]]||0)+1)+' · '+(cur+1)+'/'+pile.length;
+ $('c-face').className='face';$('c-face').textContent=q.q;
+ $('c-hint').textContent='clique pour retourner';
+ $('b-oui').disabled=$('b-non').disabled=true;
+}
+$('carte').onclick=()=>{
+ if(cur<0||cur>=pile.length)return;
+ face^=1;const q=CARTES[pile[cur]];
+ if(face){$('c-face').className='face reponse';$('c-face').innerHTML=q.r;$('c-hint').textContent='honnêteté totale : tu savais ou pas ?';$('b-oui').disabled=$('b-non').disabled=false}
+ else{$('c-face').className='face';$('c-face').textContent=q.q;$('c-hint').textContent='clique pour retourner'}
+};
+$('b-oui').onclick=()=>{const i=pile[cur];boxes[i]=Math.min((boxes[i]||0)+1,2);lsSet(boxes);stats();suivante()};
+$('b-non').onclick=()=>{const i=pile[cur];boxes[i]=0;lsSet(boxes);stats();suivante()};
+stats();demarrer();
+</script>
+</body>
+</html>
