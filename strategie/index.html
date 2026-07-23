@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stratégie de réussite · ENCOR 350-401</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0B1220;--panel:#101A2E;--panel2:#0E1626;--bord:#1E2A44;--txt:#D7E2F4;--dim:#7E8DA8;--acc:#3FD8C2;--amb:#F0A429;--rouge:#E5484D;--vert:#46C08A}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);font-family:'IBM Plex Sans',sans-serif;line-height:1.65}
+.wrap{max-width:860px;margin:0 auto;padding:24px 20px 80px}
+a{color:var(--acc)}
+.back{font-family:'IBM Plex Mono',monospace;font-size:.85rem;text-decoration:none}
+h1{font-family:'IBM Plex Sans Condensed',sans-serif;font-size:1.7rem;margin:12px 0 4px}
+.sub{color:var(--dim);margin-bottom:20px}
+section{background:var(--panel);border:1px solid var(--bord);border-radius:10px;padding:20px 24px;margin:16px 0}
+section h2{font-family:'IBM Plex Sans Condensed',sans-serif;color:var(--acc);font-size:1.15rem;margin-bottom:10px}
+section h2 .n{color:var(--amb);font-family:'IBM Plex Mono',monospace;font-size:.85rem;margin-right:8px}
+p{margin:8px 0;font-size:.94rem}
+ul,ol{margin:8px 0 8px 22px}
+li{margin:6px 0;font-size:.94rem}
+b{color:#fff}
+.encadre{background:var(--panel2);border-left:3px solid var(--amb);padding:12px 16px;border-radius:0 6px 6px 0;margin:12px 0;font-size:.9rem}
+.encadre.vert{border-left-color:var(--vert)}
+.encadre.rouge{border-left-color:var(--rouge)}
+code{font-family:'IBM Plex Mono',monospace;font-size:.85em;background:#0A1322;padding:1px 6px;border-radius:4px}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.88rem}
+th,td{border:1px solid var(--bord);padding:8px 10px;text-align:left}
+th{background:var(--panel2);font-family:'IBM Plex Sans Condensed',sans-serif;color:var(--acc)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="back" href="../">&larr; ENCOR# cd ..</a>
+<h1>🧠 Stratégie de réussite — spécial deuxième tentative</h1>
+<p class="sub">Un échec au 350-401 n'est pas une anomalie : c'est un des examens Cisco les plus larges. La différence au second passage se joue autant sur la <b>méthode</b> que sur les connaissances.</p>
+
+<section>
+<h2><span class="n">01</span>Transformer l'échec en diagnostic</h2>
+<p>Ton premier passage t'a donné quelque chose que la plupart des candidats n'ont pas : un <b>score report officiel par domaine</b>. Retrouve-le (email Pearson VUE / compte de certification Cisco) et remplis cette matrice de priorité :</p>
+<table>
+<tr><th>Domaine</th><th>Poids</th><th>Mon score 1er passage</th><th>Priorité = poids × faiblesse</th></tr>
+<tr><td>3.0 Infrastructure</td><td>30 %</td><td>___ %</td><td>Un domaine lourd ET faible = priorité absolue</td></tr>
+<tr><td>5.0 Security</td><td>20 %</td><td>___ %</td><td></td></tr>
+<tr><td>1.0 Architecture</td><td>15 %</td><td>___ %</td><td></td></tr>
+<tr><td>6.0 Automation</td><td>15 %</td><td>___ %</td><td></td></tr>
+<tr><td>2.0 Virtualization</td><td>10 %</td><td>___ %</td><td></td></tr>
+<tr><td>4.0 Network Assurance</td><td>10 %</td><td>___ %</td><td></td></tr>
+</table>
+<div class="encadre">📐 <b>Règle de répartition du temps :</b> ~50 % de tes heures sur tes 2 domaines prioritaires, ~30 % sur les moyens, ~20 % d'entretien sur tes points forts (ne les laisse pas rouiller, ils doivent rester des réservoirs de points).</div>
+<div class="encadre rouge">⚠ Piège classique du redoublant : réviser en boucle ce qu'on aime et qu'on connaît déjà (zone de confort). Le simulateur en <b>mode par domaine</b> t'impose l'inverse.</div>
+</section>
+
+<section>
+<h2><span class="n">02</span>Étudier ACTIVEMENT (ce qui change tout)</h2>
+<p>Relire un cours donne une <b>illusion de maîtrise</b> : tout paraît familier, rien n'est récupérable de mémoire le jour J. Le cerveau retient ce qu'il <b>produit</b>, pas ce qu'il reconnaît. Ton protocole quotidien :</p>
+<ol>
+<li><b>20 min de flashcards</b> (matin, café ☕) — la récupération active espacée est la technique la plus validée par la recherche.</li>
+<li><b>1 bloc d'étude de 45-90 min</b> sur le domaine prioritaire du jour : lire → <b>fermer</b> → réexpliquer à voix haute comme si tu l'enseignais à tes étudiants du Canado (tu as un avantage énorme : tu SAIS enseigner).</li>
+<li><b>15-30 questions en mode étude</b> sur ce domaine — lis CHAQUE explication, même quand tu as juste.</li>
+<li><b>1 lab par soirée</b> quand le calendrier en prévoit — les doigts retiennent ce que les yeux oublient.</li>
+</ol>
+<div class="encadre vert">🎓 <b>Ton super-pouvoir :</b> tu enseignes le réseau. Pour chaque sujet difficile, prépare mentalement « comment je l'expliquerais en cours à Canado ». Si tu ne peux pas l'expliquer simplement, c'est que ce n'est pas encore acquis — et maintenant tu le sais AVANT l'examen.</div>
+</section>
+
+<section>
+<h2><span class="n">03</span>Maîtriser la mécanique de l'examen</h2>
+<ul>
+<li><b>~102 questions / 120 minutes</b> → budget ≈ <b>70 secondes par question</b>. Certaines se répondent en 15 s, garde ce capital pour les exhibits.</li>
+<li><b>On ne revient JAMAIS en arrière</b> à un examen Cisco : une fois validée, la question est derrière toi. Conséquence stratégique : <b>décide et avance</b>. Ressasser une question passée te coûte les trois suivantes.</li>
+<li>Formats : choix unique, choix multiples (« Choose two/three » — le nombre est TOUJOURS indiqué), drag-and-drop (ordres, correspondances), questions sur exhibit (config, show, code Python, JSON).</li>
+<li>Pas de pénalité pour une mauvaise réponse → <b>ne laisse jamais une question vide</b>. Élimine 2 options et choisis : 50 % vaut mieux que 0 %.</li>
+</ul>
+<div class="encadre">⏱ <b>Points de contrôle du chrono :</b> question 35 → il doit rester ≥ 80 min · question 70 → ≥ 40 min. En retard ? Passe en mode rapide : lecture de la question, élimination, décision en 45 s max.</div>
+</section>
+
+<section>
+<h2><span class="n">04</span>Décoder les questions Cisco</h2>
+<ul>
+<li><b>Lis la question AVANT l'exhibit.</b> Elle te dit quoi chercher — sinon tu perds 40 s à tout analyser.</li>
+<li>Les mots-pièges : « <b>best</b> », « <b>most</b> », « <b>first</b> » = plusieurs réponses sont vraies, une seule est optimale. « FIRST action » ≠ « la solution finale » (souvent : vérifier/isoler avant d'agir).</li>
+<li>Méfie-toi des options avec « <b>always</b> », « <b>never</b> », « <b>all</b> », « <b>only</b> » — les absolus sont statistiquement faux en réseau.</li>
+<li>Sur les exhibits de config : cherche <b>l'anomalie type</b> — masque/wildcard faux, inside/outside inversés, access-group au lieu d'access-class, no-summary manquant, network BGP sans correspondance exacte, auto+auto en DTP.</li>
+<li>Questions « Choose two » : trouve d'abord la réponse dont tu es SÛR, puis élimine parmi les restantes.</li>
+<li>Sur le code Python/JSON : exécute-le <b>ligne par ligne au brouillon</b> (borne exclue du slicing, == vs =, .get avec défaut).</li>
+</ul>
+</section>
+
+<section>
+<h2><span class="n">05</span>Les 3 examens blancs — protocole strict</h2>
+<table>
+<tr><th>Blanc</th><th>Quand</th><th>Objectif</th><th>Après</th></tr>
+<tr><td>n°1</td><td>Fin de la semaine 4</td><td>≥ 65 % — photographie honnête</td><td>2 h d'analyse : chaque erreur classée (ignorance / précipitation / piège de formulation)</td></tr>
+<tr><td>n°2</td><td>Semaine 5</td><td>≥ 75 %</td><td>Rattrapage ciblé des domaines &lt; 70 %</td></tr>
+<tr><td>n°3</td><td>2–3 jours avant l'examen</td><td><b>≥ 80 %</b> = feu vert</td><td>Ensuite : révision LÉGÈRE uniquement</td></tr>
+</table>
+<p>Conditions réelles obligatoires : chrono lancé, aucune pause, aucune note, téléphone ailleurs. L'<b>analyse post-blanc vaut plus que le blanc lui-même</b> : c'est là que les points se gagnent.</p>
+<div class="encadre rouge">🚨 Moins de 80 % au blanc n°3 ? Regarde honnêtement : si tu es à 75-79 %, tente (la marge d'erreur joue dans les deux sens). En dessous de 72-73 %, <b>reporter de 2 semaines coûte moins cher qu'un troisième passage</b> — financièrement et moralement.</div>
+</section>
+
+<section>
+<h2><span class="n">06</span>J-1 et jour J</h2>
+<ul>
+<li><b>La veille :</b> fiches PDF uniquement (2 relectures max), aucun contenu nouveau, un tour de flashcards « boîte 1 », préparation logistique (pièce d'identité valide au MÊME nom que l'inscription, itinéraire vers le centre, ou test système complet si OnVUE en ligne : webcam, pièce calme, débit stable). Coucher tôt — le sommeil consolide la mémoire, littéralement.</li>
+<li><b>Le matin :</b> vrai petit-déjeuner, arrivée 30 min en avance, eau. Pas de révision panique dans la salle d'attente — un tour de flashcards « acquises » pour la confiance, c'est tout.</li>
+<li><b>Pendant :</b> les 5 premières questions servent à te mettre en rythme, ne panique pas si elles sont dures — la difficulté n'est pas croissante. Respire entre les blocs de 20 questions (10 secondes, épaules relâchées).</li>
+<li><b>Le mental :</b> tu n'es pas le candidat de la première fois. Tu connais la bête, tu as un an d'enseignement de plus, 350 questions d'entraînement, 10 labs et un protocole. La nervosité est normale ; elle redescend après la question 10.</li>
+</ul>
+<div class="encadre vert">💪 <b>Kenbe fèm.</b> Un CCNA qui enseigne le réseau et qui prépare méthodiquement son second passage a statistiquement toutes les cartes en main. Ce kit existe pour une seule raison : que le soir de l'examen, tu écrives « PASSED » dans le groupe.</div>
+</section>
+</div>
+</body>
+</html>
