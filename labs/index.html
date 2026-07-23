@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Labs pratiques · ENCOR 350-401</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0B1220;--panel:#101A2E;--bord:#1E2A44;--txt:#D7E2F4;--dim:#7E8DA8;--acc:#3FD8C2;--amb:#F0A429}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);font-family:'IBM Plex Sans',sans-serif;line-height:1.65}
+.wrap{max-width:900px;margin:0 auto;padding:24px 20px 80px}
+a{color:var(--acc)}
+.back{font-family:'IBM Plex Mono',monospace;font-size:.85rem;text-decoration:none}
+h1{font-family:'IBM Plex Sans Condensed',sans-serif;font-size:1.7rem;margin:12px 0 4px}
+.sub{color:var(--dim);margin-bottom:18px}
+nav{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+nav a{font-family:'IBM Plex Mono',monospace;font-size:.75rem;background:var(--panel);border:1px solid var(--bord);padding:5px 10px;border-radius:14px;text-decoration:none}
+nav a:hover{border-color:var(--acc)}
+section{background:var(--panel);border:1px solid var(--bord);border-radius:10px;padding:20px 24px;margin:18px 0}
+section h2{font-family:'IBM Plex Sans Condensed',sans-serif;color:var(--acc);font-size:1.2rem;margin-bottom:8px}
+section h3{font-family:'IBM Plex Sans Condensed',sans-serif;color:var(--amb);font-size:1rem;margin:16px 0 6px}
+pre{background:#0A1322;border:1px solid var(--bord);border-left:3px solid var(--acc);border-radius:6px;padding:12px 14px;overflow-x:auto;font-family:'IBM Plex Mono',monospace;font-size:.8rem;margin:10px 0;line-height:1.5}
+code{font-family:'IBM Plex Mono',monospace;font-size:.85em;background:#0A1322;padding:1px 5px;border-radius:4px}
+ul,ol{margin:8px 0 8px 22px}
+li{margin:4px 0}
+p{margin:8px 0;font-size:.94rem}
+b{color:#fff}
+</style></head><body><div class="wrap">
+<a class="back" href="../">&larr; ENCOR# cd ..</a>
+<h1>🧪 Labs pratiques</h1>
+<p class="sub">10 labs CML-Free / Packet Tracer — un par soirée. Pour SD-Access, SD-WAN et les API : sandboxes Cisco DevNet (gratuites).</p>
+<nav><a href="#lab-01-stp">Lab 01</a>
+<a href="#lab-02-etherchannel">Lab 02</a>
+<a href="#lab-03-hsrp">Lab 03</a>
+<a href="#lab-04-ospf-multiaires">Lab 04</a>
+<a href="#lab-05-ospfv3">Lab 05</a>
+<a href="#lab-06-ebgp">Lab 06</a>
+<a href="#lab-07-gre-ipsec">Lab 07</a>
+<a href="#lab-08-vrf-lite">Lab 08</a>
+<a href="#lab-09-nat-ipsla">Lab 09</a>
+<a href="#lab-10-copp-aaa">Lab 10</a></nav>
+<section id="lab-01-stp"><h2>Lab 01 — Spanning Tree : root, convergence et protections</h2><p><b>Semaine 1 · Domaine 3.0 Infrastructure · CML-Free ou Packet Tracer · ~45 min</b></p>
+<h3>Objectifs</h3>
+<ul>
+<li>Forcer l&#x27;élection du root bridge et lire la topologie STP</li>
+<li>Chronométrer la convergence RSTP après une coupure</li>
+<li>Sécuriser l&#x27;accès avec PortFast + BPDU Guard</li>
+</ul>
+<h3>Topologie</h3>
+<pre>
+        D1 ================= D2
+         \\    (2 liens)     /
+          \\                /
+           +----- A1 -----+
+                  |
+                 PC1 (VLAN 10)
+</pre>
+<p>3 switches : D1, D2 (distribution), A1 (accès). Deux liens D1–D2, un lien vers A1 depuis chaque distribution. VLAN 10 partout.</p>
+<h3>Tâches</h3>
+<ol>
+<li><b>Base</b> : créer VLAN 10, mettre tous les liens inter-switches en trunk statique (<code>switchport mode trunk</code>), PC1 en accès VLAN 10.</li>
+<li><b>Observer l&#x27;élection par défaut</b> : <code>show spanning-tree vlan 10</code> sur les 3 switches. Qui est root ? Pourquoi (priorité ? MAC ?) Note le port bloqué.</li>
+<li><b>Forcer D1 root</b> :</li>
+<p>   ```</p>
+<p>   D1(config)# spanning-tree vlan 10 root primary</p>
+<p>   D2(config)# spanning-tree vlan 10 root secondary</p>
+<p>   ```</p>
+<p>   Vérifie la nouvelle priorité (24576) et le déplacement du port bloqué.</p>
+<li><b>Convergence</b> : lance un ping continu PC1 → SVI de D1. Coupe le lien actif A1–D1 (<code>shutdown</code>). Combien de pings perdus en RSTP (<code>spanning-tree mode rapid-pvst</code>) ? Compare avec <code>spanning-tree mode pvst</code> (802.1D) : la différence doit être spectaculaire (≈ 1-2 s vs 30-50 s).</li>
+<li><b>Protections d&#x27;accès</b> :</li>
+<p>   ```</p>
+<p>   A1(config-if)# spanning-tree portfast</p>
+<p>   A1(config-if)# spanning-tree bpduguard enable</p>
+<p>   ```</p>
+<p>   Simule un BPDU entrant sur le port de PC1 (branche un switch à la place). Constate l&#x27;err-disable : <code>show interfaces status err-disabled</code>. Récupération : <code>errdisable recovery cause bpduguard</code>.</p>
+</ol>
+<h3>Vérifications clés</h3>
+<p><code>show spanning-tree vlan 10</code> · <code>show spanning-tree summary</code> · <code>show interfaces trunk</code> · <code>show interfaces status err-disabled</code></p>
+<h3>Défi bonus</h3>
+<p>Configure MST : les VLAN 10-20 dans l&#x27;instance 1, root D1 ; VLAN 30-40 dans l&#x27;instance 2, root D2. Vérifie que nom/révision/mapping sont IDENTIQUES sur les 3 switches (<code>show spanning-tree mst configuration</code>).</p>
+<h3>Lien examen</h3>
+<p>Flags des états, timers 2/15/20 s, <code>root primary</code> = 24576, BPDU Guard vs BPDU Filter, Loop Guard vs UDLD.</p></section>
+<section id="lab-02-etherchannel"><h2>Lab 02 — EtherChannel : LACP et diagnostic de mismatch</h2><p><b>Semaine 1 · Domaine 3.0 Infrastructure · ~30 min</b></p>
+<h3>Objectifs</h3>
+<ul>
+<li>Monter un LACP L2 entre D1 et D2</li>
+<li>Provoquer et diagnostiquer un mismatch (le flag qui trahit tout)</li>
+<li>Monter un EtherChannel L3</li>
+</ul>
+<h3>Topologie</h3>
+<pre>
+D1 ==(g1/0/1 + g1/0/2)== D2
+</pre>
+<h3>Tâches</h3>
+<ol>
+<li><b>LACP L2</b> :</li>
+<p>   ```</p>
+<p>   D1(config)# interface range g1/0/1-2</p>
+<p>   D1(config-if-range)# channel-group 1 mode active</p>
+<p>   D1(config)# interface port-channel 1</p>
+<p>   D1(config-if)# switchport mode trunk</p>
+<p>   ```</p>
+<p>   Idem sur D2 (<code>mode active</code> des deux côtés = OK).</p>
+<li><b>Lire les flags</b> : <code>show etherchannel summary</code> → attendu <code>Po1(SU)</code> avec <code>(P)</code> sur chaque membre.</li>
+<li><b>Provoquer un mismatch</b> : passe g1/0/2 de D2 en <code>switchport access vlan 99</code>. Observe : le port passe en <code>(s)</code> suspended. Remets la config, vérifie le retour en <code>(P)</code>.</li>
+<li><b>Casser la négociation</b> : passe D2 en <code>mode on</code> pendant que D1 reste <code>active</code>. Résultat ? (<code>(I)</code> standalone ou down — LACP ne négocie pas avec du statique).</li>
+<li><b>EtherChannel L3</b> : supprime le Po1, puis :</li>
+<p>   ```</p>
+<p>   D1(config)# interface range g1/0/1-2</p>
+<p>   D1(config-if-range)# no switchport</p>
+<p>   D1(config-if-range)# channel-group 2 mode active</p>
+<p>   D1(config)# interface port-channel 2</p>
+<p>   D1(config-if)# ip address 10.1.12.1 255.255.255.252</p>
+<p>   ```</p>
+<p>   Ping D2 à travers le bundle L3.</p>
+<li><b>Load-balancing</b> : <code>show etherchannel load-balance</code>, puis <code>port-channel load-balance src-dst-ip</code>. Comprends pourquoi src-mac serait mauvais derrière un routeur.</li>
+</ol>
+<h3>Vérifications clés</h3>
+<p><code>show etherchannel summary</code> (flags SU/P/s/I/D) · <code>show lacp neighbor</code> · <code>show etherchannel load-balance</code></p>
+<h3>Lien examen</h3>
+<p>active/passive/on (combinaisons qui marchent), conditions d&#x27;uniformité des membres, min-links, lecture des flags en exhibit.</p></section>
+<section id="lab-03-hsrp"><h2>Lab 03 — HSRP : priorité, preempt, tracking</h2><p><b>Semaine 1 · Domaine 3.0 Infrastructure · ~40 min</b></p>
+<h3>Objectifs</h3>
+<ul>
+<li>Passerelle redondante HSRP entre D1 et D2</li>
+<li>Bascule automatique sur panne d&#x27;uplink via tracking</li>
+<li>Comprendre le rôle CRITIQUE de preempt</li>
+</ul>
+<h3>Topologie</h3>
+<pre>
+      (WAN simulé : loopback ou R1)
+        |                |
+  g0/1  D1 ---- lien ---- D2  g0/1
+        |    (VLAN 10)    |
+        +------ A1 -------+
+                |
+               PC1 (10.0.10.100/24, GW 10.0.10.254)
+</pre>
+<h3>Tâches</h3>
+<ol>
+<li>SVI VLAN 10 : D1 = 10.0.10.1, D2 = 10.0.10.2.</li>
+<li><b>HSRP</b> :</li>
+<p>   ```</p>
+<p>   D1(config-if)# standby version 2</p>
+<p>   D1(config-if)# standby 1 ip 10.0.10.254</p>
+<p>   D1(config-if)# standby 1 priority 110</p>
+<p>   D1(config-if)# standby 1 preempt</p>
+<p>   D2 : priority 100 + preempt</p>
+<p>   ```</p>
+<li><code>show standby brief</code> : D1 Active, D2 Standby. Note la vMAC (0000.0c9f.f001 en v2).</li>
+<li><b>Bascule brutale</b> : ping continu depuis PC1 vers 10.0.10.254 → <code>shutdown</code> du SVI de D1 → combien de pings perdus ? D2 devient Active.</li>
+<li><b>Tracking</b> : rallume D1 (il repasse Active grâce à preempt), puis :</li>
+<p>   ```</p>
+<p>   D1(config)# track 8 interface g0/1 line-protocol</p>
+<p>   D1(config-if)# standby 1 track 8 decrement 30</p>
+<p>   ```</p>
+<p>   Coupe g0/1 de D1 : priorité 110→80 &lt; 100 → D2 preempt et devient Active <b>sans</b> que le lien LAN soit tombé. C&#x27;est le scénario d&#x27;examen classique.</p>
+<li><b>Test négatif</b> : retire <code>preempt</code> de D2 et refais l&#x27;étape 5. Constate que D2 ne prend PAS le relais malgré sa meilleure priorité → preempt est indispensable côté &quot;challenger&quot;.</li>
+</ol>
+<h3>Vérifications clés</h3>
+<p><code>show standby brief</code> · <code>show track</code> · <code>debug standby events</code> (avec modération)</p>
+<h3>Défi bonus</h3>
+<p>Remplace le tracking d&#x27;interface par une sonde : <code>ip sla 1</code> (icmp-echo vers le WAN) + <code>track 8 ip sla 1 reachability</code>. Plus fiable : détecte les pannes AU-DELÀ du lien local.</p>
+<h3>Lien examen</h3>
+<p>Timers 3/10, v1 vs v2 (groupes, multicast, vMAC), la chaîne SLA→track→decrement→preempt, comparaison HSRP/VRRP/GLBP.</p></section>
+<section id="lab-04-ospf-multiaires"><h2>Lab 04 — OSPF multi-aires : LSA, stub, résumé</h2><p><b>Semaine 2 · Domaine 3.0 Infrastructure · ~60 min</b></p>
+<h3>Objectifs</h3>
+<ul>
+<li>Monter une topologie aire 0 + aire 1</li>
+<li>Lire la LSDB et identifier chaque type de LSA</li>
+<li>Configurer une aire stub totally stubby + résumé inter-aires</li>
+</ul>
+<h3>Topologie</h3>
+<pre>
+R3 ---- Aire 1 ---- R2(ABR) ---- Aire 0 ---- R1
+Lo0: 10.1.3.1/32              Lo0: 10.1.1.1/32
++ 172.16.0.0/24 à 172.16.3.0/24 (loopbacks sur R3)
+</pre>
+<h3>Tâches</h3>
+<ol>
+<li>OSPF process 10 partout, router-id manuels (1.1.1.1 / 2.2.2.2 / 3.3.3.3).</li>
+<li>Active OSPF par interface (méthode moderne) : <code>ip ospf 10 area 0</code> (ou area 1 côté R3).</li>
+<li><b>Lecture LSDB</b> sur R2 : <code>show ip ospf database</code>. Identifie : Router LSA (type 1) par aire, Network LSA (type 2) si segment multi-accès, Summary LSA (type 3) générées par R2 vers chaque aire.</li>
+<li><b>Codes de routes</b> sur R1 : <code>show ip route ospf</code> → les réseaux de l&#x27;aire 1 apparaissent en <code>O IA</code>.</li>
+<li><b>Stub</b> : passe l&#x27;aire 1 en totally stubby :</li>
+<p>   ```</p>
+<p>   R3(config-router)# area 1 stub</p>
+<p>   R2(config-router)# area 1 stub no-summary</p>
+<p>   ```</p>
+<p>   Sur R3 : <code>show ip route ospf</code> → tout a disparu sauf <code>O*IA 0.0.0.0/0</code>. C&#x27;est le but : table minimale.</p>
+<li><b>Résumé</b> : sur R2, agrège les loopbacks de R3 :</li>
+<p>   ```</p>
+<p>   R2(config-router)# area 1 range 172.16.0.0 255.255.252.0</p>
+<p>   ```</p>
+<p>   R1 ne voit plus qu&#x27;une seule route /22 au lieu de quatre /24.</p>
+<li><b>Réglages d&#x27;interface</b> : sur le lien R1–R2, <code>ip ospf network point-to-point</code> → plus d&#x27;élection DR inutile. Compare <code>show ip ospf interface</code> avant/après.</li>
+</ol>
+<h3>Vérifications clés</h3>
+<p><code>show ip ospf neighbor</code> · <code>show ip ospf database</code> · <code>show ip ospf interface brief</code> · <code>show ip route ospf</code></p>
+<h3>Défi bonus</h3>
+<p>Ajoute une route statique vers un réseau fictif sur R1 et redistribue-la (<code>redistribute static subnets</code>). Observe le type 5 dans la LSDB, le code <code>O E2</code> sur R3... impossible ! (aire stub = pas de type 5). Repasse l&#x27;aire 1 en normale pour le voir, puis en NSSA pour observer le type 7 et le code <code>O N2</code>.</p>
+<h3>Lien examen</h3>
+<p>Types de LSA 1/2/3/4/5/7, règles stub/totally stubby/NSSA (qui configure quoi), E1 vs E2, network types et timers, virtual-link.</p></section>
+<section id="lab-05-ospfv3"><h2>Lab 05 — OSPFv3 : la même topologie en IPv6</h2><p><b>Semaine 2 · Domaine 3.0 Infrastructure · ~40 min</b></p>
+<h3>Objectifs</h3>
+<ul>
+<li>Reproduire le lab 04 en IPv6</li>
+<li>Comprendre les différences structurantes v2/v3</li>
+</ul>
+<h3>Topologie</h3>
+<p>Identique au lab 04. Adressage : 2001:db8:12::/64 (R1–R2), 2001:db8:23::/64 (R2–R3), loopbacks 2001:db8::X/128.</p>
+<h3>Tâches</h3>
+<ol>
+<li><code>ipv6 unicast-routing</code> (l&#x27;oubli n°1 !).</li>
+<li>Adresses IPv6 sur les interfaces + link-local automatiques (observe-les : <code>show ipv6 interface brief</code>).</li>
+<li><b>OSPFv3 par interface</b> (pas de network statement) :</li>
+<p>   ```</p>
+<p>   R1(config-if)# ipv6 ospf 10 area 0</p>
+<p>   ```</p>
+<p>   Le router-id reste 32 bits : le fixer manuellement (<code>router-id 1.1.1.1</code> sous <code>ipv6 router ospf 10</code>) car sans IPv4, pas d&#x27;élection automatique possible.</p>
+<li>Vérifie les adjacences : <code>show ipv6 ospf neighbor</code> → note que les voisins dialoguent en <b>link-local</b> (FE80::...).</li>
+<li><code>show ipv6 route ospf</code> : codes O / OI.</li>
+<li>Refais l&#x27;aire 1 stub totally stubby comme au lab 04.</li>
+</ol>
+<h3>Vérifications clés</h3>
+<p><code>show ipv6 ospf neighbor</code> · <code>show ipv6 ospf interface</code> · <code>show ipv6 route</code></p>
+<h3>Défi bonus</h3>
+<p>Sur IOS-XE récent, teste le mode address-family d&#x27;OSPFv3 (<code>router ospfv3 10</code> + <code>address-family ipv4/ipv6 unicast</code>) : un seul process pour les deux piles.</p>
+<h3>Lien examen</h3>
+<p>Activation par interface, adjacences en link-local, multicast FF02::5/FF02::6, router-id 32 bits obligatoire, différences v2/v3 en tableau.</p></section>
+<section id="lab-06-ebgp"><h2>Lab 06 — eBGP : session, annonces et best-path</h2><p><b>Semaine 2 · Domaine 3.0 Infrastructure · ~45 min</b></p>
+<h3>Objectifs</h3>
+<ul>
+<li>Monter une session eBGP et annoncer des réseaux</li>
+<li>Lire <code>show ip bgp</code> (codes &gt;, *, i)</li>
+<li>Comprendre le piège du network à correspondance exacte</li>
+</ul>
+<h3>Topologie</h3>
+<pre>
+R1 (AS 65001) ---- 10.99.12.0/30 ---- R2 (AS 65002)
+Lo0 R1 : 192.168.1.1/24 annoncé      Lo0 R2 : 192.168.2.1/24 annoncé
+</pre>
+<h3>Tâches</h3>
+<ol>
+<li><b>Session</b> :</li>
+<p>   ```</p>
+<p>   R1(config)# router bgp 65001</p>
+<p>   R1(config-router)# neighbor 10.99.12.2 remote-as 65002</p>
+<p>   ```</p>
+<p>   Miroir sur R2. <code>show ip bgp summary</code> : l&#x27;état doit passer Idle → Active → OpenSent → Established (colonne State/PfxRcd = un nombre).</p>
+<li><b>Annonce</b> :</li>
+<p>   ```</p>
+<p>   R1(config-router)# network 192.168.1.0 mask 255.255.255.0</p>
+<p>   ```</p>
+<li><b>LE piège</b> : annonce <code>network 192.168.1.0 mask 255.255.0.0</code> (masque volontairement faux). Constate : rien ne part (<code>show ip bgp</code> vide côté R2 pour ce préfixe). BGP exige la correspondance EXACTE préfixe+masque dans la table de routage. Corrige.</li>
+<li><b>Lecture</b> : <code>show ip bgp</code> sur R2 :</li>
+<p>   - <code>*</code> = route valide, <code>&gt;</code> = best path, Next Hop, AS Path <code>65001 i</code>.</p>
+<li><b>Diagnostic Idle</b> : <code>shutdown</code> sur l&#x27;interface WAN de R2, <code>clear ip bgp *</code> sur R1 → session Idle. <code>show ip route 10.99.12.2</code> = network not in table → BGP ne peut même pas tenter le TCP 179. Rallume et regarde la machine à états remonter.</li>
+<li><b>Loopback peering (bonus multihop)</b> : monte la session entre Lo0 avec <code>update-source Loopback0</code> + <code>ebgp-multihop 2</code> + routes statiques croisées. Comprends pourquoi les DEUX commandes sont nécessaires.</li>
+</ol>
+<h3>Vérifications clés</h3>
+<p><code>show ip bgp summary</code> · <code>show ip bgp</code> · <code>show ip bgp neighbors | include BGP state</code> · <code>show tcp brief</code></p>
+<h3>Lien examen</h3>
+<p>États BGP dans l&#x27;ordre, TTL eBGP=1, update-source/multihop, network mask exact, attributs (weight &gt; local-pref &gt; AS-path...), timers 60/180.</p></section>
+<section id="lab-07-gre-ipsec"><h2>Lab 07 — GRE + OSPF dans le tunnel, puis IPsec</h2><p><b>Semaine 3 · Domaines 2.0/3.0 · ~60 min</b></p>
+<h3>Objectifs</h3>
+<ul>
+<li>Tunnel GRE R1–R3 par-dessus R2 (qui ignore tout)</li>
+<li>OSPF DANS le tunnel + éviter le routage récursif</li>
+<li>Chiffrer avec un profil IPsec (méthode moderne)</li>
+</ul>
+<h3>Topologie</h3>
+<pre>
+R1 ---- 10.0.12.0/30 ---- R2 ---- 10.0.23.0/30 ---- R3
+        Tunnel0 : 172.16.13.0/30 (R1 ↔ R3, via R2)
+LAN R1 : 192.168.1.0/24          LAN R3 : 192.168.3.0/24
+</pre>
+<h3>Tâches</h3>
+<ol>
+<li>Routage de base : routes statiques (ou OSPF area 0) pour que R1 et R3 joignent leurs IP WAN mutuelles À TRAVERS R2. R2 ne connaît PAS les LAN.</li>
+<li><b>GRE</b> :</li>
+<p>   ```</p>
+<p>   R1(config)# interface Tunnel0</p>
+<p>   R1(config-if)# ip address 172.16.13.1 255.255.255.252</p>
+<p>   R1(config-if)# tunnel source g0/0</p>
+<p>   R1(config-if)# tunnel destination 10.0.23.2</p>
+<p>   R1(config-if)# ip mtu 1400</p>
+<p>   R1(config-if)# ip tcp adjust-mss 1360</p>
+<p>   ```</p>
+<p>   Miroir sur R3. Ping 172.16.13.2 : le tunnel vit.</p>
+<li><b>OSPF dans le tunnel</b> : <code>ip ospf 10 area 0</code> sur Tunnel0 et les LAN (PAS sur les interfaces WAN !). Les LAN s&#x27;apprennent via le tunnel. Traceroute R1-LAN → R3-LAN : un seul &quot;saut&quot; tunnel (R2 invisible).</li>
+<li><b>Provoquer le routage récursif</b> (pédagogique) : ajoute les interfaces WAN dans OSPF. Le routeur apprend la destination du tunnel VIA le tunnel → messages <code>%TUN-5-RECURDOWN</code>, flapping. Comprends, puis retire.</li>
+<li><b>IPsec par profil</b> :</li>
+<p>   ```</p>
+<p>   crypto ikev2 proposal PROP : encryption aes-cbc-256 / integrity sha256 / group 14</p>
+<p>   crypto ikev2 policy POL : proposal PROP</p>
+<p>   crypto ikev2 keyring KEY : peer R3 / address 10.0.23.2 / pre-shared-key Encor2026!</p>
+<p>   crypto ikev2 profile PROF : match identity remote address 10.0.23.2 / authentication local|remote pre-share / keyring local KEY</p>
+<p>   crypto ipsec transform-set TS esp-aes 256 esp-sha256-hmac (mode transport)</p>
+<p>   crypto ipsec profile IPSECPROF : set transform-set TS / set ikev2-profile PROF</p>
+<p>   interface Tunnel0 : tunnel protection ipsec profile IPSECPROF</p>
+<p>   ```</p>
+<li>Vérifie : <code>show crypto ikev2 sa</code>, <code>show crypto ipsec sa</code> (encaps/decaps qui s&#x27;incrémentent pendant un ping).</li>
+</ol>
+<h3>Vérifications clés</h3>
+<p><code>show interface tunnel0</code> · <code>show ip ospf neighbor</code> · <code>show crypto ipsec sa</code> · ping avec <code>size 1500 df-bit</code> (constate le code M → MTU du chemin)</p>
+<h3>Lien examen</h3>
+<p>GRE protocole 47, MTU 1476/1400, transport vs tunnel mode, tunnel protection vs crypto map, recursive routing, ESP=50.</p></section>
+<section id="lab-08-vrf-lite"><h2>Lab 08 — VRF-lite : deux clients isolés sur un routeur</h2><p><b>Semaine 3 · Domaine 2.0 Virtualisation · ~35 min</b></p>
+<h3>Objectifs</h3>
+<ul>
+<li>Créer deux VRF étanches sur le même équipement</li>
+<li>Vérifier l&#x27;isolement et manier les commandes &quot;vrf-aware&quot;</li>
+</ul>
+<h3>Topologie</h3>
+<pre>
+PC-A (client ROUGE) --- g0/0 [VRF ROUGE] R1 [VRF BLEU] g0/1 --- PC-B (client BLEU)
+                        192.168.10.1/24        192.168.10.1/24  ← MÊME adresse !
+</pre>
+<h3>Tâches</h3>
+<ol>
+<li><b>VRF</b> :</li>
+<p>   ```</p>
+<p>   R1(config)# vrf definition ROUGE</p>
+<p>   R1(config-vrf)# address-family ipv4</p>
+<p>   (idem BLEU)</p>
+<p>   ```</p>
+<li><b>Affectation</b> (⚠ l&#x27;ordre : le vrf forwarding EFFACE l&#x27;IP) :</li>
+<p>   ```</p>
+<p>   R1(config)# interface g0/0</p>
+<p>   R1(config-if)# vrf forwarding ROUGE</p>
+<p>   R1(config-if)# ip address 192.168.10.1 255.255.255.0</p>
+<p>   ```</p>
+<p>   Même IP dans BLEU sur g0/1 → aucune erreur : les tables sont séparées. C&#x27;est LA démonstration de la VRF.</p>
+<li><b>Tables</b> : <code>show ip route vrf ROUGE</code> vs <code>show ip route vrf BLEU</code> vs <code>show ip route</code> (globale, vide de ces réseaux).</li>
+<li><b>Ping vrf-aware</b> : <code>ping vrf ROUGE 192.168.10.10</code> fonctionne ; <code>ping 192.168.10.10</code> (global) échoue. Réflexe à ancrer.</li>
+<li><b>Isolement</b> : PC-A ne peut pas joindre PC-B — aucune fuite entre VRF sans configuration explicite.</li>
+</ol>
+<h3>Défi bonus</h3>
+<p>Route leaking statique : rends un serveur &quot;partagé&quot; du VRF BLEU joignable depuis ROUGE (<code>ip route vrf ROUGE &lt;prefix&gt; &lt;mask&gt; g0/1 &lt;next-hop&gt;</code> + retour). Mesure la portée (et le danger) du leaking.</p>
+<h3>Lien examen</h3>
+<p>vrf definition + address-family, vrf forwarding qui efface l&#x27;IP, commandes show/ping/traceroute vrf, VRF-lite vs MPLS, cas d&#x27;usage (multi-tenant, séparation invités/corporate, underlay/overlay SD-Access).</p></section>
+<section id="lab-09-nat-ipsla"><h2>Lab 09 — NAT/PAT + IP SLA : bascule dual-WAN automatique</h2><p><b>Semaine 3 · Domaines 3.0/4.0 · ~45 min</b></p>
+<h3>Objectifs</h3>
+<ul>
+<li>PAT vers l&#x27;extérieur (le montage le plus courant au monde)</li>
+<li>Sonde IP SLA + tracking + route flottante = bascule automatique</li>
+<li>Le scénario multi-FAI typique (très concret pour Haïti !)</li>
+</ul>
+<h3>Topologie</h3>
+<pre>
+LAN 192.168.50.0/24 --- R1 --- g0/1 --- FAI-1 (203.0.113.1) [principal]
+                          \\--- g0/2 --- FAI-2 (198.51.100.1) [secours]
+</pre>
+<p>(FAI-1/FAI-2 simulés par un routeur avec deux loopbacks &quot;Internet&quot; : 8.8.8.8/32 par exemple.)</p>
+<h3>Tâches</h3>
+<ol>
+<li><b>PAT</b> :</li>
+<p>   ```</p>
+<p>   R1(config)# access-list 1 permit 192.168.50.0 0.0.0.255</p>
+<p>   R1(config)# ip nat inside source list 1 interface g0/1 overload</p>
+<p>   R1(config)# interface g0/0 → ip nat inside</p>
+<p>   R1(config)# interface g0/1 → ip nat outside</p>
+<p>   R1(config)# interface g0/2 → ip nat outside</p>
+<p>   ```</p>
+<p>   ⚠ Vérifie bien inside côté LAN, outside côté WAN — l&#x27;inversion est le piège d&#x27;exhibit classique.</p>
+<li>Ping depuis un PC vers 8.8.8.8, puis <code>show ip nat translations</code> : observe inside local / inside global et les ports PAT.</li>
+<li><b>Sonde</b> :</li>
+<p>   ```</p>
+<p>   ip sla 1</p>
+<p>    icmp-echo 8.8.8.8 source-interface g0/1</p>
+<p>    frequency 5</p>
+<p>   ip sla schedule 1 life forever start-time now</p>
+<p>   track 8 ip sla 1 reachability</p>
+<p>   ```</p>
+<li><b>Routes</b> :</li>
+<p>   ```</p>
+<p>   ip route 0.0.0.0 0.0.0.0 203.0.113.1 track 8</p>
+<p>   ip route 0.0.0.0 0.0.0.0 198.51.100.1 250</p>
+<p>   ```</p>
+<li><b>Test de bascule</b> : ping continu depuis le PC → coupe le lien FAI-1 (ou filtre l&#x27;ICMP de la sonde) → <code>show track</code> passe Down → la route principale disparaît → la flottante (AD 250) prend le relais. Combien de secondes de coupure ?</li>
+<li><b>PAT sur la 2e sortie</b> : ajoute la règle overload sur g0/2 (avec route-map pour choisir l&#x27;interface selon la sortie — bonus avancé).</li>
+</ol>
+<h3>Vérifications clés</h3>
+<p><code>show ip nat translations</code> · <code>show ip nat statistics</code> · <code>show ip sla statistics</code> · <code>show track</code> · <code>show ip route | include 0.0.0.0</code></p>
+<h3>Lien examen</h3>
+<p>Terminologie NAT (inside/outside, local/global), PAT/overload, ordre NAT vs ACL, IP SLA + track + floating static (question quasi garantie), <code>ip sla responder</code> pour udp-jitter.</p></section>
+<section id="lab-10-copp-aaa"><h2>Lab 10 — CoPP + AAA : protéger le plan de contrôle et les accès</h2><p><b>Semaine 3-4 · Domaine 5.0 Sécurité · ~50 min</b></p>
+<h3>Objectifs</h3>
+<ul>
+<li>Policer l&#x27;ICMP et protéger SSH vers le control-plane (CoPP)</li>
+<li>AAA avec fallback local (sans s&#x27;enfermer dehors !)</li>
+<li>Durcissement de base des lignes</li>
+</ul>
+<h3>Topologie</h3>
+<p>Un routeur R1 + un PC d&#x27;administration (10.0.99.10) + un PC &quot;attaquant&quot;.</p>
+<h3>Tâches</h3>
+<ol>
+<li><b>Durcissement de base</b> :</li>
+<p>   ```</p>
+<p>   hostname R1 / ip domain name encor.lab</p>
+<p>   crypto key generate rsa modulus 2048</p>
+<p>   ip ssh version 2</p>
+<p>   username admin privilege 15 algorithm-type scrypt secret Encor2026!</p>
+<p>   line vty 0 4 : transport input ssh / login local</p>
+<p>   access-list 99 permit host 10.0.99.10</p>
+<p>   line vty 0 4 : access-class 99 in     ← access-class, PAS access-group !</p>
+<p>   login block-for 120 attempts 3 within 60</p>
+<p>   ```</p>
+<li><b>Test</b> : SSH depuis le PC admin = OK ; depuis l&#x27;attaquant = refusé (ACL) ; 3 mauvais mots de passe = quiet period.</li>
+<li><b>CoPP</b> :</li>
+<p>   ```</p>
+<p>   ip access-list extended ACL-ICMP : permit icmp any any</p>
+<p>   class-map CM-ICMP : match access-group name ACL-ICMP</p>
+<p>   policy-map COPP</p>
+<p>    class CM-ICMP : police 32000 conform-action transmit exceed-action drop</p>
+<p>    class class-default : police 1000000 conform-action transmit exceed-action transmit</p>
+<p>   control-plane : service-policy input COPP</p>
+<p>   ```</p>
+<p>   (class-default en transmit/transmit d&#x27;abord = mode observation prudent.)</p>
+<li><b>Test CoPP</b> : flood de pings vers R1 depuis l&#x27;attaquant (<code>ping ... repeat 10000 timeout 0</code>) → <code>show policy-map control-plane</code> : compteurs conformed/exceeded qui montent. Le CPU reste calme (<code>show processes cpu sorted</code>).</li>
+<li><b>AAA fallback</b> (même sans serveur TACACS+ réel, la logique se configure) :</li>
+<p>   ```</p>
+<p>   aaa new-model</p>
+<p>   aaa authentication login VTY-AUTH group tacacs+ local</p>
+<p>   line vty 0 4 : login authentication VTY-AUTH</p>
+<p>   ```</p>
+<p>   Serveur absent → le fallback <code>local</code> prend le relais : tu rentres quand même. Ne JAMAIS appliquer une liste sans fallback testé sur la console.</p>
+</ol>
+<h3>Vérifications clés</h3>
+<p><code>show policy-map control-plane</code> · <code>show ssh</code> · <code>show login</code> · <code>test aaa</code> (si serveur disponible)</p>
+<h3>Lien examen</h3>
+<p>CoPP par classes, MPP, iACL, access-class vs access-group, login block-for, listes AAA nommées vs default, TACACS+ vs RADIUS, type 9 scrypt.</p></section>
+</div></body></html>
