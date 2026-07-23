@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENCOR 350-401 · Parcours de préparation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0B1220;--panel:#101A2E;--panel2:#0E1626;--bord:#1E2A44;--txt:#D7E2F4;--dim:#7E8DA8;--acc:#3FD8C2;--amb:#F0A429;--rouge:#E5484D;--vert:#46C08A}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);font-family:'IBM Plex Sans',sans-serif;line-height:1.6}
+.wrap{max-width:1000px;margin:0 auto;padding:24px 20px 80px}
+.prompt{font-family:'IBM Plex Mono',monospace;color:var(--acc);font-size:.85rem;margin-bottom:4px}
+h1{font-family:'IBM Plex Sans Condensed',sans-serif;font-size:2rem;letter-spacing:.5px}
+h1 span{color:var(--acc)}
+.sub{color:var(--dim);margin:6px 0 8px}
+.countdown{display:inline-block;font-family:'IBM Plex Mono',monospace;background:var(--panel);border:1px solid var(--bord);border-left:3px solid var(--amb);padding:8px 14px;border-radius:6px;margin:10px 0 26px;font-size:.9rem}
+.countdown b{color:var(--amb)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-bottom:34px}
+.card{background:var(--panel);border:1px solid var(--bord);border-radius:10px;padding:18px;text-decoration:none;color:var(--txt);transition:border-color .15s,transform .15s;display:block}
+.card:hover{border-color:var(--acc);transform:translateY(-2px)}
+.card .ico{font-size:1.5rem}
+.card h3{font-family:'IBM Plex Sans Condensed',sans-serif;margin:8px 0 4px;font-size:1.05rem}
+.card p{color:var(--dim);font-size:.85rem}
+h2{font-family:'IBM Plex Sans Condensed',sans-serif;font-size:1.25rem;margin:30px 0 6px;padding-bottom:6px;border-bottom:1px solid var(--bord)}
+h2 .h2p{font-family:'IBM Plex Mono',monospace;color:var(--acc);font-size:.8rem;display:block;font-weight:400}
+.pwrap{background:var(--panel);border:1px solid var(--bord);border-radius:10px;padding:16px 18px;margin:14px 0 8px}
+.pbar{height:10px;background:var(--panel2);border-radius:5px;overflow:hidden;margin:8px 0 4px}
+.pbar div{height:100%;background:linear-gradient(90deg,var(--acc),var(--vert));width:0;transition:width .3s;border-radius:5px}
+.plabel{font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--dim)}
+details{background:var(--panel);border:1px solid var(--bord);border-radius:10px;margin:10px 0;overflow:hidden}
+details[open]{border-color:#2A3A5C}
+summary{cursor:pointer;padding:13px 18px;font-family:'IBM Plex Sans Condensed',sans-serif;font-size:1rem;list-style:none;display:flex;justify-content:space-between;align-items:center;user-select:none}
+summary::-webkit-details-marker{display:none}
+summary .wk{color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:.78rem;margin-right:10px}
+summary .cnt{font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:var(--dim)}
+.items{padding:2px 18px 14px}
+label.it{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-top:1px dashed #1A2540;cursor:pointer;font-size:.92rem}
+label.it:first-child{border-top:none}
+label.it input{accent-color:var(--acc);margin-top:4px;flex-shrink:0}
+label.it.done span{color:var(--dim);text-decoration:line-through}
+.note{background:var(--panel2);border-left:3px solid var(--acc);padding:10px 14px;border-radius:0 6px 6px 0;font-size:.85rem;color:var(--dim);margin:16px 0}
+footer{margin-top:44px;color:var(--dim);font-size:.8rem;font-family:'IBM Plex Mono',monospace;border-top:1px solid var(--bord);padding-top:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="prompt">ENCOR# show study-path | begin objectif</div>
+<h1>CCNP <span>ENCOR 350-401</span> — parcours de préparation</h1>
+<p class="sub">Plan 5 semaines · simulateur 350 questions · 127 flashcards · 10 labs · stratégie de 2ᵉ passage — cette fois, c'est la bonne.</p>
+<div class="countdown" id="cd">⏳ calcul…</div>
+
+<div class="grid">
+<a class="card" href="plan/"><div class="ico">🗺️</div><h3>Plan d'étude</h3><p>26 modules, calendrier 5 semaines, commandes clés, pièges d'examen</p></a>
+<a class="card" href="simulateur/"><div class="ico">🎯</div><h3>Simulateur d'examen</h3><p>350 questions · examens blancs de 100 questions / 120 min · mode étude et par domaine</p></a>
+<a class="card" href="labs/"><div class="ico">🧪</div><h3>Labs pratiques</h3><p>10 labs CML-Free / Packet Tracer + sandboxes DevNet</p></a>
+<a class="card" href="flashcards/"><div class="ico">⚡</div><h3>Flashcards</h3><p>127 cartes à répétition espacée (Leitner) — la mémorisation active qui fait la différence</p></a>
+<a class="card" href="strategie/"><div class="ico">🧠</div><h3>Stratégie de réussite</h3><p>Spécial 2ᵉ passage : diagnostic de l'échec, gestion du temps, décodage des pièges Cisco</p></a>
+<a class="card" href="fiches/fiches-revision-encor-350-401.pdf"><div class="ico">📄</div><h3>Fiches de révision</h3><p>8 pages imprimables : ports, LSA, FHRP, sécurité, SDN, jour J</p></a>
+</div>
+
+<h2><span class="h2p">ENCOR# show simulator history</span>Mes tentatives au simulateur</h2>
+<div class="pwrap" id="histo"><span class="plabel">Aucune tentative enregistrée pour l'instant — lance un mode étude ou un examen blanc, tes scores apparaîtront ici automatiquement.</span></div>
+<h2><span class="h2p">ENCOR# show progression</span>Suivi des 5 semaines</h2>
+<div class="pwrap">
+<div class="plabel" id="ptxt">0 / 0 étapes</div>
+<div class="pbar"><div id="pfill"></div></div>
+</div>
+<div id="weeks"></div>
+<div class="note">✅ La progression est enregistrée dans ton navigateur (localStorage) — elle persiste sur GitHub Pages. Change de navigateur ou vide le cache = compteur remis à zéro.</div>
+
+<footer>ENCOR# ■ dépôt d'étude personnel · Rooby Raymonvil · CCNP ENCOR 350-401 v1.2 · bonne route vers la certif 🇭🇹</footer>
+</div>
+<script>
+const SEMAINES=[
+ {t:"Semaine 1 — Commutation & architecture",items:[
+  "Modules architecture : hiérarchie campus, spine-leaf, haute dispo (SSO/NSF, StackWise)",
+  "STP/RSTP/MST à fond + QoS (trust, LLQ, WRED)",
+  "Lab 01 — STP : root, convergence, BPDU Guard",
+  "Lab 02 — EtherChannel LACP + mismatch",
+  "Lab 03 — HSRP : priorité, preempt, tracking",
+  "Simulateur : mode étude domaines Architecture + Infrastructure (commutation)"]},
+ {t:"Semaine 2 — Routage",items:[
+  "OSPF v2/v3 : LSA, aires, stub, résumé, network types",
+  "BGP : états, best-path, network exact, update-source/multihop",
+  "EIGRP (timers, K-values, variance, SIA) + multicast (PIM, IGMP, RP)",
+  "Lab 04 — OSPF multi-aires · Lab 05 — OSPFv3 · Lab 06 — eBGP",
+  "Simulateur : mode par domaine Infrastructure ≥ 75 %"]},
+ {t:"Semaine 3 — Sécurité & virtualisation",items:[
+  "Sécurité équipement : AAA, TACACS+/RADIUS, CoPP, ACL, 802.1X, WPA3",
+  "Virtualisation : VRF, GRE/IPsec, DMVPN, LISP, VXLAN",
+  "Lab 07 — GRE+IPsec · Lab 08 — VRF-lite",
+  "Lab 09 — NAT + IP SLA · Lab 10 — CoPP + AAA",
+  "Simulateur : domaines Sécurité + Virtualisation ≥ 75 %"]},
+ {t:"Semaine 4 — Programmabilité & SDN",items:[
+  "SD-Access & SD-WAN : rôles, plans, LISP/VXLAN/OMP",
+  "Python (lecture de code), JSON/XML/YAML, REST, NETCONF/RESTCONF/YANG",
+  "Sandbox DevNet Catalyst Center : session API complète (token → inventaire)",
+  "Sandbox SD-WAN vManage + EEM/Ansible/Terraform (concepts)",
+  "Simulateur : domaines Automation + Assurance ≥ 75 %",
+  "Examen blanc n°1 (100 questions, conditions réelles) + analyse des domaines faibles"]},
+ {t:"Semaine 5 — Sprint final",items:[
+  "Rattrapage ciblé des domaines < 70 % du blanc n°1",
+  "Examen blanc n°2 + analyse",
+  "Fiches PDF : relecture complète (2 passages)",
+  "Examen blanc n°3 — objectif ≥ 80 %",
+  "J-1 : révision légère, fiches uniquement, sommeil ✓",
+  "Jour J : pièce d'identité, arrivée en avance, gestion du temps (72 s/question) 🎯"]}
+];
+const KEY='encor-progress-v1';
+function lsGet(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}}
+function lsSet(o){try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
+let state=lsGet();
+const weeks=document.getElementById('weeks');
+SEMAINES.forEach((s,si)=>{
+ const d=document.createElement('details');
+ if(si===0)d.open=true;
+ const done=s.items.filter((_,ii)=>state[si+'-'+ii]).length;
+ d.innerHTML='<summary><span><span class="wk">S'+(si+1)+'</span>'+s.t.split('—')[1]+'</span><span class="cnt" id="cnt'+si+'">'+done+'/'+s.items.length+'</span></summary><div class="items" id="w'+si+'"></div>';
+ weeks.appendChild(d);
+ const box=d.querySelector('#w'+si);
+ s.items.forEach((it,ii)=>{
+  const id=si+'-'+ii;
+  const l=document.createElement('label');l.className='it'+(state[id]?' done':'');
+  l.innerHTML='<input type="checkbox" '+(state[id]?'checked':'')+'><span>'+it+'</span>';
+  l.querySelector('input').onchange=e=>{state[id]=e.target.checked;if(!e.target.checked)delete state[id];lsSet(state);l.classList.toggle('done',e.target.checked);maj();};
+  box.appendChild(l);
+ });
+});
+function maj(){
+ const tot=SEMAINES.reduce((a,s)=>a+s.items.length,0);
+ const ok=Object.keys(state).filter(k=>state[k]).length;
+ document.getElementById('ptxt').textContent=ok+' / '+tot+' étapes · '+Math.round(ok/tot*100)+' %';
+ document.getElementById('pfill').style.width=(ok/tot*100)+'%';
+ SEMAINES.forEach((s,si)=>{
+  const d=s.items.filter((_,ii)=>state[si+'-'+ii]).length;
+  document.getElementById('cnt'+si).textContent=d+'/'+s.items.length;
+ });
+}
+maj();
+(function(){
+ try{
+  const H=JSON.parse(localStorage.getItem('encor-attempts')||'[]');
+  if(!H.length) return;
+  const DN={arch:'Archi',virt:'Virt',infra:'Infra',assur:'Assur',sec:'Séc',auto:'Auto'};
+  const MN={examen:'🎯 Examen blanc',etude:'📖 Étude',domaine:'🎚 Par domaine',revue:'🔁 Revue'};
+  let rows=H.slice(-6).reverse().map(a=>{
+   const d=new Date(a.t);
+   const faibles=Object.entries(a.dom||{}).filter(([k,v])=>v<70).map(([k,v])=>DN[k]+' '+v+'%').join(', ');
+   const coul=a.pct>=80?'var(--vert)':a.pct>=65?'var(--amb)':'var(--rouge)';
+   return '<div style="display:flex;justify-content:space-between;gap:10px;padding:7px 0;border-top:1px dashed #1A2540;font-size:.88rem;flex-wrap:wrap">'
+    +'<span style="color:var(--dim);font-family:IBM Plex Mono,monospace;font-size:.78rem">'+d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short'})+' '+d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})+'</span>'
+    +'<span>'+(MN[a.mode]||a.mode)+' · '+a.ok+'/'+a.tot+'</span>'
+    +'<span style="font-family:IBM Plex Mono,monospace;color:'+coul+';font-weight:600">'+a.pct+' %</span>'
+    +'<span style="color:var(--dim);font-size:.78rem;flex-basis:100%">'+(faibles?'à travailler : '+faibles:'aucun domaine sous 70 % ✔')+'</span></div>';
+  }).join('');
+  const exams=H.filter(a=>a.mode==='examen');
+  let head='';
+  if(exams.length>=2){
+   const prev=exams[exams.length-2].pct, last=exams[exams.length-1].pct, d=last-prev;
+   head='<div class="plabel" style="margin-bottom:6px">Tendance examens blancs : '+prev+' % → <b style="color:'+(d>=0?'var(--vert)':'var(--rouge)')+'">'+last+' % ('+(d>=0?'+':'')+d+')</b></div>';
+  }
+  document.getElementById('histo').innerHTML=head+rows;
+ }catch(e){}
+})();
+(function(){
+ const el=document.getElementById('cd');
+ function get(){try{return localStorage.getItem('encor-exam-date')||''}catch(e){return ''}}
+ function set(v){try{if(v)localStorage.setItem('encor-exam-date',v);else localStorage.removeItem('encor-exam-date')}catch(e){}}
+ function render(){
+  const d=get();
+  if(!d){
+   el.innerHTML='📅 Fixe ta date d\'examen : <input type="date" id="cd-in" style="background:var(--panel2);border:1px solid var(--bord);color:var(--txt);border-radius:5px;padding:4px 8px;font-family:inherit"> <button id="cd-btn" style="background:var(--acc);border:none;color:#06231F;border-radius:5px;padding:5px 12px;cursor:pointer;font-weight:600">OK</button>';
+   document.getElementById('cd-btn').onclick=()=>{const v=document.getElementById('cd-in').value;if(v){set(v);render()}};
+   return;
+  }
+  const exam=new Date(d+'T08:00:00');
+  const j=Math.ceil((exam-new Date())/86400000);
+  const dstr=exam.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+  let m = j>42 ? '⏳ Examen dans <b>'+j+' jours</b> ('+dstr+') — large : commence tranquillement par la page Stratégie'
+    : j>1 ? '⏳ Examen dans <b>'+j+' jours</b> — '+dstr
+    : j===1 ? '🔥 Examen <b>demain</b> — dernière ligne droite !'
+    : j===0 ? '🎯 <b>C\'est aujourd\'hui.</b> Respire, tu es prêt.'
+    : '🏁 Examen passé — on croise les doigts (ou on fête déjà ?)';
+  el.innerHTML=m+' &nbsp;<a href="#" id="cd-mod" style="color:var(--dim);font-size:.72rem;text-decoration:underline">modifier</a>';
+  document.getElementById('cd-mod').onclick=e=>{e.preventDefault();set('');render()};
+ }
+ render();
+})();
+</script>
+</body>
+</html>
