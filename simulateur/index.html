@@ -158,6 +158,15 @@ pre.exhibit{background:#060B15;border:1px solid var(--ligne);border-radius:6px;p
 
 </div>
 <script>
+const DOMAINES = {
+  arch:  {nom:"1.0 Architecture", poids:"15%"},
+  virt:  {nom:"2.0 Virtualization", poids:"10%"},
+  infra: {nom:"3.0 Infrastructure", poids:"30%"},
+  assur: {nom:"4.0 Network Assurance", poids:"10%"},
+  sec:   {nom:"5.0 Security", poids:"20%"},
+  auto:  {nom:"6.0 Automation", poids:"15%"}
+};
+
 const QUESTIONS = [
 {d:"arch", q:"In a three-tier campus design, which layer is responsible for aggregating access switches and serving as the Layer 2/Layer 3 boundary?", o:["Core layer", "Distribution layer", "Access layer", "WAN edge"], a:[1], e:"La couche <b>distribution</b> agrège les switches d'accès, applique les politiques (ACL, QoS) et marque la frontière L2/L3 (les SVI passerelles y résident classiquement). Le cœur ne fait que commuter vite ; l'accès connecte les terminaux."},
 {d:"arch", q:"Which two statements about Cisco Express Forwarding (CEF) are true? (Choose two.)", multi:2, o:["The FIB is built from the routing table before any packet arrives", "The first packet of each flow is process-switched to populate a cache", "The adjacency table stores precomputed Layer 2 rewrite information", "CEF must be manually enabled on modern IOS-XE routers", "CEF sends every packet to the route processor CPU"], a:[0, 2], e:"CEF pré-construit la <b>FIB</b> (copie optimisée de la table de routage) et la <b>table d'adjacence</b> (réécritures L2) AVANT tout trafic — contrairement au fast switching qui traite le premier paquet au CPU. CEF est activé par défaut sur IOS-XE."},
