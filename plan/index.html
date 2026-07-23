@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan d'étude ENCOR 350-401 — Préparation examen du jour J</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --nuit:#0B1220;
+  --panneau:#111C30;
+  --panneau2:#0E1728;
+  --ligne:#22314D;
+  --texte:#E8EEF9;
+  --muted:#8093B0;
+  --fibre:#3FD8C2;
+  --ambre:#F0A429;
+  --rouge:#F26D6D;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'IBM Plex Sans',sans-serif;
+  --cond:'IBM Plex Sans Condensed',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--nuit);color:var(--texte);font-family:var(--sans);line-height:1.65;font-size:16px}
+a{color:var(--fibre);text-decoration:none}
+a:hover{text-decoration:underline}
+a:focus-visible,summary:focus-visible{outline:2px solid var(--fibre);outline-offset:3px}
+
+/* ── Navigation ── */
+nav{position:sticky;top:0;z-index:50;background:rgba(11,18,32,.95);backdrop-filter:blur(8px);border-bottom:1px solid var(--ligne)}
+nav .inner{max-width:1020px;margin:0 auto;padding:.7rem 1.2rem;display:flex;gap:1.1rem;align-items:center;overflow-x:auto;white-space:nowrap}
+nav .logo{font-family:var(--mono);font-weight:600;color:var(--ambre);font-size:.85rem}
+nav a.lnk{font-size:.82rem;color:var(--muted);font-weight:500}
+nav a.lnk:hover{color:var(--fibre);text-decoration:none}
+
+.wrap{max-width:1020px;margin:0 auto;padding:0 1.2rem}
+
+/* ── Hero ── */
+header.hero{padding:4rem 0 2.6rem;border-bottom:1px solid var(--ligne)}
+.prompt{font-family:var(--mono);font-size:.85rem;color:var(--fibre)}
+.prompt .host{color:var(--ambre)}
+.prompt .cmd{color:var(--texte)}
+h1{font-family:var(--cond);font-weight:700;font-size:clamp(2.1rem,5.2vw,3.4rem);line-height:1.08;margin:.9rem 0 .6rem;letter-spacing:.01em}
+h1 .acc{color:var(--fibre)}
+.sub{color:var(--muted);max-width:46rem;font-size:1.03rem}
+.badges{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1.4rem}
+.badge{font-family:var(--mono);font-size:.76rem;border:1px solid var(--ligne);border-radius:4px;padding:.32rem .65rem;color:var(--texte);background:var(--panneau2)}
+.badge b{color:var(--ambre);font-weight:600}
+
+/* ── Compteur ── */
+.compteur{margin-top:1.6rem;border:1px solid var(--ligne);border-left:3px solid var(--ambre);background:var(--panneau2);padding:.85rem 1.1rem;font-family:var(--mono);font-size:.86rem}
+.compteur b{color:var(--ambre)}
+
+/* ── Sections ── */
+section{padding:3rem 0;border-bottom:1px solid var(--ligne)}
+.shead{margin-bottom:1.6rem}
+.shead .prompt{margin-bottom:.55rem}
+h2{font-family:var(--cond);font-weight:700;font-size:clamp(1.5rem,3.4vw,2.15rem);line-height:1.15}
+.poids{display:flex;align-items:center;gap:.7rem;margin-top:.7rem;max-width:30rem}
+.poids .barre{flex:1;height:6px;background:var(--ligne);border-radius:3px;overflow:hidden}
+.poids .fill{height:100%;background:linear-gradient(90deg,var(--fibre),#2AA795);border-radius:3px}
+.poids .pct{font-family:var(--mono);font-size:.8rem;color:var(--fibre);min-width:3.2rem}
+
+h3{font-family:var(--sans);font-weight:600;font-size:1.12rem;margin:1.6rem 0 .5rem;color:var(--fibre)}
+h4{font-weight:600;font-size:.98rem;margin:1rem 0 .35rem}
+p{margin:.55rem 0;color:#C7D2E6}
+p.intro{color:var(--texte)}
+ul,ol{margin:.5rem 0 .9rem 1.35rem;color:#C7D2E6}
+li{margin:.3rem 0}
+li::marker{color:var(--fibre)}
+strong{color:var(--texte)}
+em{color:var(--ambre);font-style:normal;font-weight:500}
+
+/* ── Modules ── */
+details.module{border:1px solid var(--ligne);border-radius:6px;background:var(--panneau);margin:.7rem 0;overflow:hidden}
+details.module>summary{cursor:pointer;list-style:none;padding:.95rem 1.15rem;display:flex;gap:.85rem;align-items:baseline;font-weight:600}
+details.module>summary::-webkit-details-marker{display:none}
+details.module>summary .num{font-family:var(--mono);font-size:.78rem;color:var(--ambre);min-width:4.6rem}
+details.module>summary::after{content:'+';margin-left:auto;font-family:var(--mono);color:var(--muted);font-size:1.05rem}
+details.module[open]>summary::after{content:'−'}
+details.module[open]>summary{border-bottom:1px solid var(--ligne)}
+.mbody{padding:.4rem 1.15rem 1.15rem}
+
+/* ── CLI ── */
+pre{background:#060B15;border:1px solid var(--ligne);border-radius:6px;padding:.9rem 1rem;overflow-x:auto;font-family:var(--mono);font-size:.8rem;line-height:1.55;margin:.7rem 0;color:#BFE8DE}
+pre .c{color:#5E7191}
+code{font-family:var(--mono);font-size:.85em;background:#060B15;border:1px solid var(--ligne);border-radius:3px;padding:.1em .4em;color:#9FE3D5}
+pre code{border:0;background:none;padding:0}
+
+/* ── Encadrés ── */
+.note,.astuce,.piege{border-radius:6px;padding:.85rem 1.05rem;margin:.9rem 0;font-size:.93rem}
+.note{background:rgba(63,216,194,.07);border:1px solid rgba(63,216,194,.3)}
+.note::before{content:'🔑 À retenir — ';font-weight:600;color:var(--fibre)}
+.astuce{background:rgba(240,164,41,.07);border:1px solid rgba(240,164,41,.32)}
+.astuce::before{content:'💡 Conseil examen — ';font-weight:600;color:var(--ambre)}
+.piege{background:rgba(242,109,109,.07);border:1px solid rgba(242,109,109,.32)}
+.piege::before{content:'⚠️ Piège fréquent — ';font-weight:600;color:var(--rouge)}
+
+/* ── Tables ── */
+table{width:100%;border-collapse:collapse;margin:.9rem 0;font-size:.88rem}
+th{font-family:var(--mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);text-align:left;padding:.55rem .7rem;border-bottom:2px solid var(--ligne)}
+td{padding:.55rem .7rem;border-bottom:1px solid var(--ligne);vertical-align:top;color:#C7D2E6}
+tr:hover td{background:rgba(63,216,194,.04)}
+td b{color:var(--texte)}
+.semaine{font-family:var(--mono);color:var(--ambre);white-space:nowrap;font-size:.8rem}
+.wrap-table{overflow-x:auto}
+
+/* ── Checklist ── */
+.check li{list-style:none;position:relative;padding-left:1.6rem}
+.check li::before{content:'☐';position:absolute;left:0;color:var(--fibre);font-size:1.05rem}
+.check{margin-left:0}
+
+footer{padding:2.4rem 0 3.2rem;color:var(--muted);font-size:.85rem}
+footer .prompt{margin-bottom:.6rem}
+
+@media(max-width:640px){
+  details.module>summary{flex-direction:column;gap:.15rem}
+  section{padding:2.2rem 0}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <span class="logo">ENCOR#</span>
+    <a class="lnk" href="#examen">Examen</a>
+    <a class="lnk" href="#calendrier">Calendrier 5 sem.</a>
+    <a class="lnk" href="#d1">1·Commutation</a>
+    <a class="lnk" href="#d2">2·Routage</a>
+    <a class="lnk" href="#d3">3·Sécurité</a>
+    <a class="lnk" href="#d4">4·Virtualisation</a>
+    <a class="lnk" href="#d5">5·Programmabilité</a>
+    <a class="lnk" href="#d6">6·SDN</a>
+    <a class="lnk" href="#labs">Labs</a>
+    <a class="lnk" href="#final">Sprint final</a>
+  </div>
+</nav>
+
+<div class="wrap">
+
+<header class="hero">
+  <div class="prompt"><span class="host">Rooby@ENCOR</span># <span class="cmd">show study-plan | begin 350-401</span></div>
+  <h1>Plan d'étude complet<br><span class="acc">CCNP ENCOR 350-401</span> v1.2</h1>
+  <p class="sub">Programme de préparation intensive en français, structuré sur les 6 domaines officiels de l'examen, avec explications détaillées, commandes IOS-XE essentielles, pièges d'examen et calendrier de révision jusqu'au jour J.</p>
+  <div class="badges">
+    <span class="badge">Examen : <b>350-401 ENCOR v1.2</b></span>
+    <span class="badge">Date : <b>mardi jour J</b></span>
+    <span class="badge">Durée : <b>120 min</b></span>
+    <span class="badge">≈ <b>90–110 questions</b></span>
+    <span class="badge">Score requis : <b>≈ 750–850 / 1000</b></span>
+    <span class="badge">Langue : <b>anglais (examen)</b></span>
+  </div>
+  <div class="compteur">
+    ! Départ : Jour 0 → Jour J : ta date d'examen (parcours de 5 semaines)<br>
+    ! Temps disponible : <b>36 jours (~5 semaines)</b> — objectif : <b>2 à 3 h/jour en semaine, 4 à 5 h le week-end</b>
+  </div>
+</header>
+
+<!-- ══════════════ COMPRENDRE L'EXAMEN ══════════════ -->
+<section id="examen">
+  <div class="shead">
+    <div class="prompt"><span class="host">ENCOR</span># <span class="cmd">show exam detail</span></div>
+    <h2>Comprendre l'examen 350-401</h2>
+  </div>
+
+  <p class="intro">Le 350-401 ENCOR (<em>Implementing and Operating Cisco Enterprise Network Core Technologies</em>) est l'examen « core » du CCNP Enterprise. Il valide ta maîtrise des technologies fondamentales des réseaux d'entreprise : architecture, virtualisation, infrastructure (switching + routage + services), assurance réseau, sécurité et automatisation. Il sert aussi d'examen de qualification pour le CCIE Enterprise Infrastructure.</p>
+
+  <h3>Pondération officielle des domaines (blueprint v1.2)</h3>
+  <div class="wrap-table"><table>
+    <tr><th>#</th><th>Domaine</th><th>Poids</th><th>Ce que ça couvre concrètement</th></tr>
+    <tr><td>1.0</td><td><b>Architecture</b></td><td>15 %</td><td>Conception d'entreprise (2-tier/3-tier, fabric, cloud), haute disponibilité (FHRP, SSO), WLAN, principes SD-WAN/SD-Access, QoS, mécanismes de commutation (CEF, CAM/TCAM)</td></tr>
+    <tr><td>2.0</td><td><b>Virtualization</b></td><td>10 %</td><td>Virtualisation des équipements (hyperviseurs, VM, VRF), chemins virtuels (GRE, IPsec), LISP, VXLAN</td></tr>
+    <tr><td>3.0</td><td><b>Infrastructure</b></td><td>30 %</td><td>Le plus gros bloc ! L2 (trunks, VLAN, STP/RSTP/MST, EtherChannel), routage (OSPFv2/v3, eBGP), services IP (NTP, NAT/PAT, FHRP, multicast), sans-fil</td></tr>
+    <tr><td>4.0</td><td><b>Network Assurance</b></td><td>10 %</td><td>Diagnostic (debug, traceroute, ping, SPAN/ERSPAN), NetFlow/Flexible NetFlow, SNMP, syslog, IP SLA, Catalyst Center workflows, NETCONF/RESTCONF</td></tr>
+    <tr><td>5.0</td><td><b>Security</b></td><td>20 %</td><td>Contrôle d'accès aux équipements (AAA, TACACS+/RADIUS), ACL, CoPP, sécurité sans-fil (802.1X, WebAuth, PSK, EAPOL), composants de sécurité réseau (pare-feu, TrustSec, MACsec)</td></tr>
+    <tr><td>6.0</td><td><b>Automation</b></td><td>15 %</td><td>Python de base, JSON, YANG, NETCONF/RESTCONF, APIs REST (Catalyst Center, vManage), EEM, Ansible/Terraform (concepts)</td></tr>
+  </table></div>
+
+  <div class="astuce">L'Infrastructure (30 %) + la Sécurité (20 %) = la moitié de l'examen. C'est là que ton expérience CCNA et ton enseignement en TRI te donnent déjà une base solide. Ta vraie zone d'effort : SD-Access/SD-WAN, la virtualisation (VXLAN/LISP) et l'automatisation, qui sont les nouveautés par rapport au CCNA.</div>
+
+  <h3>Format des questions</h3>
+  <ul>
+    <li><strong>QCM à réponse unique et multiple</strong> — la majorité des questions.</li>
+    <li><strong>Drag-and-drop</strong> — associer des termes à des définitions (ex. types de LSA, composants SD-Access).</li>
+    <li><strong>Analyse de sorties de commandes</strong> — on te montre un <code>show ip ospf neighbor</code> ou un extrait de config et tu dois diagnostiquer.</li>
+    <li><strong>Lecture de code</strong> — extraits Python, JSON, ou requêtes REST à interpréter (pas à écrire de zéro).</li>
+  </ul>
+  <div class="piege">Pas de retour en arrière possible dans les examens Cisco : une fois une question validée, tu ne peux plus la modifier. Gère ton temps — environ 70 secondes par question en moyenne.</div>
+</section>
+
+<!-- ══════════════ CALENDRIER ══════════════ -->
+<section id="calendrier">
+  <div class="shead">
+    <div class="prompt"><span class="host">ENCOR</span># <span class="cmd">show calendar | section semaines-1-5</span></div>
+    <h2>Calendrier de préparation — 5 semaines jusqu'au Jour J</h2>
+  </div>
+
+  <p class="intro">Le plan suit la logique du cours NetAcad (6 groupes de modules) mais réorganisé par poids d'examen : on attaque tôt le gros bloc Infrastructure, on garde les 10 derniers jours pour SDN/Automation + révision générale et examens blancs.</p>
+
+  <div class="wrap-table"><table>
+    <tr><th>Semaine</th><th>Dates</th><th>Domaines</th><th>Objectifs de la semaine</th></tr>
+    <tr>
+      <td class="semaine">S1</td><td>Jours 1–7</td>
+      <td><b>Commutation d'entreprise</b> (modules 1–7)</td>
+      <td>Architecture campus, CEF/CAM/TCAM, VLAN &amp; trunks, STP/RSTP/MST à fond, FHRP (HSRP/VRRP/GLBP), EtherChannel, QoS. Labs : STP root manipulation + EtherChannel + HSRP en CML ou Packet Tracer.</td>
+    </tr>
+    <tr>
+      <td class="semaine">S2</td><td>Jours 8–14</td>
+      <td><b>Routage</b> (modules 8–13)</td>
+      <td>OSPF multi-aires (LSA, DR/BDR, coût, résumé, filtrage, OSPFv3), comparaison EIGRP, eBGP (états, attributs, best path), multicast (IGMP, PIM), NAT/NVI. Labs : OSPF multi-area + eBGP entre 2 AS.</td>
+    </tr>
+    <tr>
+      <td class="semaine">S3</td><td>Jours 15–21</td>
+      <td><b>Sécurité</b> (mod. 14–16) + <b>Virtualisation &amp; services</b> (mod. 17–20)</td>
+      <td>ACL avancées, CoPP, AAA TACACS+/RADIUS, 802.1X, TrustSec/MACsec. Puis VRF, GRE, IPsec, LISP, VXLAN, NTP, syslog, SNMP, NetFlow, SPAN, IP SLA. Labs : CoPP + VRF-lite + tunnel GRE/IPsec.</td>
+    </tr>
+    <tr>
+      <td class="semaine">S4</td><td>Jours 22–28</td>
+      <td><b>Programmabilité</b> (mod. 21–22) + <b>SDN</b> (mod. 23–26)</td>
+      <td>Python (lecture de code), JSON, YANG, NETCONF vs RESTCONF, APIs REST, EEM. Catalyst Center, SD-Access (fabric, LISP+VXLAN, rôles), SD-WAN (vManage/vSmart/vBond/cEdge), sans-fil (AP modes, roaming, antennes). Premier examen blanc complet le dimanche 16.</td>
+    </tr>
+    <tr>
+      <td class="semaine">S5</td><td>Jours 29–35</td>
+      <td><b>Révision + examens blancs</b></td>
+      <td>2–3 examens blancs chronométrés (Boson ExSim si possible, sinon banques NetAcad + Cisco U practice). Chaque blanc → analyse des erreurs → re-lecture ciblée. Fiches de synthèse (tableaux LSA, timers FHRP, ports/protocoles). La veille de l'examen : repos actif, relecture légère des fiches uniquement.</td>
+    </tr>
+    <tr>
+      <td class="semaine">J</td><td><b>jour J</b></td>
+      <td colspan="2"><b>EXAMEN 350-401</b> — arrive 30 min en avance, pièce d'identité valide, bonne nuit de sommeil la veille. Rythme : ~70 s/question, ne bloque jamais plus de 2 min.</td>
+    </tr>
+  </table></div>
+
+  <h3>Rythme quotidien recommandé</h3>
+  <ul>
+    <li><strong>Session 1 (théorie, 60–90 min)</strong> : lecture du module NetAcad + prise de notes en fiches (une fiche = un concept).</li>
+    <li><strong>Session 2 (pratique, 45–60 min)</strong> : lab CML-Free/Packet Tracer ou vidéos de démonstration + reproduction des commandes.</li>
+    <li><strong>Session 3 (quiz, 20–30 min)</strong> : quiz du module + 10 questions de révision des jours précédents (répétition espacée).</li>
+  </ul>
+  <div class="note">La répétition espacée est ta meilleure arme en 5 semaines : chaque jour, refais 10 questions des modules déjà vus. Ce que tu revois 3 fois espacé tient jusqu'au jour J ; ce que tu lis une seule fois s'évapore.</div>
+</section>
+
+<!-- ══════════════ DOMAINE 1 : COMMUTATION ══════════════ -->
+<section id="d1">
+  <div class="shead">
+    <div class="prompt"><span class="host">ENCOR</span># <span class="cmd">show domain 1 network-switching</span></div>
+    <h2>Domaine 1 — Commutation d'entreprise (modules 1–7)</h2>
+    <div class="poids"><div class="barre"><div class="fill" style="width:88%"></div></div><span class="pct">S1</span></div>
+  </div>
+
+  <details class="module" open>
+    <summary><span class="num">MOD 01</span>Architecture réseau d'entreprise Cisco</summary>
+    <div class="mbody">
+      <p>Cisco structure le réseau d'entreprise en blocs fonctionnels : <strong>Campus</strong> (accès, distribution, cœur), <strong>Edge</strong> (Internet/WAN), <strong>SP Edge</strong> et <strong>sites distants</strong>. Deux modèles de campus dominent :</p>
+      <ul>
+        <li><strong>3-tier (accès / distribution / cœur)</strong> : pour les grands campus multi-bâtiments. Le cœur commute vite et ne fait rien d'autre (« switch fast, touch nothing »).</li>
+        <li><strong>2-tier / collapsed core</strong> : distribution et cœur fusionnés — le cas typique des PME et de la plupart des sites en Haïti.</li>
+      </ul>
+      <p>Il faut aussi connaître les concepts modernes : <em>Spine-Leaf</em> pour les data centers, réseau en <em>fabric</em> (underlay physique + overlay logique), et le positionnement du cloud (on-prem vs cloud vs hybride).</p>
+      <div class="note">L'accès = port utilisateur + PoE + sécurité de port ; la distribution = frontière L2/L3, politiques et agrégation ; le cœur = vitesse et redondance uniquement. C'est un classique de question drag-and-drop.</div>
+    </div>
+  </details>
+
+  <details class="module">
+    <summary><span class="num">MOD 02</span>Chemins de commutation Cisco (CEF, CAM, TCAM)</summary>
+    <div class="mbody">
+      <p>Trois mécanismes historiques de traitement des paquets :</p>
+      <ul>
+        <li><strong>Process switching</strong> : chaque paquet remonte au CPU. Lent — utilisé seulement pour le trafic destiné au routeur ou les cas exotiques.</li>
+        <li><strong>Fast switching</strong> : le premier paquet est traité par le CPU, le résultat est mis en cache pour les suivants.</li>
+        <li><strong>CEF (Cisco Express Forwarding)</strong> : le mode par défaut moderne. Deux tables construites <em>à l'avance</em> : la <strong>FIB</strong> (copie optimisée de la table de routage) et la <strong>table d'adjacence</strong> (réécritures L2 pré-calculées).</li>
+      </ul>
+      <p>Côté matériel : la <strong>CAM</strong> stocke les correspondances exactes MAC→port (commutation L2) ; la <strong>TCAM</strong> permet des recherches avec masques (ACL, QoS, préfixes de routage) en un seul cycle.</p>
+      <pre>Switch# show mac address-table dynamic
+Router# show ip cef
+Router# show adjacency detail</pre>
+      <div class="piege">SVI vs port routé : un SVI (<code>interface vlan 10</code>) sert de passerelle pour tout un VLAN ; un port routé (<code>no switchport</code>) est une interface L3 point-à-point comme sur un routeur. L'examen adore tester la différence.</div>
+    </div>
+  </details>
+
+  <details class="module">
+    <summary><span class="num">MOD 03</span>Connectivité LAN de campus (VLAN, trunks, inter-VLAN)</summary>
+    <div class="mbody">
+      <p>Révision approfondie du CCNA avec le niveau de détail CCNP :</p>
+      <ul>
+        <li><strong>802.1Q</strong> : tag de 4 octets inséré dans la trame ; le VLAN natif circule non taggé — il doit être identique des deux côtés du trunk.</li>
+        <li><strong>DTP</strong> : négociation dynamique des trunks (<code>dynamic auto</code>, <code>dynamic desirable</code>). Bonne pratique : le désactiver (<code>switchport nonegotiate</code>) et configurer statiquement.</li>
+        <li><strong>Routage inter-VLAN</strong> : router-on-a-stick (sous-interfaces) vs commutateur multicouche avec SVI — le second est la norme en entreprise.</li>
+      </ul>
+      <pre>Switch(config-if)# switchport mode trunk
+Switch(config-if)# switchport trunk allowed vlan 10,20,99
+Switch(config-if)# switchport trunk native vlan 99
+Switch# show interfaces trunk</pre>
+      <div class="piege">Mismatch de VLAN natif = les trames « fuient » d'un VLAN vers l'autre + messages CDP d'erreur. Symptôme classique dans les questions de dépannage.</div>
+    </div>
+  </details>
+
+  <details class="module">
+    <summary><span class="num">MOD 04</span>Topologies commutées redondantes (STP / RSTP / MST)</summary>
+    <div class="mbody">
+      <p><strong>Sujet majeur de l'examen.</strong> Maîtrise l'élection et la convergence par cœur :</p>
+      <ul>
+        <li><strong>Élection du root bridge</strong> : priorité la plus basse (défaut 32768 + VLAN ID), puis MAC la plus basse. Manipulation : <code>spanning-tree vlan 10 root primary</code>.</li>
+        <li><strong>Rôles de ports</strong> : root port (meilleur chemin vers le root), designated port (un par segment), blocked/alternate.</li>
+        <li><strong>Coûts</strong> : basés sur la bande passante (méthode courte : 10 Gb=2, 1 Gb=4, 100 Mb=19).</li>
+        <li><strong>RSTP (802.1w)</strong> : convergence en secondes grâce au mécanisme proposal/agreement ; états réduits à discarding/learning/forwarding ; rôles supplémentaires alternate et backup.</li>
+        <li><strong>MST (802.1s)</strong> : regroupe plusieurs VLAN dans une même instance de spanning-tree — révision de la notion de région (nom + révision + table VLAN→instance identiques).</li>
+        <li><strong>Mécanismes de protection</strong> : <em>PortFast</em> (accès direct au forwarding pour les ports terminaux), <em>BPDU Guard</em> (err-disable si BPDU reçu sur un port PortFast), <em>Root Guard</em> (empêche un switch en aval de devenir root), <em>Loop Guard</em> (protège contre les liens unidirectionnels).</li>
+      </ul>
+      <pre>Switch(config)# spanning-tree mode rapid-pvst
+Switch(config)# spanning-tree vlan 1-99 root primary
+Switch(config-if)# spanning-tree portfast
+Switch(config-if)# spanning-tree bpduguard enable
+Switch# show spanning-tree vlan 10</pre>
+      <div class="astuce">Sache lire un <code>show spanning-tree</code> et identifier : qui est root, pourquoi, quel port bloque et ce qui se passe si un lien tombe. C'est le scénario type des questions à sortie de commande.</div>
+    </div>
+  </details>
+
+  <details class="module">
+    <summary><span class="num">MOD 05</span>Redondance de premier saut (HSRP, VRRP, GLBP)</summary>
+    <div class="mbody">
+      <p>Les FHRP fournissent une passerelle virtuelle qui survit à la panne d'un routeur :</p>
+      <div class="wrap-table"><table>
+        <tr><th></th><th>HSRP</th><th>VRRP</th><th>GLBP</th></tr>
+        <tr><td><b>Norme</b></td><td>Cisco</td><td>IETF (ouvert)</td><td>Cisco</td></tr>
+        <tr><td><b>Rôles</b></td><td>Active / Standby</td><td>Master / Backup</td><td>AVG + jusqu'à 4 AVF</td></tr>
+        <tr><td><b>Priorité défaut</b></td><td>100</td><td>100</td><td>100</td></tr>
+        <tr><td><b>Timers</b></td><td>Hello 3 s / Hold 10 s</td><td>Advert 1 s</td><td>Hello 3 s / Hold 10 s</td></tr>
+        <tr><td><b>Load balancing</b></td><td>Non (par VLAN seulement)</td><td>Non</td><td><b>Oui, natif</b> (round-robin des MAC virtuelles)</td></tr>
+        <tr><td><b>Preempt</b></td><td>Désactivé par défaut</td><td><b>Activé</b> par défaut</td><td>Désactivé par défaut</td></tr>
+      </table></div>
+      <pre>R1(config-if)# standby 1 ip 192.168.10.254
+R1(config-if)# standby 1 priority 110
+R1(config-if)# standby 1 preempt
+R1(config-if)# standby 1 track GigabitEthernet0/0/1 20</pre>
+      <div class="piege">Sans <code>preempt</code>, un routeur HSRP qui revient en ligne avec la meilleure priorité ne reprend PAS le rôle actif. Question quasi garantie à l'examen.</div>
+    </div>
+  </details>
+
+  <details class="module">
+    <summary><span class="num">MOD 06</span>Agrégation de liens L2 (EtherChannel)</summary>
+    <div class="mbody">
+      <p>EtherChannel regroupe jusqu'à 8 liens physiques en un seul lien logique — STP le voit comme un seul port, donc pas de blocage entre les liens membres.</p>
+      <ul>
+        <li><strong>LACP (802.3ad, ouvert)</strong> : modes <code>active</code> (initie) et <code>passive</code> (répond). Au moins un côté doit être <code>active</code>.</li>
+        <li><strong>PAgP (Cisco)</strong> : modes <code>desirable</code> / <code>auto</code>. Même logique.</li>
+        <li><strong>Mode <code>on</code></strong> : forcé sans négociation — les deux côtés doivent être <code>on</code>, sinon boucle possible.</li>
+        <li><strong>Conditions</strong> : mêmes vitesse, duplex, VLAN autorisés, VLAN natif et mode sur tous les membres.</li>
+        <li><strong>Load balancing</strong> : par hachage (src/dst MAC, IP ou port) — se vérifie avec <code>show etherchannel load-balance</code>.</li>
+      </ul>
+      <pre>Switch(config)# interface range g1/0/1-2
+Switch(config-if-range)# channel-group 1 mode active
+Switch# show etherchannel summary</pre>
+      <div class="piege">active+passive = OK ; passive+passive = jamais de channel. desirable+auto = OK ; auto+auto = jamais. LACP et PAgP ne se parlent pas entre eux.</div>
+    </div>
+  </details>
+
+  <details class="module">
+    <summary><span class="num">MOD 07</span>Qualité de service (QoS)</summary>
+    <div class="mbody">
+      <p>La QoS gère la contention : quand le lien est saturé, qui passe en premier ?</p>
+      <ul>
+        <li><strong>Besoins applicatifs</strong> : la voix exige ≤150 ms de latence, ≤30 ms de gigue, ≤1 % de perte. La vidéo est gourmande et sensible, les données tolèrent.</li>
+        <li><strong>Modèles</strong> : Best Effort (rien), IntServ (RSVP, réservation par flux — ne passe pas à l'échelle), <strong>DiffServ</strong> (marquage par classe — le standard réel).</li>
+        <li><strong>Classification &amp; marquage</strong> : CoS (L2, 3 bits 802.1p), DSCP (L3, 6 bits). Valeurs à connaître : <em>EF (46)</em> = voix, <em>AF41</em> = vidéo interactive, <em>CS0</em> = best effort.</li>
+        <li><strong>Mécanismes de file</strong> : CBWFQ (bande passante garantie par classe), <strong>LLQ</strong> = CBWFQ + file prioritaire stricte pour la voix.</li>
+        <li><strong>Policing vs shaping</strong> : le policing <em>jette ou re-marque</em> l'excès (entrée ou sortie) ; le shaping <em>met en tampon et lisse</em> (sortie seulement).</li>
+        <li><strong>Évitement de congestion</strong> : WRED jette des paquets de façon sélective avant que la file ne déborde (évite la synchronisation globale TCP).</li>
+      </ul>
+      <div class="note">Policing = ciseaux (drop/remark), Shaping = entonnoir (buffer/délai). Le shaping ajoute de la latence, donc jamais pour la voix.</div>
+    </div>
+  </details>
+</section>
+
+<!-- ══════════════ DOMAINE 2 : ROUTAGE ══════════════ -->
+<section id="d2">
+  <div class="shead">
+    <div class="prompt"><span class="host">ENCOR</span># <span class="cmd">show domain 2 network-routing</span></div>
+    <h2>Domaine 2 — Routage (modules 8–13)</h2>
+    <div class="poids"><div class="barre"><div class="fill" style="width:88%"></div></div><span class="pct">S2</span></div>
+  </div>
+
+  <details class="module" open>
+    <summary><span class="num">MOD 08</span>EIGRP expliqué (et comparé à OSPF)</summary>
+    <div class="mbody">
+      <p>À l'ENCOR, EIGRP est surtout testé en <em>compréhension</em> (la configuration avancée est pour l'ENARSI) :</p>
+      <ul>
+        <li><strong>Protocole à vecteur de distance avancé</strong>, algorithme <strong>DUAL</strong>, distance administrative 90 (interne) / 170 (externe).</li>
+        <li><strong>Métrique composite</strong> : bande passante (la plus faible du chemin) + délai (cumulé) par défaut. K1=K3=1, les autres à 0.</li>
+        <li><strong>Vocabulaire DUAL</strong> : <em>Successor</em> = meilleure route installée ; <em>Feasible Successor</em> = route de secours pré-validée (sa Reported Distance &lt; Feasible Distance du successor — la <em>condition de faisabilité</em>). Convergence quasi instantanée si un FS existe.</li>
+        <li><strong>vs OSPF</strong> : EIGRP converge très vite avec FS et supporte l'équilibrage à coût inégal (<code>variance</code>) ; OSPF est standard ouvert, vision complète de la topologie, meilleure interopérabilité multi-constructeur.</li>
+      </ul>
+      <pre>R1# show ip eigrp topology
+R1# show ip eigrp neighbors</pre>
+      <div class="note">La condition de faisabilité (RD du voisin &lt; FD actuelle) garantit l'absence de boucle sans recalcul. C'est LE concept EIGRP à connaître pour l'ENCOR.</div>
+    </div>
+  </details>
+
+  <details class="module">
+    <summary><span class="num">MOD 09</span>Implémentation d'OSPF</summary>
+    <div class="mbody">
+      <p><strong>Le protocole le plus testé de l'examen.</strong> À maîtriser sur le bout des doigts :</p>
+      <h4>Adjacences</h4>
+      <ul>
+        <li>États : Down → Init → 2-Way → ExStart → Exchange → Loading → <strong>Full</strong>.</li>
+        <li>Bloqué en 2-Way avec le DROTHER ? Normal sur un réseau multi-accès. Bloqué en ExStart/Exchange ? Problème de <em>MTU</em>. Jamais de voisin ? Vérifie : aire, timers hello/dead, masque de sous-réseau (sur broadcast), authentification, type de réseau.</li>
+        <li><strong>DR/BDR</strong> : élection sur les segments multi-accès (priorité la plus haute, puis Router-ID le plus haut ; priorité 0 = jamais DR). Pas de préemption !</li>
+      </ul>
+      <h4>Types de LSA (drag-and-drop garanti)</h4>
+      <div class="wrap-table"><table>
+        <tr><th>Type</th><th>Nom</th><th>Rôle</th><th>Portée</th></tr>
+        <tr><td><b>1</b></td><td>Router LSA</td><td>Chaque routeur décrit ses liens</td><td>Intra-aire</td></tr>
+        <tr><td><b>2</b></td><td>Network LSA</td><td>Généré par le DR pour le segment</td><td>Intra-aire</td></tr>
+        <tr><td><b>3</b></td><td>Summary LSA</td><td>Routes inter-aires (généré par l'ABR)</td><td>Inter-aires</td></tr>
+        <tr><td><b>4</b></td><td>ASBR Summary</td><td>Localisation de l'ASBR</td><td>Inter-aires</td></tr>
+        <tr><td><b>5</b></td><td>External LSA</td><td>Routes redistribuées (généré par l'ASBR)</td><td>Tout le domaine</td></tr>
+        <tr><td><b>7</b></td><td>NSSA External</td><td>Externe dans une aire NSSA (converti en type 5 par l'ABR)</td><td>NSSA</td></tr>
+      </table></div>
+      <pre>R1(config)# router ospf 10
+R1(config-router)# router-id 1.1.1.1
+R1(config-router)# network 10.0.0.0 0.0.0.255 area 0
+R1(config-if)# ip ospf 10 area 0        <span class="c">! méthode par interface, préférée</span>
+R1# show ip ospf neighbor
+R1# show ip ospf database
+R1# show ip ospf interface brief</pre>
+    </div>
+  </details>
+
+  <details class="module">
+    <summary><span class="num">MOD 10</span>Optimisation d'OSPF (+ OSPFv3)</summary>
+    <div class="mbody">
+      <ul>
+        <li><strong>Coût</strong> : bande passante de référence (100 Mb/s par défaut) ÷ bande passante du lien. Ajuste avec <code>auto-cost reference-bandwidth 10000</code> (identique partout !) ou <code>ip ospf cost</code>.</li>
+        <li><strong>Résumé de routes</strong> : inter-aires sur l'<em>ABR</em> (<code>area 1 range 172.16.0.0 255.255.252.0</code>) ; externes sur l'<em>ASBR</em> (<code>summary-address</code>).</li>
+        <li><strong>Aires spéciales</strong> : <em>stub</em> (bloque les type 5, route par défaut injectée), <em>totally stubby</em> (bloque aussi les type 3), <em>NSSA</em> (stub qui autorise la redistribution locale via type 7).</li>
+        <li><strong>Filtrage</strong> : distribute-list, filtrage de préfixes inter-aires sur l'ABR (<code>area x filter-list</code>).</li>
+        <li><strong>Route par défaut</strong> : <code>default-information originate</code> (avec <code>always</code> pour l'annoncer même sans route par défaut locale).</li>
+        <li><strong>OSPFv3</strong> : pour IPv6 (et IPv4 en address-family). Config par interface (<code>ipv6 ospf 10 area 0</code>), Router-ID toujours au format 32 bits, voisinage via adresses link-local.</li>
+      </ul>
+      <div class="piege">Le résumé OSPF ne se fait JAMAIS n'importe où : inter-aires = ABR seulement, externe = ASBR seulement. OSPF ne permet pas le résumé arbitraire comme EIGRP.</div>
+    </div>
+  </details>
+
+  <details class="module">
+    <summary><span class="num">MOD 11</span>eBGP</summary>
+    <div class="mbody">
+      <p>L'ENCOR se limite à l'essentiel d'eBGP (le reste est en ENARSI) :</p>
+      <ul>
+        <li><strong>Path vector</strong>, port <strong>TCP 179</strong>, voisins configurés manuellement (pas de découverte automatique). AD : eBGP = 20, iBGP = 200.</li>
+        <li><strong>États</strong> : Idle → Connect → Active (⚠ Active = il <em>essaie</em>, pas qu'il marche !) → OpenSent → OpenConfirm → <strong>Established</strong>.</li>
+        <li><strong>Attributs et ordre de sélection du meilleur chemin</strong> (mémorise le début) : Weight (Cisco, local, plus haut) → Local Preference (plus haut, dans l'AS) → routes locales → AS-Path le plus court → Origin (IGP&lt;EGP&lt;Incomplete) → MED le plus bas → eBGP sur iBGP → …</li>
+        <li><strong>Annonce de réseaux</strong> : <code>network</code> exige que la route existe exactement dans la table de routage.</li>
+      </ul>
+      <pre>R1(config)# router bgp 65001
+R1(config-router)# neighbor 203.0.113.2 remote-as 65002
+R1(config-router)# network 198.51.100.0 mask 255.255.255.0
+R1# show ip bgp summary
+R1# show ip bgp</pre>
+      <div class="astuce">Moyen mnémotechnique pour le best path : « <b>W</b>e <b>L</b>ove <b>O</b>ranges <b>AS</b> <b>O</b>ranges <b>M</b>ean Pure Refreshment » (Weight, LocalPref, Originated, AS-Path, Origin, MED…).</div>
+    </div>
+  </details>
+
+  <details class="module">
+    <summary><span class="num">MOD 12</span>Protocoles multicast</summary>
+    <div class="mbody">
+      <ul>
+        <li><strong>Adressage</strong> : 224.0.0.0/4. Réservées : 224.0.0.1 (tous les hôtes), 224.0.0.2 (tous les routeurs), 224.0.0.5/6 (OSPF), 224.0.0.9 (RIPv2), 224.0.0.13 (PIM).</li>
+        <li><strong>IGMP</strong> : entre l'hôte et le routeur — l'hôte « s'abonne » à un groupe (IGMPv2 : join/leave ; IGMPv3 : filtrage par source pour SSM).</li>
+        <li><strong>IGMP snooping</strong> : le commutateur écoute IGMP pour n'envoyer le flux qu'aux ports abonnés.</li>
+        <li><strong>PIM</strong> : entre routeurs. <em>Dense mode</em> (flood &amp; prune — rare), <em>Sparse mode</em> (arbre partagé enraciné sur un <strong>RP — Rendezvous Point</strong>, puis bascule possible vers l'arbre source SPT), <em>PIM-SSM</em> (l'hôte précise la source, pas besoin de RP).</li>
+        <li><strong>RPF check</strong> : un routeur n'accepte un flux multicast que s'il arrive par l'interface qui mène à la source (anti-boucle).</li>
+      </ul>
+      <div class="note">Sparse mode + RP = le modèle par défaut à connaître. SSM (232.0.0.0/8) supprime le besoin de RP car le récepteur connaît déjà la source.</div>
+    </div>
+  </details>
+
+  <details class="module">
+    <summary><span class="num">MOD 13</span>NAT et NVI</summary>
+    <div class="mbody">
+      <ul>
+        <li><strong>Terminologie</strong> : inside local (IP privée réelle), inside global (IP publique traduite), outside local/global. Les questions jouent sur ces 4 termes.</li>
+        <li><strong>Types</strong> : NAT statique (1:1), NAT dynamique (pool), <strong>PAT / overload</strong> (n:1 avec ports — le plus courant).</li>
+        <li><strong>NVI (NAT Virtual Interface)</strong> : supprime la notion inside/outside — on met <code>ip nat enable</code> sur les interfaces et la traduction fonctionne dans n'importe quel sens (utile en NAT entre VRF ou topologies complexes).</li>
+      </ul>
+      <pre>R1(config)# ip nat inside source list 1 interface g0/0/0 overload
+R1(config)# access-list 1 permit 192.168.10.0 0.0.0.255
+R1(config-if)# ip nat inside     <span class="c">! LAN</span>
+R1(config-if)# ip nat outside    <span class="c">! WAN</span>
+R1# show ip nat translations
+R1# clear ip nat translation *</pre>
+    </div>
+  </details>
+</section>
+
+<!-- ══════════════ DOMAINE 3 : SÉCURITÉ ══════════════ -->
+<section id="d3">
+  <div class="shead">
+    <div class="prompt"><span class="host">ENCOR</span># <span class="cmd">show domain 3 network-security</span></div>
+    <h2>Domaine 3 — Sécurité réseau (modules 14–16) · 20 % de l'examen</h2>
+    <div class="poids"><div class="barre"><div class="fill" style="width:66%"></div></div><span class="pct">20 %</span></div>
+  </div>
+
+  <details class="module" open>
+    <summary><span class="num">MOD 14</span>Sécurité de l'infrastructure (ACL, CoPP)</summary>
+    <div class="mbody">
+      <ul>
+        <li><strong>ACL numérotées</strong> : standard 1–99 (source seulement, à placer <em>près de la destination</em>), étendues 100–199 (source+dest+protocole+ports, à placer <em>près de la source</em>). Préfère les ACL nommées, éditables ligne par ligne.</li>
+        <li><strong>Deny implicite</strong> à la fin de toute ACL — toujours.</li>
+        <li><strong>ACL sur VTY</strong> : <code>access-class 10 in</code> pour restreindre SSH/Telnet.</li>
+        <li><strong>CoPP (Control Plane Policing)</strong> : protège le <em>CPU</em> du routeur en limitant le débit du trafic destiné au plan de contrôle (SSH, SNMP, protocoles de routage, ICMP). Construction MQC : class-map → policy-map avec <code>police</code> → <code>service-policy input</code> sous <code>control-plane</code>.</li>
+      </ul>
+      <pre>R1(config)# ip access-list extended PROTECT-SSH
+R1(config-ext-nacl)# permit tcp 10.0.0.0 0.0.0.255 any eq 22
+R1(config)# class-map CM-SSH
+R1(config-cmap)# match access-group name PROTECT-SSH
+R1(config)# policy-map PM-COPP
+R1(config-pmap-c)# police 64000 conform-action transmit exceed-action drop
+R1(config)# control-plane
+R1(config-cp)# service-policy input PM-COPP</pre>
+      <div class="piege">CoPP s'applique en <code>input</code> sous <code>control-plane</code>, pas sur une interface physique. Et attention : trop restrictif, tu casses tes propres adjacences OSPF/BGP.</div>
+    </div>
+  </details>
+
+  <details class="module">
+    <summary><span class="num">MOD 15</span>Architecture de sécurité d'entreprise</summary>
+    <div class="mbody">
+      <ul>
+        <li><strong>Menaces</strong> : DoS/DDoS, spoofing, man-in-the-middle, phishing, malware, exploitation de vulnérabilités (comprendre le vocabulaire : menace / vulnérabilité / exploit / risque).</li>
+        <li><strong>Composants Cisco à connaître (rôle, pas config)</strong> : pare-feu nouvelle génération (Firepower NGFW — inspection stateful + applicatif + IPS), Cisco Umbrella (sécurité DNS), Cisco Secure Endpoint (AMP), ESA/WSA (mail/web), <strong>Cisco ISE</strong> (politique d'accès, 802.1X, profilage), Stealthwatch (analyse NetFlow), TrustSec (segmentation par SGT), MACsec (chiffrement L2, 802.1AE).</li>
+        <li><strong>Défense en profondeur</strong> : plusieurs couches — périmètre, réseau, endpoint, identité.</li>
+      </ul>
+      <div class="note">Question type : « quel produit répond à ce besoin ? ». Retiens la fonction d'une phrase pour chaque produit — ISE = qui accède ; Umbrella = filtrage DNS ; Stealthwatch = détection par télémétrie ; TrustSec = segmentation par tags SGT indépendante des VLAN/IP.</div>
+    </div>
+  </details>
+
+  <details class="module">
+    <summary><span class="num">MOD 16</span>Contrôle d'accès sécurisé (AAA, 802.1X)</summary>
+    <div class="mbody">
+      <ul>
+        <li><strong>AAA</strong> : Authentication (qui es-tu), Authorization (que peux-tu faire), Accounting (qu'as-tu fait).</li>
+        <li><strong>TACACS+ vs RADIUS</strong> — tableau à connaître par cœur :</li>
+      </ul>
+      <div class="wrap-table"><table>
+        <tr><th></th><th>TACACS+</th><th>RADIUS</th></tr>
+        <tr><td><b>Transport</b></td><td>TCP 49</td><td>UDP 1812/1813 (ou 1645/1646)</td></tr>
+        <tr><td><b>Chiffrement</b></td><td>Paquet entier</td><td>Mot de passe seulement</td></tr>
+        <tr><td><b>AAA</b></td><td>Sépare les 3 fonctions</td><td>Combine authentification + autorisation</td></tr>
+        <tr><td><b>Usage typique</b></td><td>Administration des équipements</td><td>Accès réseau des utilisateurs (802.1X)</td></tr>
+        <tr><td><b>Norme</b></td><td>Cisco</td><td>Standard ouvert</td></tr>
+      </table></div>
+      <ul>
+        <li><strong>802.1X</strong> : trois rôles — <em>supplicant</em> (le poste), <em>authenticator</em> (le switch/WLC), <em>authentication server</em> (RADIUS/ISE). Le protocole entre poste et switch : <strong>EAPOL</strong>.</li>
+        <li><strong>Alternatives</strong> : MAB (MAC Authentication Bypass, pour imprimantes/IoT), WebAuth (portail captif invités).</li>
+      </ul>
+      <pre>R1(config)# aaa new-model
+R1(config)# tacacs server ISE1
+R1(config-server-tacacs)# address ipv4 10.0.0.50
+R1(config-server-tacacs)# key MonSecret123
+R1(config)# aaa authentication login default group tacacs+ local</pre>
+      <div class="astuce">Toujours garder <code>local</code> en dernier recours dans la méthode AAA — sinon serveur injoignable = plus personne ne se connecte. L'examen teste cette bonne pratique.</div>
+    </div>
+  </details>
+</section>
+
+<!-- ══════════════ DOMAINE 4 : VIRTUALISATION & SERVICES ══════════════ -->
+<section id="d4">
+  <div class="shead">
+    <div class="prompt"><span class="host">ENCOR</span># <span class="cmd">show domain 4 virtualization-services</span></div>
+    <h2>Domaine 4 — Virtualisation &amp; services réseau (modules 17–20)</h2>
+    <div class="poids"><div class="barre"><div class="fill" style="width:50%"></div></div><span class="pct">S3</span></div>
+  </div>
+
+  <details class="module" open>
+    <summary><span class="num">MOD 17</span>Virtualisation : protocoles et techniques</summary>
+    <div class="mbody">
+      <ul>
+        <li><strong>Virtualisation des serveurs</strong> : hyperviseur de type 1 (bare-metal : ESXi, KVM, Hyper-V) vs type 2 (sur OS hôte : VirtualBox, VMware Workstation). VM vs conteneurs (les conteneurs partagent le noyau — plus légers).</li>
+        <li><strong>vSwitch</strong> : commutateur virtuel reliant les VM aux NIC physiques ; SR-IOV pour l'accès direct au matériel.</li>
+        <li><strong>VRF (Virtual Routing and Forwarding)</strong> : plusieurs tables de routage indépendantes sur le même routeur — la segmentation L3 de référence. VRF-lite = sans MPLS.</li>
+        <li><strong>Virtualisation des fonctions réseau (NFV)</strong> : routeurs/pare-feu virtuels (Catalyst 8000V, etc.).</li>
+      </ul>
+      <pre>R1(config)# vrf definition CLIENTS
+R1(config-vrf)# address-family ipv4
+R1(config-if)# vrf forwarding CLIENTS
+R1(config-if)# ip address 10.1.1.1 255.255.255.0
+R1# show ip route vrf CLIENTS
+R1# ping vrf CLIENTS 10.1.1.2</pre>
+      <div class="piege">Appliquer <code>vrf forwarding</code> sur une interface <em>efface son adresse IP</em> — il faut la reconfigurer après. Détail vicieux que l'examen adore.</div>
+    </div>
+  </details>
+
+  <details class="module">
+    <summary><span class="num">MOD 18</span>VPN et interfaces virtuelles (GRE, IPsec, LISP, VXLAN)</summary>
+    <div class="mbody">
+      <ul>
+        <li><strong>GRE</strong> : tunnel simple multi-protocoles (supporte le multicast → les IGP passent dedans !), mais <em>aucun chiffrement</em>. Overhead : 24 octets. Attention au MTU (1476) et au routage récursif.</li>
+        <li><strong>IPsec</strong> : chiffrement (ESP), intégrité, authentification. Deux phases IKE : phase 1 = tunnel de gestion (ISAKMP), phase 2 = tunnel de données. Modes transport vs tunnel. IPsec seul ne transporte pas le multicast → d'où le combo <strong>GRE over IPsec</strong>.</li>
+        <li><strong>Types de VPN</strong> : site-à-site, accès distant (SSL/TLS ou IPsec), DMVPN (hub-and-spoke dynamique — concept), FlexVPN (concept).</li>
+        <li><strong>LISP</strong> : sépare l'identité (EID) de la localisation (RLOC). Composants : ITR/ETR (routeurs d'entrée/sortie), Map Server / Map Resolver (l'« annuaire »). C'est le <em>plan de contrôle</em> de SD-Access.</li>
+        <li><strong>VXLAN</strong> : encapsulation L2-dans-UDP (port 4789) avec un identifiant <strong>VNI sur 24 bits</strong> (≈ 16 millions de segments vs 4096 VLAN). Les extrémités = <strong>VTEP</strong>. C'est le <em>plan de données</em> de SD-Access.</li>
+      </ul>
+      <pre>R1(config)# interface Tunnel0
+R1(config-if)# ip address 10.255.0.1 255.255.255.252
+R1(config-if)# tunnel source g0/0/0
+R1(config-if)# tunnel destination 203.0.113.10</pre>
+      <div class="note">Formule d'examen : SD-Access = LISP (contrôle) + VXLAN (données) + TrustSec/SGT (politique). Retiens ce trio, il revient partout.</div>
+    </div>
+  </details>
+
+  <details class="module">
+    <summary><span class="num">MOD 19</span>Services réseau (NTP, syslog, SNMP, NetFlow, DHCP…)</summary>
+    <div class="mbody">
+      <ul>
+        <li><strong>NTP</strong> : hiérarchie en <em>stratum</em> (0 = horloge de référence, 1 = serveur directement connecté…). UDP 123. Un routeur peut être client, serveur ou pair.</li>
+        <li><strong>Syslog</strong> : niveaux 0–7 à connaître par cœur : <em>0 Emergency, 1 Alert, 2 Critical, 3 Error, 4 Warning, 5 Notification, 6 Informational, 7 Debugging</em>. Mnémonique : « <b>E</b>very <b>A</b>wesome <b>C</b>isco <b>E</b>ngineer <b>W</b>ill <b>N</b>eed <b>I</b>ce-cream <b>D</b>aily ».</li>
+        <li><strong>SNMP</strong> : v2c (community strings, en clair) vs <strong>v3</strong> (authentification + chiffrement : modes noAuthNoPriv / authNoPriv / authPriv). Traps (non acquittés) vs informs (acquittés).</li>
+        <li><strong>NetFlow / Flexible NetFlow</strong> : télémétrie des flux. FNF = 3 blocs : <em>flow record</em> (quoi collecter) + <em>flow exporter</em> (où envoyer) + <em>flow monitor</em> (appliqué à l'interface).</li>
+        <li><strong>DHCP relay</strong> : <code>ip helper-address</code> transforme le broadcast DHCP en unicast vers le serveur.</li>
+        <li><strong>IP SLA</strong> : sondes actives (icmp-echo, jitter…) pour mesurer et déclencher (tracking + FHRP ou routes statiques conditionnelles).</li>
+      </ul>
+      <pre>R1(config)# ntp server 216.239.35.0
+R1(config)# logging host 10.0.0.100
+R1(config)# logging trap warnings          <span class="c">! envoie niveaux 0-4</span>
+R1(config)# ip sla 1
+R1(config-ip-sla)# icmp-echo 8.8.8.8
+R1(config)# ip sla schedule 1 life forever start-time now</pre>
+      <div class="piege"><code>logging trap warnings</code> envoie les niveaux 0 à 4 inclus (le niveau choisi ET tout ce qui est plus grave). Beaucoup de candidats inversent.</div>
+    </div>
+  </details>
+
+  <details class="module">
+    <summary><span class="num">MOD 20</span>Outils d'analyse et de dépannage</summary>
+    <div class="mbody">
+      <ul>
+        <li><strong>Méthodologie</strong> : définir le problème → collecter → analyser → éliminer → proposer une hypothèse → tester → documenter.</li>
+        <li><strong>ping / traceroute étendus</strong> : choisir la source, la taille, le DF-bit (diagnostic MTU !).</li>
+        <li><strong>debug</strong> : puissant mais dangereux en production — utiliser des ACL de filtrage (<code>debug ip packet 101</code>) et <code>undebug all</code>.</li>
+        <li><strong>SPAN / RSPAN / ERSPAN</strong> : copie du trafic vers un analyseur. SPAN = local ; RSPAN = via un VLAN dédié entre switches ; ERSPAN = encapsulé GRE à travers un réseau L3.</li>
+        <li><strong>Conditional debugging</strong> : <code>debug platform condition</code> sur IOS-XE pour cibler une interface/adresse.</li>
+      </ul>
+      <pre>Switch(config)# monitor session 1 source interface g1/0/5
+Switch(config)# monitor session 1 destination interface g1/0/24
+Switch# show monitor session 1</pre>
+    </div>
+  </details>
+</section>
+
+<!-- ══════════════ DOMAINE 5 : PROGRAMMABILITÉ ══════════════ -->
+<section id="d5">
+  <div class="shead">
+    <div class="prompt"><span class="host">ENCOR</span># <span class="cmd">show domain 5 programmability</span></div>
+    <h2>Domaine 5 — Programmabilité &amp; automatisation (modules 21–22) · 15 %</h2>
+    <div class="poids"><div class="barre"><div class="fill" style="width:50%"></div></div><span class="pct">15 %</span></div>
+  </div>
+
+  <details class="module" open>
+    <summary><span class="num">MOD 21</span>Bases de Python pour le réseau</summary>
+    <div class="mbody">
+      <p>Tu n'écriras pas de script à l'examen : tu dois <em>lire et prédire</em> ce que fait un extrait de code.</p>
+      <ul>
+        <li><strong>Types</strong> : str, int, list <code>[ ]</code>, dict <code>{ }</code> (clé:valeur — exactement la structure du JSON !), bool.</li>
+        <li><strong>Structures</strong> : <code>if/elif/else</code>, boucles <code>for</code>, fonctions <code>def</code>. L'indentation EST la syntaxe.</li>
+        <li><strong>Manipulation JSON</strong> : <code>import json</code>, <code>json.loads()</code> (texte → dict), <code>json.dumps()</code> (dict → texte).</li>
+        <li><strong>Requêtes API</strong> : bibliothèque <code>requests</code> — <code>requests.get(url, headers=...)</code>, code 200 = OK.</li>
+      </ul>
+      <pre>import json, requests
+r = requests.get("https://sandbox/api/v1/devices",
+                 headers={"X-Auth-Token": token}, verify=False)
+devices = r.json()
+for d in devices["response"]:
+    print(d["hostname"], d["managementIpAddress"])</pre>
+      <div class="astuce">Entraîne-toi à lire du JSON imbriqué et à écrire le « chemin » d'une valeur : <code>data["response"][0]["hostname"]</code>. C'est le format de question le plus fréquent du domaine 6.0.</div>
+    </div>
+  </details>
+
+  <details class="module">
+    <summary><span class="num">MOD 22</span>Protocoles de programmabilité (YANG, NETCONF, RESTCONF, EEM…)</summary>
+    <div class="mbody">
+      <ul>
+        <li><strong>YANG</strong> : langage de <em>modélisation</em> des données de configuration/état (le « schéma »). Ce n'est pas un protocole de transport.</li>
+        <li><strong>NETCONF</strong> : transport <strong>SSH port 830</strong>, encodage <strong>XML</strong>, opérations get-config / edit-config, notion de datastores (running, candidate, startup).</li>
+        <li><strong>RESTCONF</strong> : transport <strong>HTTPS (443)</strong>, verbes REST (GET/POST/PUT/PATCH/DELETE), encodage <strong>JSON ou XML</strong>, URI basées sur les modèles YANG.</li>
+        <li><strong>APIs REST</strong> : northbound (intention → contrôleur, ex. API Catalyst Center) vs southbound (contrôleur → équipements : NETCONF, RESTCONF, SNMP, CLI). Codes HTTP : 200 OK, 201 Created, 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 500 Server Error.</li>
+        <li><strong>Authentification API</strong> : Basic (user:pass en Base64), Bearer token, clés API.</li>
+        <li><strong>EEM (Embedded Event Manager)</strong> : automatisation embarquée sur IOS — un <em>event</em> (syslog, timer, CLI…) déclenche des <em>actions</em>.</li>
+        <li><strong>Outils de config management (concepts)</strong> : <em>Ansible</em> (sans agent, SSH, playbooks YAML, push), <em>Terraform</em> (infrastructure as code déclarative, fichiers HCL, plan/apply), Puppet/Chef (avec agent, pull).</li>
+      </ul>
+      <pre>event manager applet SAUVEGARDE
+ event syslog pattern "%SYS-5-CONFIG_I"
+ action 1.0 cli command "enable"
+ action 2.0 cli command "copy running-config tftp://10.0.0.100/backup.cfg"</pre>
+      <div class="note">Trio à ne jamais confondre : YANG = le modèle ; NETCONF = SSH 830 + XML ; RESTCONF = HTTPS + JSON/XML + verbes REST. Trois questions faciles si c'est clair, trois pièges sinon.</div>
+    </div>
+  </details>
+</section>
+
+<!-- ══════════════ DOMAINE 6 : SDN + SANS-FIL ══════════════ -->
+<section id="d6">
+  <div class="shead">
+    <div class="prompt"><span class="host">ENCOR</span># <span class="cmd">show domain 6 software-defined-networking</span></div>
+    <h2>Domaine 6 — SDN : Catalyst Center, SD-Access, SD-WAN (modules 23–26) + sans-fil</h2>
+    <div class="poids"><div class="barre"><div class="fill" style="width:50%"></div></div><span class="pct">S4</span></div>
+  </div>
+
+  <details class="module" open>
+    <summary><span class="num">MOD 23</span>Cisco Catalyst Center (ex-DNA Center)</summary>
+    <div class="mbody">
+      <p>Le contrôleur central des réseaux d'entreprise Cisco. Quatre grands workflows :</p>
+      <ul>
+        <li><strong>Design</strong> : hiérarchie de sites, profils réseau, pools IP, paramètres globaux.</li>
+        <li><strong>Policy</strong> : politiques d'accès basées sur l'identité (groupes → SGT via ISE).</li>
+        <li><strong>Provision</strong> : déploiement des configurations, Plug-and-Play, LAN automation.</li>
+        <li><strong>Assurance</strong> : santé du réseau et des clients, télémétrie, analyse des problèmes avec IA, « time travel » pour rejouer un incident.</li>
+      </ul>
+      <p>Catalyst Center expose une <strong>API northbound REST (Intent API)</strong> et pilote les équipements par les interfaces southbound (NETCONF, RESTCONF, SNMP, CLI).</p>
+      <div class="note">Assurance = la fonctionnalité différenciante à l'examen : c'est elle qui répond aux questions du type « quel outil montre la santé des clients et l'historique d'un problème ? »</div>
+    </div>
+  </details>
+
+  <details class="module">
+    <summary><span class="num">MOD 24</span>Cisco SD-Access</summary>
+    <div class="mbody">
+      <p>SD-Access = le campus en mode <em>fabric</em>, piloté par Catalyst Center + ISE.</p>
+      <ul>
+        <li><strong>Underlay</strong> : réseau IP routé classique (souvent IS-IS via LAN automation) — il transporte, c'est tout.</li>
+        <li><strong>Overlay (le fabric)</strong> : <em>LISP</em> = plan de contrôle (annuaire qui-est-où), <em>VXLAN</em> = plan de données (encapsulation qui transporte aussi le SGT), <em>TrustSec/SGT</em> = plan de politique.</li>
+        <li><strong>Rôles des nœuds</strong> :
+          <ul>
+            <li><em>Control Plane Node</em> : la base LISP (Map Server/Resolver) — qui répond « cet hôte est derrière tel edge ».</li>
+            <li><em>Edge Node</em> : équivalent du switch d'accès — encapsule/désencapsule VXLAN.</li>
+            <li><em>Border Node</em> : la porte vers l'extérieur du fabric (data center, Internet, WAN).</li>
+            <li><em>Fabric WLC / AP</em> : le sans-fil intégré au fabric (le trafic des AP entre dans VXLAN à l'edge).</li>
+          </ul>
+        </li>
+        <li><strong>Bénéfices</strong> : segmentation par identité (macro : VN/VRF ; micro : SGT), mobilité, politique unique filaire + sans-fil.</li>
+      </ul>
+      <div class="astuce">Question drag-and-drop très fréquente : associer Control Plane Node / Edge / Border à leur définition. Et retiens : underlay = IS-IS, overlay contrôle = LISP, overlay données = VXLAN, politique = SGT.</div>
+    </div>
+  </details>
+
+  <details class="module">
+    <summary><span class="num">MOD 25</span>Cisco Catalyst SD-WAN</summary>
+    <div class="mbody">
+      <p>Le WAN piloté par contrôleurs avec quatre plans distincts :</p>
+      <div class="wrap-table"><table>
+        <tr><th>Composant</th><th>Plan</th><th>Rôle</th></tr>
+        <tr><td><b>vManage (SD-WAN Manager)</b></td><td>Gestion</td><td>Interface unique : config, templates, politiques, monitoring, API REST</td></tr>
+        <tr><td><b>vSmart (Controller)</b></td><td>Contrôle</td><td>Cerveau : distribue routes et politiques via le protocole <b>OMP</b></td></tr>
+        <tr><td><b>vBond (Validator)</b></td><td>Orchestration</td><td>Premier contact : authentifie et met en relation les composants (NAT traversal)</td></tr>
+        <tr><td><b>cEdge / vEdge (WAN Edge)</b></td><td>Données</td><td>Routeurs de site : tunnels IPsec entre eux, transport du trafic</td></tr>
+      </table></div>
+      <ul>
+        <li><strong>OMP</strong> : le « BGP du SD-WAN » — annonce les routes, les clés IPsec et les politiques entre vSmart et les edges.</li>
+        <li><strong>Bénéfices</strong> : indépendance du transport (MPLS + Internet + LTE), sélection de chemin par application (SLA : latence/perte/gigue), déploiement Zero-Touch (ZTP).</li>
+        <li><strong>TLOC</strong> : identifiant d'un point de sortie (IP système + couleur + encapsulation).</li>
+      </ul>
+      <div class="piege">vBond fait l'orchestration (premier contact), PAS le contrôle. vSmart distribue les politiques mais ne transporte JAMAIS de données. Les questions mélangent volontairement les rôles.</div>
+    </div>
+  </details>
+
+  <details class="module">
+    <summary><span class="num">MOD 26</span>APIs de Catalyst Center et vManage</summary>
+    <div class="mbody">
+      <ul>
+        <li><strong>Northbound</strong> : l'Intent API de Catalyst Center et l'API REST de vManage — on exprime l'<em>intention</em> (« crée ce SSID », « donne-moi la liste des équipements ») en JSON via HTTPS.</li>
+        <li><strong>Southbound</strong> : les protocoles vers les équipements : NETCONF, RESTCONF, SNMP, SSH/CLI (et OMP côté SD-WAN).</li>
+        <li><strong>Flux d'authentification type Catalyst Center</strong> : POST <code>/dna/system/api/v1/auth/token</code> (Basic Auth) → récupérer le token → l'envoyer dans l'en-tête <code>X-Auth-Token</code> pour les appels suivants.</li>
+        <li><strong>vManage</strong> : authentification par session (POST <code>j_security_check</code>) puis appels vers <code>/dataservice/...</code>.</li>
+      </ul>
+      <pre>POST https://catalystcenter/dna/system/api/v1/auth/token
+Authorization: Basic &lt;user:pass en Base64&gt;
+→ 200 OK  { "Token": "eyJhbGciOi..." }
+
+GET https://catalystcenter/dna/intent/api/v1/network-device
+X-Auth-Token: eyJhbGciOi...</pre>
+    </div>
+  </details>
+
+  <details class="module">
+    <summary><span class="num">BONUS</span>Sans-fil (transversal — Architecture + Infrastructure + Sécurité)</summary>
+    <div class="mbody">
+      <p>Le Wi-Fi n'a pas de module dédié dans le plan NetAcad mais pèse dans le blueprint. À couvrir en semaine 4 :</p>
+      <ul>
+        <li><strong>Notions RF</strong> : dBm, RSSI, SNR, canaux 2,4 GHz (1/6/11) vs 5 GHz vs 6 GHz, interférences ; types d'antennes (omnidirectionnelle vs directionnelle : Yagi, patch, parabole).</li>
+        <li><strong>Modes de déploiement</strong> : autonome, <em>centralisé (WLC + AP en mode local, tunnel CAPWAP)</em>, FlexConnect (commutation locale au site distant), fabric (SD-Access), cloud (Meraki, Catalyst 9800-CL).</li>
+        <li><strong>CAPWAP</strong> : UDP 5246 (contrôle) / 5247 (données). Découverte du WLC : broadcast, DHCP option 43, DNS (CISCO-CAPWAP-CONTROLLER), mémoire.</li>
+        <li><strong>Roaming</strong> : intra-contrôleur vs inter-contrôleurs (L2 vs L3), mobility groups.</li>
+        <li><strong>Localisation</strong> : triangulation RSSI, rôle de Cisco Spaces/MSE.</li>
+        <li><strong>Sécurité Wi-Fi</strong> : WPA2/WPA3, PSK vs 802.1X/EAP (EAP-TLS = certificats des deux côtés, PEAP = certificat serveur + mot de passe client), WebAuth invités.</li>
+      </ul>
+      <div class="note">AP en mode local : TOUT le trafic client remonte au WLC en CAPWAP. FlexConnect : le trafic peut sortir localement — crucial pour les sites distants avec WAN limité (scénario très haïtien !).</div>
+    </div>
+  </details>
+</section>
+
+<!-- ══════════════ LABS ══════════════ -->
+<section id="labs">
+  <div class="shead">
+    <div class="prompt"><span class="host">ENCOR</span># <span class="cmd">show lab-plan</span></div>
+    <h2>Plan de labs pratiques (CML-Free / Packet Tracer)</h2>
+  </div>
+  <p class="intro">La topologie de référence du cours (R1-R2-R3 + D1-D2 + A1) se reproduit très bien en CML-Free. Priorise ces 10 labs — un par soirée environ :</p>
+  <ol>
+    <li><strong>STP</strong> : forcer le root sur D1, observer les ports bloqués, couper un lien, chronométrer la convergence RSTP.</li>
+    <li><strong>EtherChannel</strong> : LACP entre D1-D2, provoquer volontairement un mismatch (mode, VLAN) et lire <code>show etherchannel summary</code> (flags !).</li>
+    <li><strong>HSRP</strong> : D1/D2 en passerelles, priorité + preempt + tracking d'interface, tester le basculement en ping continu.</li>
+    <li><strong>OSPF multi-aires</strong> : aire 0 + aire 1 stub, résumé sur l'ABR, lire la LSDB (<code>show ip ospf database</code>) et identifier chaque type de LSA.</li>
+    <li><strong>OSPFv3</strong> : la même topologie en IPv6.</li>
+    <li><strong>eBGP</strong> : R1 (AS 65001) ↔ R2 (AS 65002), annonce de réseaux, lire <code>show ip bgp</code> (les codes &gt; et *).</li>
+    <li><strong>GRE + OSPF dans le tunnel</strong> : R1–R3 via R2, puis protéger avec IPsec.</li>
+    <li><strong>VRF-lite</strong> : deux clients isolés sur le même routeur, ping par VRF.</li>
+    <li><strong>NAT/PAT + IP SLA</strong> : PAT vers l'extérieur + sonde icmp-echo avec route statique trackée.</li>
+    <li><strong>CoPP + AAA</strong> : policer SSH/ICMP vers le control-plane ; AAA avec fallback local.</li>
+  </ol>
+  <div class="astuce">Pour SD-Access, SD-WAN et Catalyst Center : pas de lab possible en CML-Free — utilise les <strong>sandboxes Cisco DevNet</strong> (gratuites, réservables) : « Catalyst Center Always-On » et « SD-WAN Always-On ». Fais-y au moins une session d'appels API avec Postman ou Python : tu retiendras 10× mieux le flux token → requêtes.</div>
+
+  <h3>Ressources recommandées</h3>
+  <ul>
+    <li><strong>Cours NetAcad CCNP ENCOR v9</strong> — ta base (tu y as déjà accès comme instructeur).</li>
+    <li><strong>OCG Cisco Press « CCNP and CCIE ENCOR 350-401 Official Cert Guide »</strong> (édition alignée v1.2) — pour approfondir + questions de fin de chapitre.</li>
+    <li><strong>Boson ExSim-Max ENCOR</strong> — les meilleurs examens blancs du marché (investissement rentable).</li>
+    <li><strong>Cisco U. Practice Exam ENCOR</strong> — inclus selon abonnement, aligné officiel.</li>
+    <li><strong>DevNet Sandbox + Postman</strong> — pour les domaines 5 et 6.</li>
+    <li><strong>Chaînes utiles</strong> : vidéos de démonstration intégrées au cours, et en complément YouTube (ex. « ENCOR labs » de divers instructeurs NetAcad).</li>
+  </ul>
+</section>
+
+<!-- ══════════════ SPRINT FINAL ══════════════ -->
+<section id="final">
+  <div class="shead">
+    <div class="prompt"><span class="host">ENCOR</span># <span class="cmd">show checklist | include jour-J</span></div>
+    <h2>Sprint final &amp; checklist du jour J</h2>
+  </div>
+
+  <h3>Semaine 5 (Jours 29–35) — protocole d'examens blancs</h3>
+  <ul>
+    <li><strong>Lun 17</strong> : examen blanc n°1 chronométré (120 min, conditions réelles). Après-midi : analyse de CHAQUE erreur — note le domaine et la cause (concept flou ? lecture trop rapide ?).</li>
+    <li><strong>Mar 18 – Mer 19</strong> : relecture ciblée des 3 domaines les plus faibles + refaire les quiz correspondants.</li>
+    <li><strong>Jeu 20</strong> : examen blanc n°2. Objectif ≥ 80 %.</li>
+    <li><strong>Ven 21 – Sam 22</strong> : fiches de synthèse (tableaux ci-dessous) + labs éclair de 30 min sur les faiblesses.</li>
+    <li><strong>Dim 23</strong> : examen blanc n°3 (optionnel si le n°2 ≥ 85 %).</li>
+    <li><strong>Lun 24</strong> : relecture LÉGÈRE des fiches uniquement. Pas de nouveau contenu. Sommeil complet.</li>
+  </ul>
+
+  <h3>Les tableaux à savoir par cœur (fiches de dernière minute)</h3>
+  <ul class="check">
+    <li>Types de LSA OSPF (1, 2, 3, 4, 5, 7) et qui les génère</li>
+    <li>États OSPF (jusqu'à Full) et états BGP (jusqu'à Established) + diagnostic de blocage</li>
+    <li>HSRP vs VRRP vs GLBP (rôles, timers, preempt, load balancing)</li>
+    <li>TACACS+ vs RADIUS (transport, chiffrement, usage)</li>
+    <li>Niveaux syslog 0–7 et valeurs DSCP clés (EF 46, AF41, CS0)</li>
+    <li>NETCONF (SSH 830, XML) vs RESTCONF (HTTPS, JSON) vs YANG (modèle)</li>
+    <li>Composants SD-WAN (vManage/vSmart/vBond/cEdge) et leurs plans</li>
+    <li>Rôles SD-Access (Control Plane / Edge / Border) + LISP/VXLAN/SGT</li>
+    <li>Ports : TCP 179 BGP, TCP 49 TACACS+, UDP 1812/1813 RADIUS, UDP 123 NTP, UDP 4789 VXLAN, SSH 830 NETCONF, UDP 5246/5247 CAPWAP, UDP 514 syslog, UDP 161/162 SNMP</li>
+    <li>Codes HTTP : 200 / 201 / 400 / 401 / 403 / 404 / 500</li>
+    <li>Policing vs shaping ; SPAN vs RSPAN vs ERSPAN ; GRE vs IPsec</li>
+    <li>Modes AP (local, FlexConnect, monitor, sniffer, bridge) + découverte du WLC</li>
+  </ul>
+
+  <h3>Checklist du jour J</h3>
+  <ul class="check">
+    <li>Confirmation Pearson VUE imprimée/enregistrée + adresse du centre vérifiée la veille</li>
+    <li>Deux pièces d'identité valides (dont une avec photo et signature)</li>
+    <li>Arriver 30 minutes en avance ; prévoir la circulation de Port-au-Prince/Pétion-Ville</li>
+    <li>Pendant l'examen : ~70 s/question, marquer mentalement les incertitudes, ne jamais bloquer &gt; 2 min</li>
+    <li>Lire les questions en entier — Cisco adore « which two » (deux réponses !) et les négations (« NOT »)</li>
+    <li>Sur les sorties de commandes : lire D'ABORD la question, PUIS chercher l'info dans la sortie</li>
+  </ul>
+
+  <div class="note">L'examen est en anglais. Pendant tes 5 semaines, fais tous tes quiz en anglais même si tu étudies les concepts en français — le vocabulaire technique anglais doit être un réflexe le jour J (« feasible successor », « designated port », « conform-action »…).</div>
+</section>
+
+<footer>
+  <div class="prompt"><span class="host">Rooby@ENCOR</span># <span class="cmd">copy study-plan startup-config</span></div>
+  Plan d'étude ENCOR 350-401 v1.2 · Préparé pour Rooby (CFPH – Canado Technique) · Basé sur le Scope &amp; Sequence CCNP Enterprise v9 (Cisco Networking Academy) et le blueprint officiel 350-401 v1.2 · Objectif : réussite le jour J. Bon courage, pwofesè ! 🇭🇹
+</footer>
+
+</div>
+</body>
+</html>
