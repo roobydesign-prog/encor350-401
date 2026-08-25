@@ -520,6 +520,7 @@ const QUESTIONS = [
 {d:"infra", q:"Refer to the exhibit. Why is the BGP session stuck in Idle state?", ex:"R1# show ip bgp summary\nNeighbor    V    AS  MsgRcvd MsgSent   Up/Down  State/PfxRcd\n10.99.99.2  4 65002        0       0    never    Idle\nR1# show ip route 10.99.99.2\n% Network not in table", o:["The AS number is wrong", "R1 has no route to the neighbor address", "The hold timer expired", "BGP requires OSPF"], a:[1], e:"<b>Idle</b> + « network not in table » = pas de ROUTE vers le voisin → impossible d'ouvrir le TCP 179. Diagnostic BGP dans l'ordre : joignabilité (ping), puis TCP (Active), puis paramètres de session (AS, timers) en OpenSent/OpenConfirm."},
 ];
 
+
 // ═══ Logique du simulateur ═══
 let mode='etude', file=[], idx=0, sel=new Set(), reponses=[], timerInt=null, tempsRestant=0, enRevue=false;
 
@@ -535,6 +536,39 @@ function tirerExamen(){
   return melanger(out);
 }
 const $=id=>document.getElementById(id);
+
+// ── Persistance de session (reprise après fermeture/rechargement) ──
+const SKEY='encor-session-v1';
+const QIDX=new Map(QUESTIONS.map((q,i)=>[q,i]));
+function sauverSession(){
+  if(enRevue) return;
+  try{localStorage.setItem(SKEY,JSON.stringify({v:QUESTIONS.length,mode,fi:file.map(q=>QIDX.get(q)),idx,
+    rep:reponses.map(r=>({qi:QIDX.get(r.q),choix:r.choix,bonne:r.bonne})),tr:tempsRestant,t:Date.now()}))}catch(e){}
+}
+function effacerSession(){try{localStorage.removeItem(SKEY)}catch(e){}}
+function lireSession(){
+  try{const s=JSON.parse(localStorage.getItem(SKEY)||'null');
+    return (s && s.v===QUESTIONS.length && Array.isArray(s.fi) && s.fi.length && Array.isArray(s.rep)) ? s : null;
+  }catch(e){return null}
+}
+function reprendre(){
+  const s=lireSession(); if(!s) return;
+  mode=s.mode; enRevue=false;
+  file=s.fi.map(i=>QUESTIONS[i]);
+  reponses=s.rep.map(r=>({q:QUESTIONS[r.qi],choix:r.choix,bonne:r.bonne}));
+  $('ecran-accueil').classList.add('hidden');
+  $('ecran-resultats').classList.add('hidden');
+  if(reponses.length>=file.length){ $('ecran-quiz').classList.remove('hidden'); terminer(); return; }
+  idx=reponses.length;
+  $('ecran-quiz').classList.remove('hidden');
+  if(mode==='examen'){
+    tempsRestant=(typeof s.tr==='number'&&s.tr>0)?s.tr:120*60;
+    timerInt=setInterval(()=>{tempsRestant--;afficherTimer();
+      if(tempsRestant%15===0)sauverSession();
+      if(tempsRestant<=0){clearInterval(timerInt);terminer();}},1000);
+  } else { $('hud-timer').textContent=''; }
+  afficherQuestion();
+}
 
 // Boutons par domaine
 (function(){
@@ -553,6 +587,7 @@ function demarrer(m,dom){
   mode=m; enRevue=false;
   file = dom ? melanger(QUESTIONS.filter(q=>q.d===dom)) : (m==='examen' ? tirerExamen() : melanger(QUESTIONS));
   idx=0; reponses=[];
+  sauverSession();
   $('ecran-accueil').classList.add('hidden');
   $('ecran-resultats').classList.add('hidden');
   $('ecran-quiz').classList.remove('hidden');
@@ -615,6 +650,7 @@ function valider(){
   const q=file[idx];
   const bonne = q.a.length===sel.size && q.a.every(x=>sel.has(x));
   reponses.push({q,choix:[...sel],bonne});
+  sauverSession();
   document.querySelectorAll('.opt').forEach(o=>{
     o.disabled=true;
     const i=+o.dataset.i;
@@ -638,7 +674,7 @@ function valider(){
 
 function suivante(){
   if(idx===file.length-1){terminer();return}
-  idx++; afficherQuestion();
+  idx++; sauverSession(); afficherQuestion();
 }
 
 function abandonner(){
@@ -648,6 +684,7 @@ function abandonner(){
 
 function terminer(){
   if(timerInt) clearInterval(timerInt);
+  effacerSession();
   $('ecran-quiz').classList.add('hidden');
   $('ecran-resultats').classList.remove('hidden');
   const ok=reponses.filter(r=>r.bonne).length, tot=reponses.length;
@@ -688,6 +725,7 @@ function terminer(){
 function revoirErreurs(){
   const errs=reponses.filter(r=>!r.bonne).map(r=>r.q);
   if(!errs.length) return;
+  effacerSession();
   mode='etude'; enRevue=true;
   file=errs; idx=0; reponses=[];
   $('ecran-resultats').classList.add('hidden');
@@ -695,6 +733,25 @@ function revoirErreurs(){
   $('hud-timer').textContent='🔁 revue des erreurs';
   afficherQuestion();
 }
+
+// ── Proposition de reprise au chargement ──
+(function(){
+  const s=lireSession();
+  if(!s || !s.rep.length || s.rep.length>=s.fi.length) return;
+  const MODES={examen:'🎯 Examen blanc',etude:'📖 Mode étude',domaine:'🎚 Mode par domaine'};
+  const ok=s.rep.filter(r=>r.bonne).length;
+  let lib=MODES[s.mode]||s.mode;
+  if(s.mode==='domaine'){const d=QUESTIONS[s.fi[0]].d;lib+=' — '+DOMAINES[d].nom;}
+  const acc=$('ecran-accueil');
+  const div=document.createElement('div');
+  div.innerHTML='<button id="btn-reprendre" style="width:100%;text-align:left;background:#0E2A26;border:1px solid #2A6B5F;border-left:4px solid #3FD8C2;border-radius:10px;padding:15px 18px;color:#D7E2F4;cursor:pointer;margin-bottom:16px;font-family:inherit">'
+    +'<span style="display:block;font-size:1.05rem;font-weight:600;color:#3FD8C2">▶ Reprendre ma session en cours</span>'
+    +'<span style="display:block;font-size:.85rem;color:#7E8DA8;margin-top:3px">'+lib+' · question '+(s.rep.length+1)+' / '+s.fi.length+' · score en cours : '+ok+'/'+s.rep.length
+    +(s.mode==='examen'?' · ⏱ '+Math.floor((s.tr||0)/60)+' min restantes':'')+'</span>'
+    +'<span style="display:block;font-size:.75rem;color:#7E8DA8;margin-top:5px">💾 Ta progression est sauvegardée automatiquement à chaque réponse — démarrer un nouveau mode remplacera cette session.</span></button>';
+  acc.insertBefore(div, acc.firstElementChild);
+  document.getElementById('btn-reprendre').onclick=reprendre;
+})();
 
 </script>
 </body>
