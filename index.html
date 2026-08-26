@@ -48,7 +48,7 @@ footer{margin-top:44px;color:var(--dim);font-size:.8rem;font-family:'IBM Plex Mo
 <div class="wrap">
 <div class="prompt">ENCOR# show study-path | begin objectif</div>
 <h1>CCNP <span>ENCOR 350-401</span> — parcours de préparation</h1>
-<p class="sub">Plan 5 semaines · simulateur 370 questions · 127 flashcards · 10 labs · stratégie de 2ᵉ passage — cette fois, c'est la bonne.</p>
+<p class="sub">Plan 5 semaines · simulateur 370 questions · 127 flashcards · 10 labs · stratégie de 2ᵉ passage · programme recalibré : finir le cours, consolider, puis viser le feu vert (≥ 80 % au blanc n°3) avant de réserver.</p>
 <div class="countdown" id="cd">⏳ calcul…</div>
 
 <div class="grid">
@@ -62,7 +62,7 @@ footer{margin-top:44px;color:var(--dim);font-size:.8rem;font-family:'IBM Plex Mo
 
 <h2><span class="h2p">ENCOR# show simulator history</span>Mes tentatives au simulateur</h2>
 <div class="pwrap" id="histo"><span class="plabel">Aucune tentative enregistrée pour l'instant — lance un mode étude ou un examen blanc, tes scores apparaîtront ici automatiquement.</span></div>
-<h2><span class="h2p">ENCOR# show progression</span>Suivi des 5 semaines</h2>
+<h2><span class="h2p">ENCOR# show progression</span>Programme recalibré — 8 semaines</h2>
 <div class="pwrap">
 <div class="plabel" id="ptxt">0 / 0 étapes</div>
 <div class="pbar"><div id="pfill"></div></div>
@@ -74,41 +74,56 @@ footer{margin-top:44px;color:var(--dim);font-size:.8rem;font-family:'IBM Plex Mo
 </div>
 <script>
 const SEMAINES=[
- {t:"Semaine 1 — Commutation & architecture",items:[
-  "Modules architecture : hiérarchie campus, spine-leaf, haute dispo (SSO/NSF, StackWise)",
-  "STP/RSTP/MST à fond + QoS (trust, LLQ, WRED)",
-  "Lab 01 — STP : root, convergence, BPDU Guard",
-  "Lab 02 — EtherChannel LACP + mismatch",
-  "Lab 03 — HSRP : priorité, preempt, tracking",
-  "Simulateur : mode étude domaines Architecture + Infrastructure (commutation)"]},
- {t:"Semaine 2 — Routage",items:[
-  "OSPF v2/v3 : LSA, aires, stub, résumé, network types",
-  "BGP : états, best-path, network exact, update-source/multihop",
-  "EIGRP (timers, K-values, variance, SIA) + multicast (PIM, IGMP, RP)",
-  "Lab 04 — OSPF multi-aires · Lab 05 — OSPFv3 · Lab 06 — eBGP",
-  "Simulateur : mode par domaine Infrastructure ≥ 75 %"]},
- {t:"Semaine 3 — Sécurité & virtualisation",items:[
-  "Sécurité équipement : AAA, TACACS+/RADIUS, CoPP, ACL, 802.1X, WPA3",
-  "Virtualisation : VRF, GRE/IPsec, DMVPN, LISP, VXLAN",
-  "Lab 07 — GRE+IPsec · Lab 08 — VRF-lite",
-  "Lab 09 — NAT + IP SLA · Lab 10 — CoPP + AAA",
-  "Simulateur : domaines Sécurité + Virtualisation ≥ 75 %"]},
- {t:"Semaine 4 — Programmabilité & SDN",items:[
-  "SD-Access & SD-WAN : rôles, plans, LISP/VXLAN/OMP",
-  "Python (lecture de code), JSON/XML/YAML, REST, NETCONF/RESTCONF/YANG",
-  "Sandbox DevNet Catalyst Center : session API complète (token → inventaire)",
-  "Sandbox SD-WAN vManage + EEM/Ansible/Terraform (concepts)",
-  "Simulateur : domaines Automation + Assurance ≥ 75 %",
-  "Examen blanc n°1 (100 questions, conditions réelles) + analyse des domaines faibles"]},
- {t:"Semaine 5 — Sprint final",items:[
-  "Rattrapage ciblé des domaines < 70 % du blanc n°1",
-  "Examen blanc n°2 + analyse",
-  "Fiches PDF : relecture complète (2 passages)",
-  "Examen blanc n°3 — objectif ≥ 80 %",
-  "J-1 : révision légère, fiches uniquement, sommeil ✓",
-  "Jour J : pièce d'identité, arrivée en avance, gestion du temps (72 s/question) 🎯"]}
+ {t:"Semaine 1 — Finir la Sécurité (le cœur de ce qui te manque)",items:[
+  "Module 15 : terminer les 8 sections restantes (AMP, pare-feu, TrustSec, MACsec, identité, 802.1X, MAB, WebAuth) — c'est le cœur du domaine Sécurité",
+  "Module 16 : Implementing Secure Access Control (AAA, TACACS+, 802.1X en pratique)",
+  "Checkpoint Exam: Network Security — sans corrigés externes, ton score = ton diagnostic",
+  "Simulateur : mode par domaine Sécurité jusqu'à ≥ 70 %",
+  "Flashcards : toutes les cartes Sécurité en boîte 2 minimum"]},
+ {t:"Semaine 2 — Virtualisation & VPN",items:[
+  "Module 17 : protocoles et techniques de virtualisation (VRF, hyperviseurs)",
+  "Module 18 : VPN et interfaces virtuelles (GRE, IPsec, DMVPN, LISP, VXLAN)",
+  "Lab 07 — GRE + OSPF + IPsec",
+  "Lab 08 — VRF-lite",
+  "Mode adaptatif : 1 session de 25 questions par jour (le rituel commence ici)"]},
+ {t:"Semaine 3 — Services réseau & outils d'analyse",items:[
+  "Module 19 : services réseau (NTP, DHCP, NAT, FHRP)",
+  "Module 20 : outils d'analyse (NetFlow, SPAN/ERSPAN, IP SLA, debug)",
+  "Checkpoint Exam: Virtualization and Network Services",
+  "Lab 09 — NAT + IP SLA dual-WAN · Lab 10 — CoPP + AAA",
+  "Simulateur : domaines Virtualisation + Assurance ≥ 70 %"]},
+ {t:"Semaine 4 — Programmabilité",items:[
+  "Module 21 : bases de Python (lecture de code : slicing, dict, boucles, ==)",
+  "Module 22 : protocoles de programmabilité (REST, NETCONF, RESTCONF, YANG)",
+  "Checkpoint Exam: Programmability",
+  "Sandbox DevNet Catalyst Center : une session API complète (token → inventaire → JSON)",
+  "Simulateur : domaine Automation ≥ 70 % · mode adaptatif quotidien"]},
+ {t:"Semaine 5 — Software-Defined Networking",items:[
+  "Modules 23-24 : Catalyst Center (DNA Center) + SD-Access (LISP/VXLAN/SGT, rôles des nœuds)",
+  "Modules 25-26 : SD-WAN (vBond/vSmart/vManage/OMP) + APIs DNA Center et vManage",
+  "Checkpoint Exam: Software-Defined Networking",
+  "Simulateur : domaine Architecture ≥ 70 %",
+  "Flashcards : 60 % de la banque totale en boîte 3"]},
+ {t:"Semaine 6 — Final NetAcad + premier verdict",items:[
+  "Révision légère des modules < 90 % (relire les résumés, refaire les quiz de section)",
+  "CCNP ENCOR: Course Final Exam — en conditions réelles, sans aide",
+  "Examen blanc n°1 au simulateur (100 questions, 120 min) — objectif ≥ 65 %",
+  "Analyse de 2 h : chaque erreur classée (ignorance / précipitation / formulation)",
+  "Mode adaptatif quotidien sur les domaines < 70 %"]},
+ {t:"Semaine 7 — Consolidation + réservation",items:[
+  "Rattrapage ciblé des domaines faibles du blanc n°1 (50 % de ton temps dessus)",
+  "Examen blanc n°2 — objectif ≥ 75 %",
+  "✅ SI ≥ 75 % : réserver l'examen Pearson VUE pour la fin de la semaine 8 (pas avant !)",
+  "Boson ExSim si le budget le permet (calibrage indépendant)",
+  "Flashcards : 85 % en boîte 3"]},
+ {t:"Semaine 8 — Sprint final",items:[
+  "Rattrapage ciblé des restes du blanc n°2",
+  "Examen blanc n°3 — objectif ≥ 80 % = feu vert (sinon : redécaler de 2 semaines, sans état d'âme)",
+  "Fiches PDF : 2 relectures complètes",
+  "J-1 : repos actif, fiches uniquement, flashcards boîte 1, sommeil ✓",
+  "Jour J : pièce d'identité, arrivée en avance, 70 s/question, on ne revient jamais en arrière — décide et avance 🎯"]}
 ];
-const KEY='encor-progress-v1';
+const KEY='encor-progress-v2';
 function lsGet(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){return {}}}
 function lsSet(o){try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
 let state=lsGet();
