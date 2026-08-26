@@ -48,12 +48,12 @@ footer{margin-top:44px;color:var(--dim);font-size:.8rem;font-family:'IBM Plex Mo
 <div class="wrap">
 <div class="prompt">ENCOR# show study-path | begin objectif</div>
 <h1>CCNP <span>ENCOR 350-401</span> — parcours de préparation</h1>
-<p class="sub">Plan 5 semaines · simulateur 350 questions · 127 flashcards · 10 labs · stratégie de 2ᵉ passage — cette fois, c'est la bonne.</p>
+<p class="sub">Plan 5 semaines · simulateur 370 questions · 127 flashcards · 10 labs · stratégie de 2ᵉ passage — cette fois, c'est la bonne.</p>
 <div class="countdown" id="cd">⏳ calcul…</div>
 
 <div class="grid">
 <a class="card" href="plan/"><div class="ico">🗺️</div><h3>Plan d'étude</h3><p>26 modules, calendrier 5 semaines, commandes clés, pièges d'examen</p></a>
-<a class="card" href="simulateur/"><div class="ico">🎯</div><h3>Simulateur d'examen</h3><p>350 questions · examens blancs de 100 questions / 120 min · mode étude et par domaine</p></a>
+<a class="card" href="simulateur/"><div class="ico">🎯</div><h3>Simulateur d'examen</h3><p>370 questions · examens blancs de 100 questions / 120 min · mode étude et par domaine</p></a>
 <a class="card" href="labs/"><div class="ico">🧪</div><h3>Labs pratiques</h3><p>10 labs CML-Free / Packet Tracer + sandboxes DevNet</p></a>
 <a class="card" href="flashcards/"><div class="ico">⚡</div><h3>Flashcards</h3><p>127 cartes à répétition espacée (Leitner) — la mémorisation active qui fait la différence</p></a>
 <a class="card" href="strategie/"><div class="ico">🧠</div><h3>Stratégie de réussite</h3><p>Spécial 2ᵉ passage : diagnostic de l'échec, gestion du temps, décodage des pièges Cisco</p></a>
@@ -144,7 +144,7 @@ maj();
   const H=JSON.parse(localStorage.getItem('encor-attempts')||'[]');
   if(!H.length) return;
   const DN={arch:'Archi',virt:'Virt',infra:'Infra',assur:'Assur',sec:'Séc',auto:'Auto'};
-  const MN={examen:'🎯 Examen blanc',etude:'📖 Étude',domaine:'🎚 Par domaine',revue:'🔁 Revue'};
+  const MN={examen:'🎯 Examen blanc',etude:'📖 Étude',domaine:'🎚 Par domaine',revue:'🔁 Revue',adaptatif:'🧠 Adaptatif'};
   let rows=H.slice(-6).reverse().map(a=>{
    const d=new Date(a.t);
    const faibles=Object.entries(a.dom||{}).filter(([k,v])=>v<70).map(([k,v])=>DN[k]+' '+v+'%').join(', ');
