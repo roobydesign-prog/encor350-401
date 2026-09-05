@@ -2,7 +2,7 @@
 
 > Dépôt d'étude personnel · examen **Cisco 350-401 ENCOR v1.2** · parcours autonome de 5 semaines, **date d'examen configurable dans le hub** 🇭🇹
 
-Un kit de préparation complet et autonome, déployable en un clic sur **GitHub Pages** : plan d'étude interactif, simulateur de 350 questions, fiches de révision PDF et 10 labs guidés.
+Un kit de préparation complet et autonome, déployable en un clic sur **GitHub Pages** : plan d'étude interactif, simulateur de 370 questions, fiches de révision PDF et 10 labs guidés.
 
 ## 📁 Structure
 
@@ -10,7 +10,7 @@ Un kit de préparation complet et autonome, déployable en un clic sur **GitHub 
 encor-350-401/
 ├── index.html              ← Hub d'accueil : liens + suivi de progression 5 semaines
 ├── plan/index.html         ← Plan d'étude complet (26 modules, calendrier, pièges d'examen)
-├── simulateur/index.html   ← Simulateur : 350 questions, blancs de 100 q / 120 min
+├── simulateur/index.html   ← Simulateur : 370 questions, blancs de 100 q / 120 min
 ├── flashcards/index.html   ← 127 flashcards à répétition espacée (Leitner 3 boîtes)
 ├── strategie/index.html    ← Stratégie de réussite spécial 2ᵉ passage
 ├── fiches/…pdf             ← 8 pages de fiches imprimables (ports, LSA, FHRP, SDN, jour J)
@@ -54,7 +54,7 @@ Ce kit est construit pour un **second passage** :
 
 ## 🎯 Le simulateur en bref
 
-- **350 questions originales** en anglais (la langue de l'examen), explications détaillées en français
+- **370 questions originales** en anglais (la langue de l'examen), explications détaillées en français
 - Pondération conforme au blueprint : Infrastructure 30 % · Sécurité 20 % · Architecture 15 % · Automation 15 % · Virtualisation 10 % · Assurance 10 %
 - **Mode examen blanc** : tirage aléatoire de 100 questions pondérées, chrono 120 min, correction à la fin
 - **Mode étude** (correction immédiate) et **mode par domaine**
