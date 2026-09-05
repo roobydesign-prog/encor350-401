@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drag & Drop Trainer · ENCOR 350-401</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0B1220;--panel:#101A2E;--panel2:#0E1626;--bord:#1E2A44;--txt:#D7E2F4;--dim:#7E8DA8;--acc:#3FD8C2;--amb:#F0A429;--rouge:#E5484D;--vert:#46C08A}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);font-family:'IBM Plex Sans',sans-serif;line-height:1.5}
+.wrap{max-width:860px;margin:0 auto;padding:20px 16px 70px}
+a.back{color:var(--acc);font-family:'IBM Plex Mono',monospace;font-size:.85rem;text-decoration:none}
+h1{font-family:'IBM Plex Sans Condensed',sans-serif;font-size:1.45rem;margin:8px 0 2px}
+.sub{color:var(--dim);font-size:.86rem;margin-bottom:14px}
+.hud{display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--dim);margin-bottom:10px}
+.exo{background:var(--panel);border:1px solid var(--bord);border-radius:12px;padding:18px}
+.titre{font-weight:600;margin-bottom:4px}
+.consigne{color:var(--dim);font-size:.82rem;margin-bottom:12px}
+.pool{display:flex;flex-wrap:wrap;gap:8px;min-height:44px;background:var(--panel2);border:1px dashed var(--bord);border-radius:9px;padding:9px;margin-bottom:14px}
+.chip{background:#16233C;border:1px solid #2A3A5C;border-radius:16px;padding:7px 13px;font-size:.85rem;cursor:pointer;user-select:none}
+.chip.sel{border-color:var(--acc);color:var(--acc);box-shadow:0 0 0 1px var(--acc)}
+.chip.ok{border-color:var(--vert);color:var(--vert)}
+.chip.ko{border-color:var(--rouge);color:var(--rouge)}
+.cats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.cat{background:var(--panel2);border:1px solid var(--bord);border-radius:10px;padding:10px;min-height:86px;cursor:pointer}
+.cat h4{font-family:'IBM Plex Sans Condensed',sans-serif;font-size:.85rem;color:var(--acc);margin-bottom:8px;pointer-events:none}
+.cat .zone{display:flex;flex-wrap:wrap;gap:6px;min-height:34px}
+.cat.cible{border-color:var(--acc)}
+.seq{display:flex;flex-direction:column;gap:7px;margin-bottom:6px}
+.slot{background:var(--panel2);border:1px solid var(--bord);border-radius:8px;padding:9px 12px;font-size:.86rem;display:flex;gap:10px;align-items:center;cursor:pointer}
+.slot .n{font-family:'IBM Plex Mono',monospace;color:var(--acc);font-size:.75rem;flex-shrink:0}
+.exp{display:none;background:var(--panel2);border-left:3px solid var(--amb);padding:10px 13px;border-radius:0 6px 6px 0;font-size:.85rem;margin-top:12px}
+.exp b{color:var(--acc)}
+.verdict{font-family:'IBM Plex Sans Condensed',sans-serif;margin-top:12px;font-size:1rem}
+.actions{display:flex;gap:10px;margin-top:12px}
+button.btn{flex:1;font-family:'IBM Plex Sans Condensed',sans-serif;font-size:.98rem;padding:12px;border-radius:9px;border:1px solid var(--bord);cursor:pointer;background:var(--panel);color:var(--txt)}
+button.btn.p{background:var(--acc);color:#06231F;border:none;font-weight:700}
+button.btn:disabled{opacity:.35}
+.fin{display:none;background:var(--panel);border:1px solid var(--bord);border-radius:12px;padding:20px}
+.score{font-family:'IBM Plex Mono',monospace;font-size:1.7rem;color:var(--acc)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a class="back" href="../">&larr; ENCOR# cd ..</a>
+<h1>🧩 Drag & Drop Trainer — le format oublié</h1>
+<p class="sub">Au vrai examen : glisser des éléments vers des catégories ou remettre des étapes dans l'ordre. Ici : <b>touche un élément, puis touche sa destination</b> (pensé pour mobile). 16 exercices sur les correspondances classiques de l'ENCOR.</p>
+<div class="hud"><span id="h-num"></span><span id="h-score"></span></div>
+<div class="exo" id="exo"></div>
+<div class="fin" id="fin"></div>
+</div>
+<script>
+const EXOS=[
+{t:"Remets les états BGP dans l'ordre d'établissement",type:"order",
+ items:["Idle","Connect","Active","OpenSent","OpenConfirm","Established"],
+ e:"<b>Idle→Connect→Active→OpenSent→OpenConfirm→Established</b>. Bloqué Idle = pas de route vers le voisin ; Active = TCP en échec ; OpenSent/Confirm = paramètres de session en cours de validation."},
+{t:"Remets les étapes du join CAPWAP d'un AP dans l'ordre",type:"order",
+ items:["Obtention d'une IP (DHCP)","Discovery (recherche des WLC)","Join (établissement DTLS)","Image download (alignement de version)","Config download","Run (service des clients)"],
+ e:"DHCP → <b>Discovery → Join → Image → Config → Run</b>. L'AP peut rebooter à l'étape image — comportement normal qui piège en dépannage."},
+{t:"Remets le flux de connexion d'un client Wi-Fi 802.1X dans l'ordre",type:"order",
+ items:["Probe request/response","Authentification 802.11 (open)","Association","Échange EAP/802.1X via RADIUS","4-way handshake (clés WPA)","DHCP"],
+ e:"Probe → auth 802.11 → association → <b>EAP</b> → <b>4-way handshake</b> → DHCP. Savoir SITUER une panne dans cette chaîne (échec EAP = côté ISE/identifiants ; pas d'IP = après les clés, côté DHCP)."},
+{t:"Classe chaque composant SD-WAN dans son plan",type:"classify",
+ cats:["Plan de gestion","Plan de contrôle","Plan d'orchestration","Plan de données"],
+ items:[{x:"vManage",c:0},{x:"vSmart",c:1},{x:"OMP",c:1},{x:"vBond",c:2},{x:"Routeurs cEdge/vEdge",c:3},{x:"Tunnels IPsec",c:3}],
+ e:"<b>vManage</b>=gestion · <b>vSmart+OMP</b>=contrôle · <b>vBond</b>=orchestration (premier contact, NAT traversal) · <b>edges+IPsec</b>=données. Classement demandé quasi tel quel à l'examen."},
+{t:"Classe chaque rôle SD-Access avec sa fonction",type:"classify",
+ cats:["Edge node","Border node","Control plane node","ISE"],
+ items:[{x:"Enregistre les terminaux et applique la politique au port",c:0},{x:"Relie le fabric aux réseaux externes (PITR/PETR)",c:1},{x:"Héberge la HTDB via LISP MS/MR",c:2},{x:"Fournit l'identité et attribue les SGT",c:3}],
+ e:"<b>Edge</b>=accès des terminaux · <b>border</b>=sortie du fabric · <b>control plane node</b>=annuaire EID→RLOC · <b>ISE</b>=identité/politique. Les 4 rôles à réciter."},
+{t:"Associe chaque type de LSA OSPF à sa description",type:"classify",
+ cats:["Type 1","Type 2","Type 3","Type 5","Type 7"],
+ items:[{x:"Router LSA : liens du routeur, dans son aire",c:0},{x:"Network LSA : généré par le DR sur un segment multi-accès",c:1},{x:"Summary LSA : routes inter-aires via l'ABR",c:2},{x:"External LSA : routes redistribuées via l'ASBR",c:3},{x:"NSSA External : externe dans une aire NSSA",c:4}],
+ e:"1=Router · 2=Network(DR) · <b>3=Summary(ABR)</b> · <b>5=External(ASBR)</b> · 7=NSSA (converti en 5 par l'ABR). Le type 4 (ASBR-Summary) complète la famille."},
+{t:"Associe chaque attaque L2 à sa parade",type:"classify",
+ cats:["Port security","DHCP snooping","Dynamic ARP Inspection","Natif dédié + nonegotiate","Root Guard"],
+ items:[{x:"MAC flooding (saturation CAM)",c:0},{x:"Serveur DHCP pirate",c:1},{x:"ARP poisoning / MITM",c:2},{x:"VLAN hopping (double tag)",c:3},{x:"Prise de contrôle du root STP",c:4}],
+ e:"Les 5 paires canoniques. Rappel des dépendances : <b>DAI s'appuie sur la table du snooping</b> — snooping d'abord, toujours."},
+{t:"Associe chaque protocole à son port",type:"classify",
+ cats:["TCP 49","UDP 1812","SSH 830","UDP 4789","UDP 5246","UDP 514"],
+ items:[{x:"TACACS+",c:0},{x:"RADIUS (authentification)",c:1},{x:"NETCONF",c:2},{x:"VXLAN",c:3},{x:"CAPWAP contrôle",c:4},{x:"Syslog",c:5}],
+ e:"TACACS+ <b>TCP 49</b> · RADIUS <b>1812</b>/1813 · NETCONF <b>SSH 830</b> · VXLAN <b>4789</b> · CAPWAP <b>5246</b> (contrôle)/5247 (données) · syslog <b>514</b>. Des points gratuits si c'est ancré."},
+{t:"Remets les critères BGP de sélection du meilleur chemin dans l'ordre",type:"order",
+ items:["Weight le plus haut","Local Preference la plus haute","Route originée localement","AS-path le plus court","Origin le plus bas (IGP<EGP<?)","MED le plus bas"],
+ e:"<b>Weight → Local Pref → locale → AS-path → Origin → MED</b> (puis eBGP>iBGP, IGP le plus proche, plus ancien, RID le plus bas). Les 6 premiers suffisent pour presque toutes les questions."},
+{t:"Associe chaque mécanisme QoS à sa fonction",type:"classify",
+ cats:["Classification","Marquage","Policing","Shaping","File prioritaire","Évitement de congestion"],
+ items:[{x:"NBAR2 (inspection applicative)",c:0},{x:"Écrire le DSCP dans l'en-tête",c:1},{x:"Jeter/re-marquer l'excès immédiatement",c:2},{x:"Mettre l'excès en buffer pour lisser",c:3},{x:"LLQ (priority) pour la voix",c:4},{x:"WRED (drop sélectif avant saturation)",c:5}],
+ e:"La chaîne QoS : classifier (NBAR/ACL) → marquer (DSCP) → traiter (police/shape/queue/WRED). <b>Police jette, shape retarde</b> — la distinction reine."},
+{t:"Classe chaque élément de virtualisation",type:"classify",
+ cats:["Hyperviseur type 1","Hyperviseur type 2","Virtualisation d'équipement","Virtualisation de chemin"],
+ items:[{x:"VMware ESXi / KVM",c:0},{x:"VirtualBox / VMware Workstation",c:1},{x:"VRF (tables de routage séparées)",c:2},{x:"GRE / IPsec / DMVPN",c:3}],
+ e:"Type 1 = bare-metal · type 2 = sur OS hôte · <b>équipement</b> = VRF/contextes · <b>chemin</b> = tunnels/overlays. Le blueprint 2.0 distingue explicitement ces familles."},
+{t:"Associe chaque code HTTP à sa signification",type:"classify",
+ cats:["200","201","202","401","403","429"],
+ items:[{x:"Succès (réponse synchrone)",c:0},{x:"Ressource créée",c:1},{x:"Accepté, traitement asynchrone (taskId)",c:2},{x:"Non authentifié (token absent/expiré)",c:3},{x:"Authentifié mais non autorisé",c:4},{x:"Trop de requêtes (rate limiting)",c:5}],
+ e:"2xx = succès (200/<b>201 créé</b>/<b>202 asynchrone</b>) · 4xx = erreur client (<b>401 qui es-tu</b>/<b>403 pas le droit</b>/404/429) · 5xx = serveur. Le duo 401/403 et le 202+taskId sont les plus testés."},
+{t:"Classe chaque outil d'automatisation selon son modèle",type:"classify",
+ cats:["Sans agent, push","Déclaratif avec fichier d'état","Agent installé, pull"],
+ items:[{x:"Ansible (SSH/API, playbooks YAML)",c:0},{x:"Terraform (HCL, plan/apply)",c:1},{x:"Puppet (manifests)",c:2},{x:"Chef (recipes)",c:2}],
+ e:"<b>Ansible</b> = agentless push · <b>Terraform</b> = déclaratif + state (provisionnement) · <b>Puppet/Chef</b> = agents qui tirent leur config. Classement récurrent en drag-and-drop."},
+{t:"Remets les étapes d'une session NETCONF dans l'ordre",type:"order",
+ items:["Connexion SSH (port 830)","Échange des <hello> et capabilities","Envoi du <rpc> (ex. get-config)","Réception du <rpc-reply>","<close-session>"],
+ e:"Transport → <b>hello/capabilities</b> (chacun annonce ce qu'il sait faire) → RPC/RPC-reply → fermeture propre. Le hello initial est LA question type sur l'établissement."},
+{t:"Associe chaque FHRP à sa signature",type:"classify",
+ cats:["HSRP","VRRP","GLBP"],
+ items:[{x:"Cisco, hello 3 s / hold 10 s, vMAC 0000.0c07.acXX",c:0},{x:"Standard ouvert, advertisement 1 s, preempt par défaut",c:1},{x:"Équilibrage actif : AVG distribue plusieurs vMAC aux AVF",c:2}],
+ e:"<b>HSRP</b>=Cisco actif/standby · <b>VRRP</b>=standard, plus rapide par défaut · <b>GLBP</b>=le seul qui équilibre la charge nativement (AVG/AVF). + les vMAC : 0000.0c07.ac / 0000.5e00.01 / 0007.b400."},
+{t:"Classe chaque trafic dans son plan (et sa protection)",type:"classify",
+ cats:["Plan de gestion","Plan de contrôle","Plan de données"],
+ items:[{x:"SSH / SNMP / NETCONF vers l'équipement",c:0},{x:"Hellos OSPF, keepalives BGP, ARP, STP",c:1},{x:"Trafic utilisateur en transit",c:2},{x:"Protégé par MPP et ACL VTY",c:0},{x:"Protégé par CoPP et l'authentification des protocoles",c:1},{x:"Protégé par ACL, uRPF, pare-feu",c:2}],
+ e:"<b>Gestion</b>=parler À l'équipement (MPP, access-class) · <b>contrôle</b>=les protocoles qui font vivre le réseau (CoPP, auth) · <b>données</b>=le transit (ACL, uRPF). Trafic ET protection : les deux faces de la même question."},
+];
+let idx=0, score=0, sel=null, resultats=[];
+const $=id=>document.getElementById(id);
+function melanger(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+const ORDRE=melanger(EXOS.map((_,i)=>i));
+let etat=null; // classify: {pool:[iIdx], place:{iIdx:catIdx}} · order: {pool:[iIdx], seq:[iIdx]}
+function aff(){
+ const e=EXOS[ORDRE[idx]]; sel=null;
+ $('h-num').textContent='Exercice '+(idx+1)+' / '+EXOS.length;
+ $('h-score').textContent='Score : '+score+' / '+idx;
+ const box=$('exo'); box.innerHTML='';
+ const t=document.createElement('div');t.className='titre';t.textContent=(e.type==='order'?'🔢 ':'🗂 ')+e.t;box.appendChild(t);
+ const c=document.createElement('div');c.className='consigne';
+ c.textContent=e.type==='order'?'Touche les éléments du bas dans le BON ORDRE pour construire la séquence (touche une ligne de la séquence pour la retirer).':'Touche un élément, puis touche sa catégorie (touche un élément placé pour le remettre dans la réserve).';
+ box.appendChild(c);
+ if(e.type==='order'){
+  etat={pool:melanger(e.items.map((_,i)=>i)),seq:[]};
+  const sq=document.createElement('div');sq.className='seq';sq.id='seq';box.appendChild(sq);
+  const pool=document.createElement('div');pool.className='pool';pool.id='pool';box.appendChild(pool);
+  rendreOrder(e);
+ } else {
+  etat={pool:melanger(e.items.map((_,i)=>i)),place:{}};
+  const pool=document.createElement('div');pool.className='pool';pool.id='pool';box.appendChild(pool);
+  const cats=document.createElement('div');cats.className='cats';cats.id='cats';
+  e.cats.forEach((nom,ci)=>{
+   const d=document.createElement('div');d.className='cat';d.dataset.c=ci;
+   d.innerHTML='<h4>'+nom+'</h4><div class="zone" data-z="'+ci+'"></div>';
+   d.onclick=()=>{if(sel===null||etat.verrou)return;etat.place[sel]=ci;sel=null;rendreClassify(e)};
+   cats.appendChild(d);
+  });
+  box.appendChild(cats);
+  rendreClassify(e);
+ }
+ const v=document.createElement('div');v.className='verdict';v.id='verdict';box.appendChild(v);
+ const ex=document.createElement('div');ex.className='exp';ex.id='exp';box.appendChild(ex);
+ const act=document.createElement('div');act.className='actions';
+ act.innerHTML='<button class="btn p" id="b-val" disabled>Valider</button><button class="btn" id="b-next" style="display:none">Exercice suivant →</button>';
+ box.appendChild(act);
+ $('b-val').onclick=()=>valider(e);
+ $('b-next').onclick=suivant;
+}
+function chip(txt,i){const s=document.createElement('span');s.className='chip'+(sel===i?' sel':'');s.dataset.i=i;s.textContent=txt;return s}
+function rendreOrder(e){
+ const pool=$('pool');pool.innerHTML='';
+ etat.pool.forEach(i=>{const s=chip(e.items[i],i);s.onclick=()=>{if(etat.verrou)return;etat.seq.push(i);etat.pool=etat.pool.filter(x=>x!==i);rendreOrder(e)};pool.appendChild(s)});
+ const sq=$('seq');sq.innerHTML='';
+ etat.seq.forEach((i,pos)=>{const d=document.createElement('div');d.className='slot';d.dataset.i=i;
+  d.innerHTML='<span class="n">'+(pos+1)+'.</span><span>'+e.items[i]+'</span>';
+  d.onclick=()=>{if(etat.verrou)return;etat.seq=etat.seq.filter(x=>x!==i);etat.pool.push(i);rendreOrder(e)};
+  sq.appendChild(d)});
+ const b=$('b-val'); if(b) b.disabled = etat.seq.length!==e.items.length;
+}
+function rendreClassify(e){
+ const pool=$('pool');pool.innerHTML='';
+ etat.pool.filter(i=>etat.place[i]===undefined).forEach(i=>{
+  const s=chip(e.items[i].x,i);
+  s.onclick=()=>{if(etat.verrou)return;sel=(sel===i?null:i);rendreClassify(e)};
+  pool.appendChild(s)});
+ document.querySelectorAll('.zone').forEach(z=>z.innerHTML='');
+ Object.entries(etat.place).forEach(([i,ci])=>{
+  const s=chip(e.items[i].x,+i);
+  s.onclick=ev=>{ev.stopPropagation();if(etat.verrou)return;delete etat.place[i];sel=null;rendreClassify(e)};
+  document.querySelector('.zone[data-z="'+ci+'"]').appendChild(s)});
+ document.querySelectorAll('.cat').forEach(c=>c.classList.toggle('cible',sel!==null));
+ const b=$('b-val'); if(b) b.disabled = Object.keys(etat.place).length!==e.items.length;
+}
+function valider(e){
+ etat.verrou=true; let bonne=true;
+ if(e.type==='order'){
+  etat.seq.forEach((i,pos)=>{const ok=(i===pos);if(!ok)bonne=false;
+   const d=document.querySelector('.slot[data-i="'+i+'"]');d.style.borderColor=ok?'var(--vert)':'var(--rouge)'});
+ } else {
+  Object.entries(etat.place).forEach(([i,ci])=>{const ok=(e.items[i].c===ci);if(!ok)bonne=false;
+   const s=document.querySelector('.zone .chip[data-i="'+i+'"]');s.classList.add(ok?'ok':'ko')});
+ }
+ if(bonne)score++;
+ resultats.push({t:e.t,ok:bonne});
+ $('verdict').textContent=bonne?'✔ CORRECT':'✘ INCORRECT — regarde les éléments en rouge';
+ $('verdict').style.color=bonne?'var(--vert)':'var(--rouge)';
+ $('exp').innerHTML=e.e;$('exp').style.display='block';
+ $('b-val').style.display='none';$('b-next').style.display='block';
+ $('h-score').textContent='Score : '+score+' / '+(idx+1);
+}
+function suivant(){
+ idx++;
+ if(idx>=EXOS.length){
+  $('exo').style.display='none';
+  const p=Math.round(score/EXOS.length*100);
+  const f=$('fin');f.style.display='block';
+  f.innerHTML='<h2 style="font-family:IBM Plex Sans Condensed,sans-serif">Résultat</h2><div class="score">'+score+' / '+EXOS.length+' — '+p+' %</div>'
+   +'<p style="color:var(--dim);font-size:.88rem;margin-top:8px">'+resultats.filter(r=>!r.ok).map(r=>'✘ '+r.t).join('<br>')+'</p>'
+   +'<p style="margin-top:12px"><button class="btn p" onclick="location.reload()">Recommencer (nouvel ordre)</button></p>';
+ } else aff();
+}
+aff();
+window._exos=EXOS;
+</script>
+</body>
+</html>
