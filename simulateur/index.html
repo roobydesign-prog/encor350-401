@@ -3,735 +3,204 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CCNP ENCOR (350-401) Offline Master Prep</title>
+    <title>CCNP ENCOR 350-401 Offline Master Guide</title>
     <style>
-        /* Standalone Offline CSS Stylesheet */
         :root {
-            --bg-dark: #0f172a;
-            --bg-card: #1e293b;
-            --bg-card-header: #334155;
-            --bg-input: #090d16;
-            --border-color: #475569;
-            --primary-blue: #3b82f6;
-            --primary-hover: #2563eb;
-            --accent-green: #10b981;
-            --accent-amber: #f59e0b;
-            --accent-red: #ef4444;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
+            --primary: #0b2545;
+            --secondary: #134074;
+            --accent: #8da9c4;
+            --light: #eeefo20;
+            --bg: #f4f6f9;
+            --text: #333333;
+            --success: #28a745;
+            --danger: #dc3545;
         }
-
-        * {
-            box-sizing: border-box;
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
             margin: 0;
             padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            line-height: 1.5;
-        }
-
         header {
-            background-color: var(--bg-card);
-            border-bottom: 1px solid var(--border-color);
-            padding: 1rem 1.5rem;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-        }
-
-        .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .title-group h1 {
-            font-size: 1.5rem;
-            color: #60a5fa;
-            font-weight: 800;
-        }
-
-        .title-group p {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-        }
-
-        .lang-control {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            background-color: var(--bg-dark);
-            padding: 0.4rem 0.6rem;
-            border-radius: 0.5rem;
-            border: 1px solid var(--border-color);
-        }
-
-        .lang-control span {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-muted);
-        }
-
-        .btn-lang {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            padding: 0.25rem 0.5rem;
-            font-size: 0.75rem;
-            font-weight: 600;
-            border-radius: 0.25rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .btn-lang.active {
-            background-color: var(--primary-blue);
+            background-color: var(--primary);
             color: white;
+            padding: 20px;
+            text-align: center;
         }
-
-        nav {
-            background-color: var(--bg-card);
-            border-bottom: 1px solid var(--border-color);
-            padding: 0 1.5rem;
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            gap: 1rem;
-            overflow-x: auto;
+        h1, h2, h3 {
+            color: var(--primary);
         }
-
-        .tab-btn {
-            background: none;
+        .lang-switch {
+            text-align: right;
+            margin-bottom: 15px;
+        }
+        button {
+            background-color: var(--secondary);
+            color: white;
             border: none;
-            color: var(--text-muted);
-            padding: 0.8rem 0.5rem;
-            font-size: 0.9rem;
+            padding: 10px 15px;
+            border-radius: 4px;
             cursor: pointer;
-            border-bottom: 3px solid transparent;
-            white-space: nowrap;
-            transition: all 0.2s;
-        }
-
-        .tab-btn.active {
-            border-bottom-color: var(--primary-blue);
-            color: var(--primary-blue);
             font-weight: bold;
         }
-
-        main {
-            max-width: 1200px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 1.5rem;
-            flex-grow: 1;
+        button:hover {
+            background-color: var(--primary);
         }
-
-        .section-box {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 0.75rem;
-            padding: 1.25rem;
-            margin-bottom: 1.5rem;
+        .section {
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
         }
-
-        .section-title {
-            font-size: 1.25rem;
-            color: #60a5fa;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
+        .question-card {
+            background: #fafafa;
+            border-left: 4px solid var(--secondary);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
         }
-
-        .section-desc {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-        }
-
-        .code-block {
-            background-color: var(--bg-input);
-            border: 1px solid var(--border-color);
-            border-radius: 0.5rem;
-            padding: 1rem;
-            font-family: monospace;
-            font-size: 0.8rem;
-            color: #4ade80;
-            overflow-x: auto;
-            white-space: pre;
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1rem;
-        }
-
-        .grid-card {
-            background-color: var(--bg-input);
-            border: 1px solid var(--border-color);
-            border-radius: 0.5rem;
-            padding: 1rem;
-        }
-
-        .grid-card h4 {
-            color: #f59e0b;
-            font-size: 0.95rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .quiz-card {
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 0.75rem;
-            padding: 1.25rem;
-            margin-bottom: 1rem;
-        }
-
-        .quiz-question {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .option-label {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            background-color: var(--bg-input);
-            border: 1px solid var(--border-color);
-            padding: 0.75rem;
-            border-radius: 0.5rem;
-            margin-bottom: 0.5rem;
+        .options label {
+            display: block;
+            margin: 8px 0;
             cursor: pointer;
-            transition: border-color 0.2s;
         }
-
-        .option-label:hover {
-            border-color: var(--primary-blue);
-        }
-
         .explanation {
-            margin-top: 0.75rem;
-            padding: 0.75rem;
-            background-color: var(--bg-input);
-            border-left: 4px solid var(--primary-blue);
-            border-radius: 0.25rem;
-            font-size: 0.85rem;
+            margin-top: 10px;
+            font-style: italic;
+            color: #555;
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
         }
-
-        .btn-submit {
-            background-color: var(--accent-green);
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            font-size: 1rem;
-            font-weight: bold;
-            border-radius: 0.5rem;
-            cursor: pointer;
-            width: 100%;
-            transition: background-color 0.2s;
-        }
-
-        .btn-submit:hover {
-            background-color: #059669;
-        }
-
-        .score-banner {
-            background-color: var(--bg-card);
-            border: 2px solid var(--primary-blue);
-            border-radius: 0.75rem;
-            padding: 1.25rem;
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .hidden { display: none !important; }
-
-        footer {
-            background-color: var(--bg-card);
-            border-top: 1px solid var(--border-color);
-            padding: 1rem;
-            text-align: center;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-top: auto;
-        }
-
-        ul.list-styled {
-            list-style-type: disc;
-            padding-left: 1.25rem;
-            font-size: 0.85rem;
-        }
-
-        ul.list-styled li {
-            margin-bottom: 0.4rem;
+        .code-block {
+            background: #1e1e1e;
+            color: #dcdcdc;
+            padding: 10px;
+            font-family: monospace;
+            border-radius: 4px;
+            overflow-x: auto;
         }
     </style>
 </head>
 <body>
 
-    <!-- Top Header -->
     <header>
-        <div class="header-container">
-            <div class="title-group">
-                <h1>CCNP ENCOR 350-401 Offline Prep</h1>
-                <p>100% Offline Master Study & Interactive Practice Platform</p>
-            </div>
-            
-            <!-- Language Selector -->
-            <div class="lang-control">
-                <span>Explanation Lang:</span>
-                <button onclick="setLang('en')" id="btn-en" class="btn-lang active">EN</button>
-                <button onclick="setLang('fr')" id="btn-fr" class="btn-lang">FR</button>
-                <button onclick="setLang('ht')" id="btn-ht" class="btn-lang">HT</button>
-            </div>
-        </div>
+        <h1>CCNP ENCOR (350-401) Master Study Guide</h1>
+        <p>Offline Edition - Strategies, Labs, & Questions</p>
     </header>
 
-    <!-- Navigation Bar -->
-    <nav>
-        <div class="nav-container">
-            <button onclick="showTab('labs')" id="tab-labs" class="tab-btn active">
-                <span class="lang-txt" data-en="CML Practical Labs" data-fr="Laboratoires CML" data-ht="Laboratwa CML">CML Practical Labs</span>
-            </button>
-            <button onclick="showTab('dnd')" id="tab-dnd" class="tab-btn">
-                <span class="lang-txt" data-en="Drag & Drop Mastery" data-fr="Maîtrise Glisser-Déposer" data-ht="Metrize Drag & Drop">Drag & Drop Mastery</span>
-            </button>
-            <button onclick="showTab('notes')" id="tab-notes" class="tab-btn">
-                <span class="lang-txt" data-en="Core Knowledge Notes" data-fr="Notes de Connaissances" data-ht="Nòt Etid Kle yo">Core Knowledge Notes</span>
-            </button>
-            <button onclick="showTab('quiz')" id="tab-quiz" class="tab-btn">
-                <span class="lang-txt" data-en="Interactive Exam Quiz" data-fr="Examen Interactif" data-ht="Egzamen Entèaktif">Interactive Exam Quiz</span>
-            </button>
+    <div class="container">
+        <div class="lang-switch">
+            <button onclick="setLang('en')">English</button>
+            <button onclick="setLang('fr')">Français</button>
+            <button onclick="setLang('ht')">Kreyòl</button>
         </div>
-    </nav>
 
-    <!-- Content Area -->
-    <main>
-
-        <!-- TAB 1: CML LABS -->
-        <section id="sec-labs">
-            <div class="section-box">
-                <div class="section-title">
-                    <span class="lang-txt" data-en="Essential CML Hands-On Labs" data-fr="Laboratoires Pratiques Essentiels CML" data-ht="Laboratwa Pratik CML Enpòtan Yo">Essential CML Hands-On Labs</span>
-                </div>
-                <div class="section-desc">
-                    <span class="lang-txt" 
-                          data-en="Run these exact Cisco IOS-XE commands in Cisco Modeling Labs (CML) to solidify routing, security, and automation concepts." 
-                          data-fr="Exécutez ces commandes Cisco IOS-XE exactes dans CML pour consolider le routage, la sécurité et l'automatisation." 
-                          data-ht="Ekzotikite komand Cisco IOS-XE sa yo nan CML pou w ka metrize routage, sekirite ak otomasyon.">
-                        Run these exact Cisco IOS-XE commands in Cisco Modeling Labs (CML) to solidify routing, security, and automation concepts.
-                    </span>
-                </div>
-            </div>
-
-            <!-- Lab 1 -->
-            <div class="section-box">
-                <h3 style="color: #10b981; margin-bottom: 0.5rem;">Lab 1: OSPFv2 Multi-Area, Summarization & DR Election</h3>
-                <p class="section-desc">
-                    <span class="lang-txt" 
-                          data-en="Configure OSPF area range summarization on ABR and force DR election using IP interface priority." 
-                          data-fr="Configurer le résumé de plages d'aires OSPF sur l'ABR et forcer l'élection DR via la priorité d'interface." 
-                          data-ht="Konfigure rezime zòn OSPF sou ABR epi fòse chwa DR la ak priyorite entèfasi an.">
-                        Configure OSPF area range summarization on ABR and force DR election using IP interface priority.
-                    </span>
-                </p>
-                <div class="code-block">! Router ABR (R1)
-enable
-configure terminal
-router ospf 1
- router-id 1.1.1.1
- area 1 range 10.1.0.0 255.255.0.0
-exit
-interface GigabitEthernet0/1
- ip ospf priority 255
-end
-write memory</div>
-            </div>
-
-            <!-- Lab 2 -->
-            <div class="section-box">
-                <h3 style="color: #10b981; margin-bottom: 0.5rem;">Lab 2: Multi-AS BGP Peering & IPv4 Address-Family</h3>
-                <p class="section-desc">
-                    <span class="lang-txt" 
-                          data-en="Configure eBGP session explicitly disabling default IPv4 unicast and enabling address-family activation." 
-                          data-fr="Configurer une session eBGP en désactivant IPv4 unicast par défaut et en activant les familles d'adresses." 
-                          data-ht="Konfigure sesyon eBGP san IPv4 unicast pa defo epi aktyalize address-family an.">
-                        Configure eBGP session explicitly disabling default IPv4 unicast and enabling address-family activation.
-                    </span>
-                </p>
-                <div class="code-block">! Router R100 (AS 100)
-enable
-configure terminal
-router bgp 100
- bgp router-id 10.0.0.1
- no bgp default ipv4-unicast
- neighbor 192.168.12.2 remote-as 200
- !
- address-family ipv4
-  neighbor 192.168.12.2 activate
-  network 10.0.0.1 mask 255.255.255.255
- exit-address-family
-end</div>
-            </div>
-
-            <!-- Lab 3 -->
-            <div class="section-box">
-                <h3 style="color: #10b981; margin-bottom: 0.5rem;">Lab 3: Python Automation via NETCONF (ncclient)</h3>
-                <p class="section-desc">
-                    <span class="lang-txt" 
-                          data-en="Script to connect via SSH port 830 and extract running configuration in XML format." 
-                          data-fr="Script pour se connecter via SSH port 830 et extraire la configuration en cours au format XML." 
-                          data-ht="Skit Python pou konekte sou pò SSH 830 epi rale konfigirasyon an an fòma XML.">
-                        Script to connect via SSH port 830 and extract running configuration in XML format.
-                    </span>
-                </p>
-                <div class="code-block" style="color: #93c5fd;">from ncclient import manager
-
-device_info = {
-    'host': '192.168.1.1',
-    'port': 830,
-    'username': 'admin',
-    'password': 'CiscoPassword123!',
-    'hostkey_verify': False,
-    'device_params': {'name': 'csr'}
-}
-
-with manager.connect(**device_info) as m:
-    xml_response = m.get_config(source='running')
-    print(xml_response.data_xml)</div>
-            </div>
-        </section>
-
-        <!-- TAB 2: DRAG & DROP -->
-        <section id="sec-dnd" class="hidden">
-            <div class="section-box">
-                <div class="section-title">
-                    <span class="lang-txt" data-en="Official Drag & Drop Mappings" data-fr="Correspondances Glisser-Déposer Officielles" data-ht="Repons Exact Drag & Drop Yo">Official Drag & Drop Mappings</span>
-                </div>
-                <div class="section-desc">
-                    <span class="lang-txt" 
-                          data-en="Study these verified associations frequently appearing in the CCNP 350-401 exam." 
-                          data-fr="Étudiez ces associations vérifiées qui apparaissent fréquemment à l'examen CCNP 350-401." 
-                          data-ht="Etidye asosyasyon sa yo ki valide epi ki retounen anpil nan egzamen an.">
-                        Study these verified associations frequently appearing in the CCNP 350-401 exam.
-                    </span>
-                </div>
-            </div>
-
-            <!-- DND Item 1 -->
-            <div class="section-box">
-                <h3 style="color: #f59e0b; margin-bottom: 0.75rem;">1. Network Automation & Configuration Management Tools</h3>
-                <div class="grid-2">
-                    <div class="grid-card">
-                        <h4>Ansible</h4>
-                        <ul class="list-styled text-muted">
-                            <li>Architecture: <strong>Agentless</strong></li>
-                            <li>Transport: <strong>SSH</strong></li>
-                            <li>Playbooks written in: <strong>YAML</strong></li>
-                        </ul>
-                    </div>
-                    <div class="grid-card">
-                        <h4>Puppet</h4>
-                        <ul class="list-styled text-muted">
-                            <li>Architecture: <strong>Agent-based / Primary-Secondary</strong></li>
-                            <li>Model: <strong>Pull Model</strong></li>
-                            <li>Manifests language: <strong>Declarative DSL</strong></li>
-                        </ul>
-                    </div>
-                    <div class="grid-card">
-                        <h4>Chef</h4>
-                        <ul class="list-styled text-muted">
-                            <li>CLI Tool: <strong>knife</strong></li>
-                            <li>Language: <strong>Ruby</strong></li>
-                            <li>Structure: <strong>Cookbooks & Recipes</strong></li>
-                        </ul>
-                    </div>
-                    <div class="grid-card">
-                        <h4>SaltStack</h4>
-                        <ul class="list-styled text-muted">
-                            <li>Language: <strong>Python</strong></li>
-                            <li>Transport: <strong>ZeroMQ or SSH</strong></li>
-                            <li>Structure: <strong>Pillars & States</strong></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!-- DND Item 2 -->
-            <div class="section-box">
-                <h3 style="color: #f59e0b; margin-bottom: 0.75rem;">2. YANG Data Modeling Constructs</h3>
-                <div class="grid-2">
-                    <div class="grid-card">
-                        <h4 style="color: #4ade80;">Leaf</h4>
-                        <p style="font-size: 0.85rem;">Contains a single simple value (e.g. string, integer, boolean). Holds no child nodes.</p>
-                    </div>
-                    <div class="grid-card">
-                        <h4 style="color: #4ade80;">Leaf-list</h4>
-                        <p style="font-size: 0.85rem;">Contains an array/sequence of scalar values of a defined type.</p>
-                    </div>
-                    <div class="grid-card">
-                        <h4 style="color: #4ade80;">Container</h4>
-                        <p style="font-size: 0.85rem;">Used to group related nodes together in a subtree. Holds no value itself.</p>
-                    </div>
-                    <div class="grid-card">
-                        <h4 style="color: #4ade80;">List</h4>
-                        <p style="font-size: 0.85rem;">Defines a sequence of list entries, uniquely identified by key leaves.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- TAB 3: NOTES -->
-        <section id="sec-notes" class="hidden">
-            <div class="section-box">
-                <div class="section-title">
-                    <span class="lang-txt" data-en="High-Yield Exam Notes" data-fr="Notes d'Examen Essentielles" data-ht="Nòt Etid Pli Enpòtan Yo">High-Yield Exam Notes</span>
-                </div>
-                <div class="section-desc">
-                    <span class="lang-txt" 
-                          data-en="Core Cisco architecture concepts, HTTP API response codes, and network security foundations." 
-                          data-fr="Concepts fondamentaux d'architecture Cisco, codes de réponse API HTTP et sécurité réseau." 
-                          data-ht="Konsèp fondamantal achitekti Cisco, kòd repons REST API ak sekirite rezo.">
-                        Core Cisco architecture concepts, HTTP API response codes, and network security foundations.
-                    </span>
-                </div>
-            </div>
-
-            <div class="grid-2">
-                <div class="section-box">
-                    <h3 style="color: #c084fc; margin-bottom: 0.75rem;">Cisco SD-Access & SD-WAN Planes</h3>
-                    <ul class="list-styled">
-                        <li><strong>SD-Access Control Plane:</strong> Uses <strong>LISP</strong> (Locator/ID Separation Protocol) to track endpoints.</li>
-                        <li><strong>SD-Access Data Plane:</strong> Uses <strong>VXLAN</strong> for data encapsulation and overlay transport.</li>
-                        <li><strong>SD-Access Policy Plane:</strong> Uses <strong>Cisco TrustSec (SGTs)</strong> for group-based policy enforcement.</li>
-                        <li><strong>SD-WAN Control Plane:</strong> Managed by <strong>vSmart</strong> controllers using <strong>OMP</strong> (Overlay Management Protocol).</li>
-                        <li><strong>SD-WAN Management Plane:</strong> Handled centrally by <strong>vManage</strong>.</li>
-                    </ul>
-                </div>
-
-                <div class="section-box">
-                    <h3 style="color: #c084fc; margin-bottom: 0.75rem;">REST API Status Codes</h3>
-                    <ul class="list-styled">
-                        <li><strong style="color: #4ade80;">200 OK:</strong> Request succeeded; returned payload data in body.</li>
-                        <li><strong style="color: #4ade80;">201 Created:</strong> Resource successfully created on server.</li>
-                        <li><strong style="color: #4ade80;">204 No Content:</strong> Request fulfilled successfully; no body returned (e.g., successful DELETE).</li>
-                        <li><strong style="color: #f59e0b;">400 Bad Request:</strong> Malformed request payload or syntax error.</li>
-                        <li><strong style="color: #f59e0b;">401 Unauthorized:</strong> Authentication credentials missing or invalid.</li>
-                        <li><strong style="color: #f59e0b;">403 Forbidden:</strong> Server understood request but refuses authorization.</li>
-                        <li><strong style="color: #f59e0b;">404 Not Found:</strong> Target resource URI does not exist.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- TAB 4: INTERACTIVE EXAM QUIZ -->
-        <section id="sec-quiz" class="hidden">
-            <div class="section-box flex-container" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
-                <div>
-                    <div class="section-title">
-                        <span class="lang-txt" data-en="CCNP 350-401 Practice Exam" data-fr="Examen de Pratique CCNP 350-401" data-ht="Egzamen Pratik CCNP 350-401">CCNP 350-401 Practice Exam</span>
-                    </div>
-                    <div class="section-desc" style="margin-bottom:0;">
-                        <span class="lang-txt" 
-                              data-en="Questions & answers are strictly in official Cisco English to prepare for real exam conditions." 
-                              data-fr="Les questions et réponses sont strictement en anglais pour refléter l'examen officiel." 
-                              data-ht="Kesyon yo ak repons yo se sèlman an Angle pou prepare w nan kondisyon egzamen reyèl la.">
-                            Questions & answers are strictly in official Cisco English to prepare for real exam conditions.
-                        </span>
-                    </div>
-                </div>
-                <button onclick="evaluateQuiz()" class="btn-submit" style="width: auto;">Submit Exam</button>
-            </div>
-
-            <!-- Results Banner -->
-            <div id="quiz-results-box" class="score-banner hidden">
-                <h2 id="quiz-score-header" style="font-size: 1.5rem; color: white;">Score: 0/0</h2>
-                <p id="quiz-score-msg" style="font-size: 0.9rem; margin-top: 0.5rem;"></p>
-            </div>
-
-            <!-- Dynamic Question List -->
-            <div id="quiz-list"></div>
-        </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer>
-        CCNP ENCOR 350-401 Offline Study Platform &bull; All resources bundled in a single offline HTML file.
-    </footer>
-
-    <!-- Offline JavaScript Engine -->
-    <script>
-        // State Management
-        let currentLanguage = 'en';
-
-        // Exam Question Database (Strict Cisco English)
-        const examQuestions = [
-            {
-                id: 1,
-                question: "Which protocol number is used directly in the IPv4 header by OSPF for packet transport?",
-                options: ["Protocol 88", "Protocol 89", "TCP Port 179", "UDP Port 520"],
-                correct: 1,
-                explanation: "OSPF runs directly on top of IP using Protocol Number 89. EIGRP uses IP Protocol 88, BGP uses TCP Port 179, and RIP uses UDP Port 520."
-            },
-            {
-                id: 2,
-                question: "Which HTTP status code indicates that a REST API call succeeded but no payload response body is returned?",
-                options: ["200 OK", "201 Created", "204 No Content", "401 Unauthorized"],
-                correct: 2,
-                explanation: "HTTP 204 No Content indicates success with an empty response body (commonly returned for successful HTTP DELETE calls)."
-            },
-            {
-                id: 3,
-                question: "Which Python function converts a JSON formatted string into a native Python dictionary?",
-                options: ["json.dumps()", "json.loads()", "json.decode()", "json.parse()"],
-                correct: 1,
-                explanation: "json.loads() (load string) deserializes JSON string data into Python dictionaries. json.dumps() performs the reverse serialization."
-            },
-            {
-                id: 4,
-                question: "Which feature distinguishes a Next-Generation Firewall (NGFW) from a traditional stateful firewall?",
-                options: [
-                    "Stateful Packet Inspection",
-                    "Network Address Translation (NAT)",
-                    "Integrated IPS and Application Visibility & Control (AVC)",
-                    "Standard Access Control Lists"
-                ],
-                correct: 2,
-                explanation: "NGFWs integrate Application Awareness/Control and Intrusion Prevention Systems (IPS) directly into the core engine."
-            },
-            {
-                id: 5,
-                question: "Which network configuration management tool is completely agentless and communicates over SSH by default?",
-                options: ["Chef", "Puppet", "Ansible", "SaltStack"],
-                correct: 2,
-                explanation: "Ansible is agentless and uses standard SSH connections to execute YAML Playbooks on remote devices."
-            },
-            {
-                id: 6,
-                question: "In Cisco SD-Access architecture, which protocol is responsible for Control Plane endpoint tracking?",
-                options: ["VXLAN", "LISP", "Cisco TrustSec", "OMP"],
-                correct: 1,
-                explanation: "SD-Access uses LISP (Locator/ID Separation Protocol) for the Control Plane. VXLAN handles Data Plane encapsulation, and TrustSec enforces Policy Plane."
-            }
-        ];
-
-        // Language Switcher Function
-        function setLang(lang) {
-            currentLanguage = lang;
+        <!-- SECTION 1: STUDY NOTES -->
+        <div class="section">
+            <h2 id="title-notes">1. Core Concepts & Architecture</h2>
+            <p id="desc-notes">Review key architecture, virtualization, and infrastructure protocols required for the exam.</p>
             
-            ['en', 'fr', 'ht'].forEach(l => {
-                const btn = document.getElementById(`btn-${l}`);
-                if (l === lang) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
+            <h3>SD-Access & SD-WAN</h3>
+            <ul>
+                <li><strong>Control Plane (SD-Access):</strong> Uses LISP (Locator/ID Separation Protocol).</li>
+                <li><strong>Data Plane (SD-Access):</strong> Uses VXLAN encapsulation.</li>
+                <li><strong>SD-WAN Planes:</strong> Management (vManage), Control (vSmart via OMP), Data (IPsec tunnels).</li>
+            </ul>
+
+            <h3>CML Routing Labs (OSPF & BGP)</h3>
+            <p>Example OSPF Summarization and DR priority command:</p>
+            <div class="code-block">
+                conf t<br>
+                router ospf 10<br>
+                area 10 range 10.1.0.0 255.255.0.0<br>
+                int e0/1<br>
+                ip ospf priority 255
+            </div>
+        </div>
+
+        <!-- SECTION 2: PRACTICE EXAM -->
+        <div class="section">
+            <h2 id="title-quiz">2. Practice Exam Questions</h2>
+            
+            <!-- Question 1 -->
+            <div class="question-card">
+                <p><strong>Q1:</strong> Which protocol is used for the control plane in Cisco SD-Access?</p>
+                <div class="options">
+                    <label><input type="radio" name="q1" value="A"> A. LISP</label>
+                    <label><input type="radio" name="q1" value="B"> B. VXLAN</label>
+                    <label><input type="radio" name="q1" value="C"> C. BGP</label>
+                </div>
+                <button onclick="checkAnswer('q1', 'A', 'exp1')">Submit Answer</button>
+                <div id="exp1" class="explanation">
+                    <strong>Correct Answer: A</strong><br>
+                    <em>EN/FR/HT:</em> LISP is the control plane protocol for SD-Access mapping endpoints. / LISP est le protocole de plan de contrôle. / Se LISP ki jere plan kontwòl nan SD-Access.
+                </div>
+            </div>
+
+            <!-- Question 2 -->
+            <div class="question-card">
+                <p><strong>Q2:</strong> Which Python module is used to parse JSON data into a Python dictionary?</p>
+                <div class="options">
+                    <label><input type="radio" name="q2" value="A"> A. xml.etree</label>
+                    <label><input type="radio" name="q2" value="B"> B. json (json.loads())</label>
+                    <label><input type="radio" name="q2" value="C"> C. netmiko</label>
+                </div>
+                <button onclick="checkAnswer('q2', 'B', 'exp2')">Submit Answer</button>
+                <div id="exp2" class="explanation">
+                    <strong>Correct Answer: B</strong><br>
+                    <em>EN/FR/HT:</em> json.loads() converts a JSON string to a Python dictionary. / Convertit une chaîne JSON en dictionnaire. / Konvèti yon chèn JSON an diksyonè Python.
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function checkAnswer(questionName, correctAnswer, expId) {
+            const radios = document.getElementsByName(questionName);
+            let selected = null;
+            for (const r of radios) {
+                if (r.checked) {
+                    selected = r.value;
+                    break;
                 }
-            });
-
-            document.querySelectorAll('.lang-txt').forEach(el => {
-                const text = el.getAttribute(`data-${lang}`);
-                if (text) el.textContent = text;
-            });
-        }
-
-        // Tab Navigation Function
-        function showTab(tabId) {
-            const tabs = ['labs', 'dnd', 'notes', 'quiz'];
-            tabs.forEach(t => {
-                const sec = document.getElementById(`sec-${t}`);
-                const btn = document.getElementById(`tab-${t}`);
-                if (t === tabId) {
-                    sec.classList.remove('hidden');
-                    btn.classList.add('active');
-                } else {
-                    sec.classList.add('hidden');
-                    btn.classList.remove('active');
-                }
-            });
-        }
-
-        // Render Quiz Questions
-        function renderQuiz() {
-            const container = document.getElementById('quiz-list');
-            container.innerHTML = '';
-
-            examQuestions.forEach((q, idx) => {
-                const card = document.createElement('div');
-                card.className = 'quiz-card';
-
-                let optsHtml = '';
-                q.options.forEach((opt, oIdx) => {
-                    optsHtml += `
-                        <label class="option-label">
-                            <input type="radio" name="q_${q.id}" value="${oIdx}">
-                            <span>${opt}</span>
-                        </label>
-                    `;
-                });
-
-                card.innerHTML = `
-                    <div class="quiz-question">Question ${idx + 1}: ${q.question}</div>
-                    <div>${optsHtml}</div>
-                    <div id="exp_${q.id}" class="explanation hidden">
-                        <strong>Explanation:</strong> ${q.explanation}
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        // Evaluate Quiz & Display Score
-        function evaluateQuiz() {
-            let score = 0;
-            examQuestions.forEach(q => {
-                const selected = document.querySelector(`input[name="q_${q.id}"]:checked`);
-                const exp = document.getElementById(`exp_${q.id}`);
-                
-                if (exp) exp.classList.remove('hidden');
-
-                if (selected && parseInt(selected.value) === q.correct) {
-                    score++;
-                }
-            });
-
-            const pct = Math.round((score / examQuestions.length) * 100);
-            const resultsBox = document.getElementById('quiz-results-box');
-            const scoreHeader = document.getElementById('quiz-score-header');
-            const scoreMsg = document.getElementById('quiz-score-msg');
-
-            resultsBox.classList.remove('hidden');
-            scoreHeader.textContent = `Score: ${score} / ${examQuestions.length} (${pct}%)`;
-
-            if (pct >= 80) {
-                scoreMsg.textContent = "Excellent! You are showing high readiness on these core topics.";
-                scoreMsg.style.color = "#4ade80";
-            } else {
-                scoreMsg.textContent = "Review the explanations above and revisit the Study Notes tab to strengthen weak areas.";
-                scoreMsg.style.color = "#f59e0b";
             }
-
-            resultsBox.scrollIntoView({ behavior: 'smooth' });
+            const expDiv = document.getElementById(expId);
+            expDiv.style.display = "block";
+            if (selected === correctAnswer) {
+                expDiv.style.background = "#d4edda";
+                expDiv.style.color = "#155724";
+            } else {
+                expDiv.style.background = "#f8d7da";
+                expDiv.style.color = "#721c24";
+            }
         }
 
-        // App Initialization
-        document.addEventListener('DOMContentLoaded', () => {
-            renderQuiz();
-        });
+        function setLang(lang) {
+            if(lang === 'ht') {
+                document.getElementById('title-notes').innerText = '1. Konsèp Kle ak Achitekti';
+                document.getElementById('desc-notes').innerText = 'Revize achitekti kle, vètyalizasyon ak pwotokòl enfrastrikti ki nesesè pou egzamen an.';
+                document.getElementById('title-quiz').innerText = '2. Kesyon Egzamen Pratik';
+            } else if(lang === 'fr') {
+                document.getElementById('title-notes').innerText = '1. Concepts Clés & Architecture';
+                document.getElementById('desc-notes').innerText = 'Révisez l\'architecture, la virtualisation et les protocoles d\'infrastructure.';
+                document.getElementById('title-quiz').innerText = '2. Questions d\'Examen Pratique';
+            } else {
+                document.getElementById('title-notes').innerText = '1. Core Concepts & Architecture';
+                document.getElementById('desc-notes').innerText = 'Review key architecture, virtualization, and infrastructure protocols required for the exam.';
+                document.getElementById('title-quiz').innerText = '2. Practice Exam Questions';
+            }
+        }
     </script>
 </body>
 </html>
