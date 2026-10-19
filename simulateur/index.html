@@ -3,17 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CCNP ENCOR 350-401 Offline Master Guide</title>
+    <title>CCNP ENCOR 350-401 Ultimate Offline Master Guide</title>
     <style>
         :root {
             --primary: #0b2545;
             --secondary: #134074;
             --accent: #8da9c4;
-            --light: #eeefo20;
             --bg: #f4f6f9;
             --text: #333333;
-            --success: #28a745;
-            --danger: #dc3545;
         }
         body {
             font-family: Arial, sans-serif;
@@ -36,9 +33,7 @@
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
-        h1, h2, h3 {
-            color: var(--primary);
-        }
+        h1, h2, h3 { color: var(--primary); }
         .lang-switch {
             text-align: right;
             margin-bottom: 15px;
@@ -47,14 +42,12 @@
             background-color: var(--secondary);
             color: white;
             border: none;
-            padding: 10px 15px;
+            padding: 8px 12px;
             border-radius: 4px;
             cursor: pointer;
             font-weight: bold;
         }
-        button:hover {
-            background-color: var(--primary);
-        }
+        button:hover { background-color: var(--primary); }
         .section {
             margin-bottom: 30px;
             border-bottom: 2px solid #eee;
@@ -75,27 +68,17 @@
         .explanation {
             margin-top: 10px;
             font-style: italic;
-            color: #555;
-            background: #e9ecef;
             padding: 10px;
             border-radius: 4px;
             display: none;
-        }
-        .code-block {
-            background: #1e1e1e;
-            color: #dcdcdc;
-            padding: 10px;
-            font-family: monospace;
-            border-radius: 4px;
-            overflow-x: auto;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>CCNP ENCOR (350-401) Master Study Guide</h1>
-        <p>Offline Edition - Strategies, Labs, & Questions</p>
+        <h1>CCNP ENCOR (350-401) Ultimate Offline Master Guide</h1>
+        <p>Complete Practice Questions & Multilingual Explanations</p>
     </header>
 
     <div class="container">
@@ -105,34 +88,10 @@
             <button onclick="setLang('ht')">Kreyòl</button>
         </div>
 
-        <!-- SECTION 1: STUDY NOTES -->
         <div class="section">
-            <h2 id="title-notes">1. Core Concepts & Architecture</h2>
-            <p id="desc-notes">Review key architecture, virtualization, and infrastructure protocols required for the exam.</p>
+            <h2 id="title-quiz">Practice Exam Questions (ENCOR 350-401)</h2>
             
-            <h3>SD-Access & SD-WAN</h3>
-            <ul>
-                <li><strong>Control Plane (SD-Access):</strong> Uses LISP (Locator/ID Separation Protocol).</li>
-                <li><strong>Data Plane (SD-Access):</strong> Uses VXLAN encapsulation.</li>
-                <li><strong>SD-WAN Planes:</strong> Management (vManage), Control (vSmart via OMP), Data (IPsec tunnels).</li>
-            </ul>
-
-            <h3>CML Routing Labs (OSPF & BGP)</h3>
-            <p>Example OSPF Summarization and DR priority command:</p>
-            <div class="code-block">
-                conf t<br>
-                router ospf 10<br>
-                area 10 range 10.1.0.0 255.255.0.0<br>
-                int e0/1<br>
-                ip ospf priority 255
-            </div>
-        </div>
-
-        <!-- SECTION 2: PRACTICE EXAM -->
-        <div class="section">
-            <h2 id="title-quiz">2. Practice Exam Questions</h2>
-            
-            <!-- Question 1 -->
+            <!-- Q1 -->
             <div class="question-card">
                 <p><strong>Q1:</strong> Which protocol is used for the control plane in Cisco SD-Access?</p>
                 <div class="options">
@@ -142,12 +101,11 @@
                 </div>
                 <button onclick="checkAnswer('q1', 'A', 'exp1')">Submit Answer</button>
                 <div id="exp1" class="explanation">
-                    <strong>Correct Answer: A</strong><br>
-                    <em>EN/FR/HT:</em> LISP is the control plane protocol for SD-Access mapping endpoints. / LISP est le protocole de plan de contrôle. / Se LISP ki jere plan kontwòl nan SD-Access.
+                    <strong>Correct: A</strong><br><em>EN/FR/HT:</em> LISP is the control plane for SD-Access. / LISP est le plan de contrôle. / Se LISP ki plan kontwòl la.
                 </div>
             </div>
 
-            <!-- Question 2 -->
+            <!-- Q2 -->
             <div class="question-card">
                 <p><strong>Q2:</strong> Which Python module is used to parse JSON data into a Python dictionary?</p>
                 <div class="options">
@@ -157,8 +115,63 @@
                 </div>
                 <button onclick="checkAnswer('q2', 'B', 'exp2')">Submit Answer</button>
                 <div id="exp2" class="explanation">
-                    <strong>Correct Answer: B</strong><br>
-                    <em>EN/FR/HT:</em> json.loads() converts a JSON string to a Python dictionary. / Convertit une chaîne JSON en dictionnaire. / Konvèti yon chèn JSON an diksyonè Python.
+                    <strong>Correct: B</strong><br><em>EN/FR/HT:</em> json.loads() converts JSON to dictionary. / Convertit le JSON en dictionnaire. / Konvèti JSON an diksyonè.
+                </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="question-card">
+                <p><strong>Q3:</strong> Which OSPF packet type is sent first to establish adjacencies and discover neighbors?</p>
+                <div class="options">
+                    <label><input type="radio" name="q3" value="A"> A. DBD</label>
+                    <label><input type="radio" name="q3" value="B"> B. Hello Packet</label>
+                    <label><input type="radio" name="q3" value="C"> C. LSR</label>
+                </div>
+                <button onclick="checkAnswer('q3', 'B', 'exp3')">Submit Answer</button>
+                <div id="exp3" class="explanation">
+                    <strong>Correct: B</strong><br><em>EN/FR/HT:</em> Hello packets discover neighbors. / Les paquets Hello découvrent les voisins. / Pakèt Hello yo dekouvri vwazen yo.
+                </div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="question-card">
+                <p><strong>Q4:</strong> What is the IP protocol number used by OSPF?</p>
+                <div class="options">
+                    <label><input type="radio" name="q4" value="A"> A. Protocol 6</label>
+                    <label><input type="radio" name="q4" value="B"> B. Protocol 88</label>
+                    <label><input type="radio" name="q4" value="C"> C. Protocol 89</label>
+                </div>
+                <button onclick="checkAnswer('q4', 'C', 'exp4')">Submit Answer</button>
+                <div id="exp4" class="explanation">
+                    <strong>Correct: C</strong><br><em>EN/FR/HT:</em> OSPF runs directly on IP protocol 89. / OSPF utilise le protocole IP 89. / OSPF itilize pwotokòl IP 89.
+                </div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="question-card">
+                <p><strong>Q5:</strong> Which automation tool is completely agentless and uses SSH and YAML playbooks?</p>
+                <div class="options">
+                    <label><input type="radio" name="q5" value="A"> A. Puppet</label>
+                    <label><input type="radio" name="q5" value="B"> B. Ansible</label>
+                    <label><input type="radio" name="q5" value="C"> C. Chef</label>
+                </div>
+                <button onclick="checkAnswer('q5', 'B', 'exp5')">Submit Answer</button>
+                <div id="exp5" class="explanation">
+                    <strong>Correct: B</strong><br><em>EN/FR/HT:</em> Ansible is agentless and uses YAML. / Ansible n'utilise pas d'agent. / Ansible pa bezwen ajan.
+                </div>
+            </div>
+
+            <!-- Q6 -->
+            <div class="question-card">
+                <p><strong>Q6:</strong> Which HTTP status code indicates a successful DELETE request with no response body?</p>
+                <div class="options">
+                    <label><input type="radio" name="q6" value="A"> A. 200 OK</label>
+                    <label><input type="radio" name="q6" value="B"> B. 201 Created</label>
+                    <label><input type="radio" name="q6" value="C"> C. 204 No Content</label>
+                </div>
+                <button onclick="checkAnswer('q6', 'C', 'exp6')">Submit Answer</button>
+                <div id="exp6" class="explanation">
+                    <strong>Correct: C</strong><br><em>EN/FR/HT:</em> 204 No Content means success with no body. / 204 No Content indique un succès sans corps. / 204 vle di operasyon an reyisi san kò repons.
                 </div>
             </div>
 
@@ -188,17 +201,11 @@
 
         function setLang(lang) {
             if(lang === 'ht') {
-                document.getElementById('title-notes').innerText = '1. Konsèp Kle ak Achitekti';
-                document.getElementById('desc-notes').innerText = 'Revize achitekti kle, vètyalizasyon ak pwotokòl enfrastrikti ki nesesè pou egzamen an.';
-                document.getElementById('title-quiz').innerText = '2. Kesyon Egzamen Pratik';
+                document.getElementById('title-quiz').innerText = 'Kesyon Egzamen Pratik (ENCOR 350-401)';
             } else if(lang === 'fr') {
-                document.getElementById('title-notes').innerText = '1. Concepts Clés & Architecture';
-                document.getElementById('desc-notes').innerText = 'Révisez l\'architecture, la virtualisation et les protocoles d\'infrastructure.';
-                document.getElementById('title-quiz').innerText = '2. Questions d\'Examen Pratique';
+                document.getElementById('title-quiz').innerText = 'Questions d\'Examen Pratique (ENCOR 350-401)';
             } else {
-                document.getElementById('title-notes').innerText = '1. Core Concepts & Architecture';
-                document.getElementById('desc-notes').innerText = 'Review key architecture, virtualization, and infrastructure protocols required for the exam.';
-                document.getElementById('title-quiz').innerText = '2. Practice Exam Questions';
+                document.getElementById('title-quiz').innerText = 'Practice Exam Questions (ENCOR 350-401)';
             }
         }
     </script>
