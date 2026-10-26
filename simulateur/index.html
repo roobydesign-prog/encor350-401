@@ -1,213 +1,1262 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" class="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CCNP ENCOR 350-401 Ultimate Offline Master Guide</title>
-    <style>
-        :root {
-            --primary: #0b2545;
-            --secondary: #134074;
-            --accent: #8da9c4;
-            --bg: #f4f6f9;
-            --text: #333333;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cisco CCNP / DevNet - Entraînement & Mémorisation Interactive</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            cisco: {
+              blue: '#049fd9',
+              darkBlue: '#005073',
+              navy: '#0b192c',
+              darkBg: '#080f19',
+              cardBg: '#112236',
+              border: '#1e3a5f',
+              accent: '#00bceb',
+              success: '#10b981',
+              warning: '#f59e0b',
+              danger: '#ef4444'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif']
+          }
         }
-        body {
-            font-family: Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 0;
-        }
-        header {
-            background-color: var(--primary);
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 20px auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        h1, h2, h3 { color: var(--primary); }
-        .lang-switch {
-            text-align: right;
-            margin-bottom: 15px;
-        }
-        button {
-            background-color: var(--secondary);
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        button:hover { background-color: var(--primary); }
-        .section {
-            margin-bottom: 30px;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 20px;
-        }
-        .question-card {
-            background: #fafafa;
-            border-left: 4px solid var(--secondary);
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 4px;
-        }
-        .options label {
-            display: block;
-            margin: 8px 0;
-            cursor: pointer;
-        }
-        .explanation {
-            margin-top: 10px;
-            font-style: italic;
-            padding: 10px;
-            border-radius: 4px;
-            display: none;
-        }
-    </style>
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #080f19;
+      color: #e2e8f0;
+      user-select: none;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0b192c;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e3a5f;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #049fd9;
+    }
+
+    /* Drag and Drop Visual Feedback */
+    .draggable-item {
+      cursor: grab;
+      transition: all 0.2s ease;
+    }
+    .draggable-item:active {
+      cursor: grabbing;
+      opacity: 0.7;
+      transform: scale(0.98);
+    }
+    .draggable-item.selected {
+      border-color: #00bceb;
+      box-shadow: 0 0 15px rgba(0, 188, 235, 0.4);
+      background-color: #005073;
+    }
+    .drop-target {
+      transition: all 0.2s ease;
+      min-height: 52px;
+    }
+    .drop-target.drag-over {
+      background-color: rgba(4, 159, 217, 0.2);
+      border-color: #00bceb !important;
+      transform: scale(1.01);
+    }
+    .drop-target.filled {
+      border-style: solid;
+      background-color: rgba(16, 185, 129, 0.1);
+      border-color: #10b981;
+    }
+
+    /* Flip Card Effect */
+    .flip-card {
+      perspective: 1000px;
+    }
+    .flip-card-inner {
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+    .flip-card-front, .flip-card-back {
+      backface-visibility: hidden;
+    }
+    .flip-card-back {
+      transform: rotateY(180deg);
+    }
+  </style>
 </head>
-<body>
+<body class="min-h-screen flex flex-col">
 
-    <header>
-        <h1>CCNP ENCOR (350-401) Ultimate Offline Master Guide</h1>
-        <p>Complete Practice Questions & Multilingual Explanations</p>
-    </header>
-
-    <div class="container">
-        <div class="lang-switch">
-            <button onclick="setLang('en')">English</button>
-            <button onclick="setLang('fr')">Français</button>
-            <button onclick="setLang('ht')">Kreyòl</button>
+  <!-- Header -->
+  <header class="bg-cisco-navy border-b border-cisco-border sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div class="flex items-center gap-3">
+        <div class="bg-cisco-blue p-2.5 rounded-xl text-white shadow-lg shadow-cisco-blue/30">
+          <i class="fa-solid fa-network-wired text-2xl"></i>
         </div>
-
-        <div class="section">
-            <h2 id="title-quiz">Practice Exam Questions (ENCOR 350-401)</h2>
-            
-            <!-- Q1 -->
-            <div class="question-card">
-                <p><strong>Q1:</strong> Which protocol is used for the control plane in Cisco SD-Access?</p>
-                <div class="options">
-                    <label><input type="radio" name="q1" value="A"> A. LISP</label>
-                    <label><input type="radio" name="q1" value="B"> B. VXLAN</label>
-                    <label><input type="radio" name="q1" value="C"> C. BGP</label>
-                </div>
-                <button onclick="checkAnswer('q1', 'A', 'exp1')">Submit Answer</button>
-                <div id="exp1" class="explanation">
-                    <strong>Correct: A</strong><br><em>EN/FR/HT:</em> LISP is the control plane for SD-Access. / LISP est le plan de contrôle. / Se LISP ki plan kontwòl la.
-                </div>
-            </div>
-
-            <!-- Q2 -->
-            <div class="question-card">
-                <p><strong>Q2:</strong> Which Python module is used to parse JSON data into a Python dictionary?</p>
-                <div class="options">
-                    <label><input type="radio" name="q2" value="A"> A. xml.etree</label>
-                    <label><input type="radio" name="q2" value="B"> B. json (json.loads())</label>
-                    <label><input type="radio" name="q2" value="C"> C. netmiko</label>
-                </div>
-                <button onclick="checkAnswer('q2', 'B', 'exp2')">Submit Answer</button>
-                <div id="exp2" class="explanation">
-                    <strong>Correct: B</strong><br><em>EN/FR/HT:</em> json.loads() converts JSON to dictionary. / Convertit le JSON en dictionnaire. / Konvèti JSON an diksyonè.
-                </div>
-            </div>
-
-            <!-- Q3 -->
-            <div class="question-card">
-                <p><strong>Q3:</strong> Which OSPF packet type is sent first to establish adjacencies and discover neighbors?</p>
-                <div class="options">
-                    <label><input type="radio" name="q3" value="A"> A. DBD</label>
-                    <label><input type="radio" name="q3" value="B"> B. Hello Packet</label>
-                    <label><input type="radio" name="q3" value="C"> C. LSR</label>
-                </div>
-                <button onclick="checkAnswer('q3', 'B', 'exp3')">Submit Answer</button>
-                <div id="exp3" class="explanation">
-                    <strong>Correct: B</strong><br><em>EN/FR/HT:</em> Hello packets discover neighbors. / Les paquets Hello découvrent les voisins. / Pakèt Hello yo dekouvri vwazen yo.
-                </div>
-            </div>
-
-            <!-- Q4 -->
-            <div class="question-card">
-                <p><strong>Q4:</strong> What is the IP protocol number used by OSPF?</p>
-                <div class="options">
-                    <label><input type="radio" name="q4" value="A"> A. Protocol 6</label>
-                    <label><input type="radio" name="q4" value="B"> B. Protocol 88</label>
-                    <label><input type="radio" name="q4" value="C"> C. Protocol 89</label>
-                </div>
-                <button onclick="checkAnswer('q4', 'C', 'exp4')">Submit Answer</button>
-                <div id="exp4" class="explanation">
-                    <strong>Correct: C</strong><br><em>EN/FR/HT:</em> OSPF runs directly on IP protocol 89. / OSPF utilise le protocole IP 89. / OSPF itilize pwotokòl IP 89.
-                </div>
-            </div>
-
-            <!-- Q5 -->
-            <div class="question-card">
-                <p><strong>Q5:</strong> Which automation tool is completely agentless and uses SSH and YAML playbooks?</p>
-                <div class="options">
-                    <label><input type="radio" name="q5" value="A"> A. Puppet</label>
-                    <label><input type="radio" name="q5" value="B"> B. Ansible</label>
-                    <label><input type="radio" name="q5" value="C"> C. Chef</label>
-                </div>
-                <button onclick="checkAnswer('q5', 'B', 'exp5')">Submit Answer</button>
-                <div id="exp5" class="explanation">
-                    <strong>Correct: B</strong><br><em>EN/FR/HT:</em> Ansible is agentless and uses YAML. / Ansible n'utilise pas d'agent. / Ansible pa bezwen ajan.
-                </div>
-            </div>
-
-            <!-- Q6 -->
-            <div class="question-card">
-                <p><strong>Q6:</strong> Which HTTP status code indicates a successful DELETE request with no response body?</p>
-                <div class="options">
-                    <label><input type="radio" name="q6" value="A"> A. 200 OK</label>
-                    <label><input type="radio" name="q6" value="B"> B. 201 Created</label>
-                    <label><input type="radio" name="q6" value="C"> C. 204 No Content</label>
-                </div>
-                <button onclick="checkAnswer('q6', 'C', 'exp6')">Submit Answer</button>
-                <div id="exp6" class="explanation">
-                    <strong>Correct: C</strong><br><em>EN/FR/HT:</em> 204 No Content means success with no body. / 204 No Content indique un succès sans corps. / 204 vle di operasyon an reyisi san kò repons.
-                </div>
-            </div>
-
+        <div>
+          <h1 class="text-xl font-bold text-white tracking-wide">CCNP & DevNet <span class="text-cisco-accent">Mastery</span></h1>
+          <p class="text-xs text-slate-400">Entraînement Drag & Drop & Mémorisation Cisco</p>
         </div>
+      </div>
+
+      <!-- Navigation / Modes -->
+      <div class="flex items-center gap-2 bg-cisco-cardBg p-1.5 rounded-xl border border-cisco-border">
+        <button id="btn-mode-study" onclick="switchMode('study')" class="px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all bg-cisco-blue text-white shadow-md">
+          <i class="fa-solid fa-book-open"></i> Mode Étude
+        </button>
+        <button id="btn-mode-exam" onclick="switchMode('exam')" class="px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all text-slate-300 hover:text-white hover:bg-cisco-navy">
+          <i class="fa-solid fa-graduation-cap"></i> Mode Examen
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- Global Stats Header -->
+    <section class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div class="bg-cisco-cardBg border border-cisco-border p-4 rounded-xl flex items-center gap-4">
+        <div class="w-12 h-12 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center text-xl font-bold">
+          <i class="fa-solid fa-layer-group"></i>
+        </div>
+        <div>
+          <div class="text-xs text-slate-400 font-medium">Total Questions</div>
+          <div id="stat-total" class="text-xl font-extrabold text-white">12</div>
+        </div>
+      </div>
+
+      <div class="bg-cisco-cardBg border border-cisco-border p-4 rounded-xl flex items-center gap-4">
+        <div class="w-12 h-12 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-xl font-bold">
+          <i class="fa-solid fa-check-circle"></i>
+        </div>
+        <div>
+          <div class="text-xs text-slate-400 font-medium">Mémorisées</div>
+          <div id="stat-mastered" class="text-xl font-extrabold text-emerald-400">0</div>
+        </div>
+      </div>
+
+      <div class="bg-cisco-cardBg border border-cisco-border p-4 rounded-xl flex items-center gap-4">
+        <div class="w-12 h-12 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center text-xl font-bold">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+        </div>
+        <div>
+          <div class="text-xs text-slate-400 font-medium">À Revoir</div>
+          <div id="stat-review" class="text-xl font-extrabold text-amber-400">0</div>
+        </div>
+      </div>
+
+      <div class="bg-cisco-cardBg border border-cisco-border p-4 rounded-xl flex items-center gap-4">
+        <div class="w-12 h-12 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center text-xl font-bold">
+          <i class="fa-solid fa-trophy"></i>
+        </div>
+        <div>
+          <div class="text-xs text-slate-400 font-medium">Meilleur Score</div>
+          <div id="stat-high-score" class="text-xl font-extrabold text-purple-400">---</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Filters Section -->
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-6 bg-cisco-cardBg p-4 rounded-xl border border-cisco-border">
+      <div class="flex items-center gap-2 overflow-x-auto py-1 w-full md:w-auto">
+        <span class="text-xs text-slate-400 font-semibold uppercase tracking-wider mr-2"><i class="fa-solid fa-filter"></i> Thèmes :</span>
+        <button onclick="filterCategory('all')" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-cisco-blue text-white transition-all" data-cat="all">Tous</button>
+        <button onclick="filterCategory('EEM')" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-cisco-navy text-slate-300 hover:text-white transition-all" data-cat="EEM">EEM Applets</button>
+        <button onclick="filterCategory('Automation')" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-cisco-navy text-slate-300 hover:text-white transition-all" data-cat="Automation">DevOps & Config</button>
+        <button onclick="filterCategory('Security')" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-cisco-navy text-slate-300 hover:text-white transition-all" data-cat="Security">Sécurité Cisco</button>
+        <button onclick="filterCategory('AAA & Coding')" class="cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-cisco-navy text-slate-300 hover:text-white transition-all" data-cat="AAA & Coding">AAA & Code Python</button>
+      </div>
+
+      <div class="text-xs text-slate-400 flex items-center gap-2">
+        <i class="fa-solid fa-circle-info text-cisco-accent"></i> Astuce : Cliquez sur un élément puis sur la cible pour associer sans glisser.
+      </div>
     </div>
 
-    <script>
-        function checkAnswer(questionName, correctAnswer, expId) {
-            const radios = document.getElementsByName(questionName);
-            let selected = null;
-            for (const r of radios) {
-                if (r.checked) {
-                    selected = r.value;
-                    break;
-                }
-            }
-            const expDiv = document.getElementById(expId);
-            expDiv.style.display = "block";
-            if (selected === correctAnswer) {
-                expDiv.style.background = "#d4edda";
-                expDiv.style.color = "#155724";
-            } else {
-                expDiv.style.background = "#f8d7da";
-                expDiv.style.color = "#721c24";
-            }
+
+    <!-- ========================================== -->
+    <!-- MODE ÉTUDE (FLASHCARDS & INTERACTIF) -->
+    <!-- ========================================== -->
+    <section id="section-study" class="space-y-6">
+      
+      <!-- Top Study Controls -->
+      <div class="flex justify-between items-center">
+        <h2 class="text-lg font-bold text-white flex items-center gap-2">
+          <i class="fa-solid fa-brain text-cisco-accent"></i> Fiches d'Étude & Mémorisation Active
+        </h2>
+        <div class="flex gap-2">
+          <button onclick="prevCard()" class="px-3 py-1.5 bg-cisco-cardBg border border-cisco-border hover:border-cisco-blue rounded-lg text-sm font-medium transition-all">
+            <i class="fa-solid fa-chevron-left mr-1"></i> Précédent
+          </button>
+          <span id="card-counter" class="px-3 py-1.5 bg-cisco-navy rounded-lg text-sm font-bold text-cisco-accent flex items-center">1 / 12</span>
+          <button onclick="nextCard()" class="px-3 py-1.5 bg-cisco-cardBg border border-cisco-border hover:border-cisco-blue rounded-lg text-sm font-medium transition-all">
+            Suivant <i class="fa-solid fa-chevron-right ml-1"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Flashcard Container -->
+      <div id="study-card-container" class="bg-cisco-cardBg border border-cisco-border rounded-2xl p-6 shadow-xl transition-all">
+        <!-- Card Header -->
+        <div class="flex flex-wrap justify-between items-center border-b border-cisco-border pb-4 mb-4 gap-2">
+          <div class="flex items-center gap-3">
+            <span id="study-card-category" class="px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-cisco-blue/20 text-cisco-accent border border-cisco-blue/30">EEM Applet</span>
+            <span id="study-card-id" class="text-xs text-slate-400 font-mono">Q#1 (NO.201)</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="btn-toggle-mastered" onclick="toggleMasteredCurrent()" class="px-3 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition-all border-slate-700 text-slate-400 hover:border-emerald-500 hover:text-emerald-400">
+              <i class="fa-regular fa-star"></i> Marquer Mémorisé
+            </button>
+          </div>
+        </div>
+
+        <!-- Question Title & Description -->
+        <div class="mb-6">
+          <h3 id="study-card-title" class="text-xl font-bold text-white mb-2">Configuration de l'Applet EEM pour l'interface Loopback0</h3>
+          <p id="study-card-desc" class="text-sm text-slate-300">Complétez les zones manquantes du script Cisco EEM ci-dessous :</p>
+        </div>
+
+        <!-- Interactive Drag & Practice Area for Study -->
+        <div id="study-interactive-area" class="mb-6 bg-cisco-navy p-5 rounded-xl border border-cisco-border">
+          <!-- Dynamically populated per question -->
+        </div>
+
+        <!-- Solution & Mnemonics Box -->
+        <div class="space-y-4">
+          <button id="btn-reveal-solution" onclick="toggleSolution()" class="w-full py-3 bg-cisco-darkBlue/40 hover:bg-cisco-darkBlue border border-cisco-blue/40 hover:border-cisco-accent text-cisco-accent font-semibold rounded-xl transition-all flex items-center justify-center gap-2">
+            <i class="fa-solid fa-lightbulb"></i> <span id="btn-reveal-text">Révéler la solution et l'astuce mnémotechnique</span>
+          </button>
+
+          <div id="solution-box" class="hidden bg-slate-900/90 border border-cisco-accent/30 rounded-xl p-5 space-y-4 animate-fade-in">
+            <div class="border-b border-slate-800 pb-3">
+              <h4 class="text-sm font-bold text-cisco-accent uppercase tracking-wider mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-circle-check text-emerald-400"></i> Reponses Exactes :
+              </h4>
+              <div id="solution-answers-list" class="space-y-1 text-sm font-mono text-slate-200">
+                <!-- Sol list -->
+              </div>
+            </div>
+
+            <div>
+              <h4 class="text-sm font-bold text-amber-400 uppercase tracking-wider mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-key"></i> Astuce Mnémotechnique & Règle d'Examen :
+              </h4>
+              <p id="solution-mnemonic" class="text-sm text-slate-300 leading-relaxed italic bg-amber-500/10 border-l-4 border-amber-500 p-3 rounded-r-lg">
+                <!-- Mnemonic text -->
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+
+    <!-- ========================================== -->
+    <!-- MODE EXAMEN (CHRONOMÉTRÉ & SCORE CISCO) -->
+    <!-- ========================================== -->
+    <section id="section-exam" class="hidden space-y-6">
+      
+      <!-- Exam Control Bar -->
+      <div class="bg-cisco-cardBg border border-cisco-border rounded-xl p-4 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="flex items-center gap-4">
+          <div class="flex items-center gap-2 text-rose-400 font-mono font-bold text-lg bg-rose-500/10 px-3 py-1.5 rounded-lg border border-rose-500/20">
+            <i class="fa-solid fa-stopwatch"></i> <span id="exam-timer">20:00</span>
+          </div>
+          <div class="text-sm text-slate-300">
+            Question <span id="exam-current-num" class="font-bold text-white">1</span> / <span id="exam-total-num" class="font-bold text-white">12</span>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="w-full md:w-1/3 bg-cisco-navy h-3 rounded-full overflow-hidden border border-cisco-border">
+          <div id="exam-progress-bar" class="bg-cisco-blue h-full w-0 transition-all duration-300"></div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="finishExam()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-bold text-sm transition-all shadow-lg shadow-emerald-600/20 flex items-center gap-2">
+            <i class="fa-solid fa-paper-plane"></i> Soumettre l'Examen
+          </button>
+        </div>
+      </div>
+
+      <!-- Exam Active Container -->
+      <div id="exam-active-container" class="bg-cisco-cardBg border border-cisco-border rounded-2xl p-6 shadow-xl">
+        <div id="exam-question-render">
+          <!-- Dynamically populated in exam mode -->
+        </div>
+
+        <div class="flex justify-between items-center mt-8 pt-4 border-t border-cisco-border">
+          <button id="exam-btn-prev" onclick="examPrevQuestion()" class="px-4 py-2 bg-cisco-navy hover:bg-cisco-border text-slate-300 rounded-lg font-medium text-sm transition-all disabled:opacity-40">
+            <i class="fa-solid fa-arrow-left mr-2"></i> Précédent
+          </button>
+          <button id="exam-btn-next" onclick="examNextQuestion()" class="px-5 py-2 bg-cisco-blue hover:bg-cisco-accent text-white rounded-lg font-bold text-sm transition-all">
+            Suivant <i class="fa-solid fa-arrow-right ml-2"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Exam Results View (Hidden by default) -->
+      <div id="exam-results-container" class="hidden bg-cisco-cardBg border border-cisco-border rounded-2xl p-8 shadow-xl text-center space-y-6">
+        <div id="exam-result-badge" class="inline-flex p-4 rounded-full text-4xl mb-2">
+          <!-- Icon dynamically added -->
+        </div>
+
+        <div>
+          <h3 id="exam-result-status" class="text-3xl font-extrabold text-white mb-2">Résultat de l’examen</h3>
+          <p id="exam-result-subtitle" class="text-slate-400 text-sm">Score d'admission minimal requise par Cisco : 825 / 1000 pts (82.5%)</p>
+        </div>
+
+        <!-- Score Board -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto my-6">
+          <div class="bg-cisco-navy p-4 rounded-xl border border-cisco-border">
+            <div class="text-xs text-slate-400 font-medium">Score Cisco</div>
+            <div id="res-score-scaled" class="text-3xl font-extrabold text-cisco-accent">0 / 1000</div>
+          </div>
+          <div class="bg-cisco-navy p-4 rounded-xl border border-cisco-border">
+            <div class="text-xs text-slate-400 font-medium">Pourcentage</div>
+            <div id="res-score-percent" class="text-3xl font-extrabold text-white">0%</div>
+          </div>
+          <div class="bg-cisco-navy p-4 rounded-xl border border-cisco-border">
+            <div class="text-xs text-slate-400 font-medium">Questions Exactes</div>
+            <div id="res-score-count" class="text-3xl font-extrabold text-emerald-400">0 / 12</div>
+          </div>
+        </div>
+
+        <div id="exam-review-section" class="text-left space-y-4 pt-6 border-t border-cisco-border">
+          <h4 class="text-lg font-bold text-white flex items-center gap-2">
+            <i class="fa-solid fa-list-check text-cisco-blue"></i> Revue complète des réponses
+          </h4>
+          <div id="exam-review-list" class="space-y-4">
+            <!-- Review items dynamically added -->
+          </div>
+        </div>
+
+        <div class="pt-6">
+          <button onclick="restartExam()" class="px-6 py-3 bg-cisco-blue hover:bg-cisco-accent text-white font-bold rounded-xl shadow-lg transition-all">
+            <i class="fa-solid fa-rotate-right mr-2"></i> Recommencer un Examen
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-cisco-navy border-t border-cisco-border mt-auto py-4">
+    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500">
+      Cisco CCNP & DevNet Self-Study Tool &bull; Mémorisation active basée sur vos captures d'examen
+    </div>
+  </footer>
+
+  <!-- Notification Toast -->
+  <div id="toast" class="fixed bottom-5 right-5 bg-cisco-blue text-white px-4 py-3 rounded-xl shadow-2xl transition-all transform translate-y-20 opacity-0 z-50 flex items-center gap-3 border border-white/20">
+    <i class="fa-solid fa-circle-check text-lg"></i>
+    <span id="toast-message" class="text-sm font-medium">Message</span>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       QUESTIONS DATA BANK (Derived directly from all exam screenshots)
+       ========================================================================== */
+    const QUESTIONS = [
+      {
+        id: "Q201",
+        category: "EEM",
+        title: "Configuration d'un Applet EEM pour l'interface Loopback0",
+        desc: "Associez les termes appropriés pour activer automatiquement l'interface Loopback0 lorsqu'elle passe à l'état down.",
+        type: "fill-gaps",
+        template: `
+          <div class="font-mono text-sm space-y-3">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span>event</span>
+              <div class="drop-target inline-block border-2 border-dashed border-cisco-blue/50 rounded-lg px-3 py-1 bg-cisco-cardBg min-w-[140px]" data-slot="0"></div>
+              <span>Enable_Loopback0</span>
+            </div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span>event</span>
+              <div class="drop-target inline-block border-2 border-dashed border-cisco-blue/50 rounded-lg px-3 py-1 bg-cisco-cardBg min-w-[140px]" data-slot="1"></div>
+              <span>"Interface Loopback0, changed state to administratively down"</span>
+            </div>
+            <div class="pl-4 border-l-2 border-cisco-border space-y-2">
+              <div>action 1.0 cli command "enable"</div>
+              <div>action 2.0 cli command "configure terminal"</div>
+              <div>action 3.0 cli command "interface loopback 0"</div>
+              <div>action 4.0 cli command "no shutdown"</div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span>action 5.0</span>
+                <div class="drop-target inline-block border-2 border-dashed border-cisco-blue/50 rounded-lg px-3 py-1 bg-cisco-cardBg min-w-[140px]" data-slot="2"></div>
+                <span>"end"</span>
+              </div>
+            </div>
+          </div>
+        `,
+        options: ["manager applet", "syslog pattern", "cli command", "manager run"],
+        correct: ["manager applet", "syslog pattern", "cli command"],
+        mnemonic: "EEM commence TOUJOURS par 'manager applet [Nom]', surveille les logs via 'syslog pattern [Texte]' et execute des commandes avec 'cli command'."
+      },
+      {
+        id: "Q-JSON-ENC",
+        category: "AAA & Coding",
+        title: "Encodage JSON personnalisé en Python",
+        desc: "Complétez le code Python permettant de sérialiser un objet Python personnalisé à l'aide de la classe JSONEncoder.",
+        type: "fill-gaps",
+        template: `
+          <div class="font-mono text-sm space-y-3">
+            <div>import json</div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span>obj = json.</span>
+              <div class="drop-target inline-block border-2 border-dashed border-cisco-blue/50 rounded-lg px-3 py-1 bg-cisco-cardBg min-w-[140px]" data-slot="0"></div>
+              <span>()</span>
+            </div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span>result = obj.</span>
+              <div class="drop-target inline-block border-2 border-dashed border-cisco-blue/50 rounded-lg px-3 py-1 bg-cisco-cardBg min-w-[140px]" data-slot="1"></div>
+              <span>(</span>
+              <div class="drop-target inline-block border-2 border-dashed border-cisco-blue/50 rounded-lg px-3 py-1 bg-cisco-cardBg min-w-[100px]" data-slot="2"></div>
+              <span>)</span>
+            </div>
+          </div>
+        `,
+        options: ["JSONEncoder", "encode", "data", "dumps", "loads"],
+        correct: ["JSONEncoder", "encode", "data"],
+        mnemonic: "Quand vous instanciez un objet d'encodage explicite en Python : json.JSONEncoder() -> utiliser la méthode d'instance .encode(data)."
+      },
+      {
+        id: "Q-JSON-DUMPS",
+        category: "AAA & Coding",
+        title: "Sérialisation de Dictionnaire en Chaîne JSON",
+        desc: "Complétez le script Python pour convertir une structure de données (dict) en chaîne JSON (String).",
+        type: "fill-gaps",
+        template: `
+          <div class="font-mono text-sm space-y-3">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span>import</span>
+              <div class="drop-target inline-block border-2 border-dashed border-cisco-blue/50 rounded-lg px-3 py-1 bg-cisco-cardBg min-w-[120px]" data-slot="0"></div>
+            </div>
+            <div>data = {"device": "Router1", "ip": "10.0.0.1"}</div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span>json_string =</span>
+              <div class="drop-target inline-block border-2 border-dashed border-cisco-blue/50 rounded-lg px-3 py-1 bg-cisco-cardBg min-w-[140px]" data-slot="1"></div>
+              <span>(data)</span>
+            </div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span>print(</span>
+              <div class="drop-target inline-block border-2 border-dashed border-cisco-blue/50 rounded-lg px-3 py-1 bg-cisco-cardBg min-w-[140px]" data-slot="2"></div>
+              <span>)</span>
+            </div>
+          </div>
+        `,
+        options: ["json", "json.dumps", "json_string", "json.dump", "load"],
+        correct: ["json", "json.dumps", "json_string"],
+        mnemonic: "Règle clé Python JSON : 'dumps' (avec un S) = Dump to String (Convertit en texte). 'dump' (sans S) = Dump to File (Écrit dans un fichier)."
+      },
+      {
+        id: "Q-JSON-FILE",
+        category: "AAA & Coding",
+        title: "Lecture et Écriture JSON dans un Fichier en Python",
+        desc: "Complétez les instructions pour lire le modèle d'un équipement et sauvegarder les données dans un fichier local.",
+        type: "fill-gaps",
+        template: `
+          <div class="font-mono text-sm space-y-3">
+            <div class="flex items-center gap-2 flex-wrap">
+              <div class="drop-target inline-block border-2 border-dashed border-cisco-blue/50 rounded-lg px-3 py-1 bg-cisco-cardBg min-w-[100px]" data-slot="0"></div>
+              <span>(data["devices"][0]["model"])</span>
+            </div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span>with</span>
+              <div class="drop-target inline-block border-2 border-dashed border-cisco-blue/50 rounded-lg px-3 py-1 bg-cisco-cardBg min-w-[100px]" data-slot="1"></div>
+              <span>("data.json", "</span>
+              <div class="drop-target inline-block border-2 border-dashed border-cisco-blue/50 rounded-lg px-3 py-1 bg-cisco-cardBg min-w-[60px]" data-slot="2"></div>
+              <span>") as file:</span>
+            </div>
+            <div class="flex items-center gap-2 flex-wrap pl-4">
+              <span>json.</span>
+              <div class="drop-target inline-block border-2 border-dashed border-cisco-blue/50 rounded-lg px-3 py-1 bg-cisco-cardBg min-w-[100px]" data-slot="3"></div>
+              <span>(data, file, indent=4)</span>
+            </div>
+          </div>
+        `,
+        options: ["print", "open", "w", "dump", "dumps", "read"],
+        correct: ["print", "open", "w", "dump"],
+        mnemonic: "Écriture dans un fichier : open(filename, 'w') puis json.dump(data, file) (sans 's' car on écrit directement dans l'objet fichier)."
+      },
+      {
+        id: "Q-CFG-CHEF-SALT",
+        category: "Automation",
+        title: "Chef vs SaltStack - Caractéristiques",
+        desc: "Associez chaque caractéristique à l'outil de gestion de configuration correspondant.",
+        type: "matching",
+        targets: ["Chef", "SaltStack"],
+        items: [
+          { text: "Utilise le langage Ruby pour la configuration", match: "Chef" },
+          { text: "Utilise le modèle Push du Master vers l'Agent", match: "Chef" },
+          { text: "Utilise des fichiers au format YAML", match: "SaltStack" },
+          { text: "Exécution basée sur Python / ZeroMQ", match: "SaltStack" }
+        ],
+        mnemonic: "Mnémo Outils DevOps : Chef = Cuisine = Recettes en Ruby ! SaltStack = Sel = Rapide (ZeroMQ) et lisible en YAML !"
+      },
+      {
+        id: "Q-PROC-DECL",
+        category: "Automation",
+        title: "Modèle Procédural vs Modèle Déclaratif",
+        desc: "Associez chaque énoncé au modèle de configuration approprié.",
+        type: "matching",
+        targets: ["Procédural (Procedural)", "Déclaratif (Declarative)"],
+        items: [
+          { text: "Définit la liste exacte de commandes à exécuter dans un ordre précis", match: "Procédural (Procedural)" },
+          { text: "L'administrateur doit maîtriser la syntaxe et le contexte exact de la CLI", match: "Procédural (Procedural)" },
+          { text: "Spécifie l'état final désiré sans imposer la manière d'y parvenir", match: "Déclaratif (Declarative)" },
+          { text: "Puppet et Terraform utilisent principalement ce modèle", match: "Déclaratif (Declarative)" }
+        ],
+        mnemonic: "Procédural = HOW (Comment faire étape par étape / CLI classique). Déclaratif = WHAT (Quel état final je veux / Puppet, Ansible)."
+      },
+      {
+        id: "Q225",
+        category: "EEM",
+        title: "Script EEM de Basculement (Failover) d'Interface",
+        desc: "Complétez le script EEM qui désactive GigabitEthernet4/0/9 dès qu'un lien tombe en panne.",
+        type: "fill-gaps",
+        template: `
+          <div class="font-mono text-sm space-y-3">
+            <div>event manager applet Interface_Failover</div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span>event syslog pattern "Interface GigabitEthernet1/0/1, changed state to</span>
+              <div class="drop-target inline-block border-2 border-dashed border-cisco-blue/50 rounded-lg px-3 py-1 bg-cisco-cardBg min-w-[100px]" data-slot="0"></div>
+              <span>"</span>
+            </div>
+            <div>action 1.0 cli command "enable"</div>
+            <div>action 2.0 cli command "configure terminal"</div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span>action 3.0 cli command "interface</span>
+              <div class="drop-target inline-block border-2 border-dashed border-cisco-blue/50 rounded-lg px-3 py-1 bg-cisco-cardBg min-w-[160px]" data-slot="1"></div>
+              <span>"</span>
+            </div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span>action 4.0 cli command "</span>
+              <div class="drop-target inline-block border-2 border-dashed border-cisco-blue/50 rounded-lg px-3 py-1 bg-cisco-cardBg min-w-[120px]" data-slot="2"></div>
+              <span>"</span>
+            </div>
+          </div>
+        `,
+        options: ["Down", "GigabitEthernet4/0/9", "Shutdown", "Up", "no shutdown"],
+        correct: ["Down", "GigabitEthernet4/0/9", "Shutdown"],
+        mnemonic: "En EEM, pour réagir à une coupure : capturer l'événement 'Down', cibler l'interface de secours 'GigabitEthernet4/0/9', et appliquer 'Shutdown'."
+      },
+      {
+        id: "Q-DEVOPS-TRIO",
+        category: "Automation",
+        title: "Ansible vs Chef vs Puppet (Terminologie & Architecture)",
+        desc: "Associez les termes et caractéristiques à l'outil d'automatisation correspondant.",
+        type: "matching",
+        targets: ["Ansible", "Chef", "Puppet"],
+        items: [
+          { text: "Utilise des Playbooks et des Plays (YAML / Sans agent)", match: "Ansible" },
+          { text: "Ne nécessite pas de compte admin ou d'agent sur le client (SSH)", match: "Ansible" },
+          { text: "Utilise des Cookbooks et des Recipes", match: "Chef" },
+          { text: "Utilise des Modules et des Manifests", match: "Puppet" }
+        ],
+        mnemonic: "DevOps Vocabulary : Ansible = Playbooks, Chef = Cookbooks (Cuisine), Puppet = Manifests (Marionnettes)."
+      },
+      {
+        id: "Q-JSON-ACL",
+        category: "AAA & Coding",
+        title: "Structure Modèle YANG / JSON pour une ACL Étendue",
+        desc: "Complétez la structure JSON représentant une règle de liste d'accès (ACL) Cisco IOS.",
+        type: "fill-gaps",
+        template: `
+          <div class="font-mono text-sm space-y-2">
+            <div>"ios-acl:extended": {</div>
+            <div class="pl-4">"ios-acl:name": "ato",</div>
+            <div class="pl-4 flex items-center gap-2 flex-wrap">
+              <span>"ios-acl:</span>
+              <div class="drop-target inline-block border-2 border-dashed border-cisco-blue/50 rounded-lg px-2 py-0.5 bg-cisco-cardBg min-w-[150px]" data-slot="0"></div>
+              <span>": {</span>
+            </div>
+            <div class="pl-8">"ios-acl:sequence": "111111",</div>
+            <div class="pl-8">"ios-acl:ace-rule": {</div>
+            <div class="pl-12 flex items-center gap-2 flex-wrap">
+              <span>"ios-acl:action": "</span>
+              <div class="drop-target inline-block border-2 border-dashed border-cisco-blue/50 rounded-lg px-2 py-0.5 bg-cisco-cardBg min-w-[90px]" data-slot="1"></div>
+              <span>",</span>
+            </div>
+            <div class="pl-12 flex items-center gap-2 flex-wrap">
+              <span>"ios-acl:protocol": "</span>
+              <div class="drop-target inline-block border-2 border-dashed border-cisco-blue/50 rounded-lg px-2 py-0.5 bg-cisco-cardBg min-w-[60px]" data-slot="2"></div>
+              <span>",</span>
+            </div>
+            <div class="pl-12">"ios-acl:any": "",</div>
+            <div class="pl-12 flex items-center gap-2 flex-wrap">
+              <span>"ios-acl:</span>
+              <div class="drop-target inline-block border-2 border-dashed border-cisco-blue/50 rounded-lg px-2 py-0.5 bg-cisco-cardBg min-w-[100px]" data-slot="3"></div>
+              <span>": ""</span>
+            </div>
+            <div class="pl-8 font-bold">} } }</div>
+          </div>
+        `,
+        options: ["access-list-seq-rule", "deny", "ip", "dst-any", "permit", "src-any"],
+        correct: ["access-list-seq-rule", "deny", "ip", "dst-any"],
+        mnemonic: "Hiérarchie YANG ACL Cisco IOS : access-list -> extended -> access-list-seq-rule -> ace-rule (action: deny/permit, protocol: ip/tcp, dst-any)."
+      },
+      {
+        id: "Q-SEC-TOOLS",
+        category: "Security",
+        title: "Fonctionnalités des Solutions de Sécurité Cisco",
+        desc: "Associez chaque produit de sécurité Cisco à sa fonction principale.",
+        type: "matching",
+        targets: ["Umbrella", "AMP4E (AMP for Endpoints)", "FTD (Firepower)", "Stealthwatch", "ESA"],
+        items: [
+          { text: "Assure la protection et le filtrage au niveau DNS", match: "Umbrella" },
+          { text: "Fournit une protection contre les malwares directement sur les terminaux", match: "AMP4E (AMP for Endpoints)" },
+          { text: "Fournit des fonctionnalités de pare-feu NG et IPS/IDS", match: "FTD (Firepower)" },
+          { text: "Analyse la sécurité en collectant les flux réseau (NetFlow)", match: "Stealthwatch" },
+          { text: "Protège contre les menaces transmises par courrier électronique (Email)", match: "ESA" }
+        ],
+        mnemonic: "Sécurité Cisco : Umbrella = Parasol contre DNS toxiques, AMP = Antivirus Endpoint, Stealthwatch = Espion NetFlow, ESA = Email Security Appliance."
+      },
+      {
+        id: "Q-AAA-PRIO",
+        category: "AAA & Coding",
+        title: "Ordre de Priorité de l'Authentification AAA Cisco",
+        desc: "Classez les méthodes d'authentification de la priorité 1 (la plus haute) à la priorité 4.",
+        type: "ordering",
+        items: [
+          { text: "Nom d'utilisateur local configuré en format sensible à la casse (case-sensitive)", priority: 1 },
+          { text: "Nom d'utilisateur local configuré en format non-sensible à la casse", priority: 2 },
+          { text: "Serveurs TACACS+ du groupe ACE", priority: 3 },
+          { text: "Si aucune méthode ne fonctionne, refuser la connexion (deny login)", priority: 4 }
+        ],
+        mnemonic: "Ordre AAA Cisco : 1° Local Case-Sensitive -> 2° Local Non-Case-Sensitive -> 3° Serveurs Distants TACACS/RADIUS -> 4° Deny Login final."
+      },
+      {
+        id: "Q-ANSIBLE-PUPPET",
+        category: "Automation",
+        title: "Ansible vs Puppet - Modèle & Architecture",
+        desc: "Associez chaque concept d'architecture et de transfert à Ansible ou Puppet.",
+        type: "matching",
+        targets: ["Ansible", "Puppet"],
+        items: [
+          { text: "Utilise un modèle PUSH (Le master pousse la conf sur le noeud)", match: "Ansible" },
+          { text: "Architecture Primary/Secondary sans besoin d'agent", match: "Ansible" },
+          { text: "Utilise un modèle PULL (L'agent demande sa conf au serveur)", match: "Puppet" },
+          { text: "Architecture Multi-master avec agents résidents", match: "Puppet" }
+        ],
+        mnemonic: "A vs P : Ansible = Agentless & Push (SSH simple). Puppet = Pull (L'agent tire la conf depuis le Puppet Master)."
+      }
+    ];
+
+    /* ==========================================================================
+       APP STATE & VARS
+       ========================================================================== */
+    let currentMode = 'study'; // 'study' or 'exam'
+    let currentCategory = 'all';
+    let currentStudyIndex = 0;
+    let filteredQuestions = [...QUESTIONS];
+    let userAnswers = {}; // Map of questionId -> array of selected options
+    let masteredQuestions = JSON.parse(localStorage.getItem('ccnp_mastered') || '[]');
+    let reviewQuestions = JSON.parse(localStorage.getItem('ccnp_review') || '[]');
+    let highScore = localStorage.getItem('ccnp_high_score') || null;
+
+    // Selected item for click-to-place fallback
+    let selectedSourceItem = null;
+
+    // Exam specific state
+    let examCurrentIndex = 0;
+    let examTimerInterval = null;
+    let examTimeLeft = 20 * 60; // 20 minutes in seconds
+    let examUserAnswers = {}; // questionId -> answers
+
+    /* ==========================================================================
+       INITIALIZATION & EVENT LISTENERS
+       ========================================================================== */
+    window.onload = function() {
+      updateStats();
+      filterCategory('all');
+      renderStudyCard();
+    };
+
+    function updateStats() {
+      document.getElementById('stat-total').innerText = QUESTIONS.length;
+      document.getElementById('stat-mastered').innerText = masteredQuestions.length;
+      document.getElementById('stat-review').innerText = reviewQuestions.length;
+      document.getElementById('stat-high-score').innerText = highScore ? `${highScore}/1000` : '---';
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-message').innerText = msg;
+      toast.classList.remove('translate-y-20', 'opacity-0');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-20', 'opacity-0');
+      }, 3000);
+    }
+
+    /* ==========================================================================
+       MODE SWITCHING & FILTERS
+       ========================================================================== */
+    function switchMode(mode) {
+      currentMode = mode;
+      const btnStudy = document.getElementById('btn-mode-study');
+      const btnExam = document.getElementById('btn-mode-exam');
+      const secStudy = document.getElementById('section-study');
+      const secExam = document.getElementById('section-exam');
+
+      if (mode === 'study') {
+        btnStudy.className = "px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all bg-cisco-blue text-white shadow-md";
+        btnExam.className = "px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all text-slate-300 hover:text-white hover:bg-cisco-navy";
+        secStudy.classList.remove('hidden');
+        secExam.classList.add('hidden');
+        clearInterval(examTimerInterval);
+        renderStudyCard();
+      } else {
+        btnExam.className = "px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all bg-cisco-blue text-white shadow-md";
+        btnStudy.className = "px-4 py-2 rounded-lg font-medium text-sm flex items-center gap-2 transition-all text-slate-300 hover:text-white hover:bg-cisco-navy";
+        secStudy.classList.add('hidden');
+        secExam.classList.remove('hidden');
+        startExam();
+      }
+    }
+
+    function filterCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        if (btn.dataset.cat === cat) {
+          btn.className = "cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-cisco-blue text-white transition-all shadow-md";
+        } else {
+          btn.className = "cat-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-cisco-navy text-slate-300 hover:text-white transition-all";
+        }
+      });
+
+      if (cat === 'all') {
+        filteredQuestions = [...QUESTIONS];
+      } else {
+        filteredQuestions = QUESTIONS.filter(q => q.category === cat);
+      }
+      currentStudyIndex = 0;
+      if (currentMode === 'study') renderStudyCard();
+    }
+
+    /* ==========================================================================
+       MODE ÉTUDE (RENDER & LOGIC)
+       ========================================================================== */
+    function renderStudyCard() {
+      if (filteredQuestions.length === 0) return;
+      const q = filteredQuestions[currentStudyIndex];
+
+      document.getElementById('card-counter').innerText = `${currentStudyIndex + 1} / ${filteredQuestions.length}`;
+      document.getElementById('study-card-category').innerText = q.category;
+      document.getElementById('study-card-id').innerText = q.id;
+      document.getElementById('study-card-title').innerText = q.title;
+      document.getElementById('study-card-desc').innerText = q.desc;
+
+      // Mastered button status
+      const isMastered = masteredQuestions.includes(q.id);
+      const btnMaster = document.getElementById('btn-toggle-mastered');
+      if (isMastered) {
+        btnMaster.className = "px-3 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition-all border-emerald-500 text-emerald-400 bg-emerald-500/10";
+        btnMaster.innerHTML = `<i class="fa-solid fa-star"></i> Mémorisé`;
+      } else {
+        btnMaster.className = "px-3 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 border transition-all border-slate-700 text-slate-400 hover:border-emerald-500 hover:text-emerald-400";
+        btnMaster.innerHTML = `<i class="fa-regular fa-star"></i> Marquer Mémorisé`;
+      }
+
+      // Hide solution by default when switching cards
+      document.getElementById('solution-box').classList.add('hidden');
+      document.getElementById('btn-reveal-text').innerText = "Révéler la solution et l'astuce mnémotechnique";
+
+      // Render interactive area
+      const area = document.getElementById('study-interactive-area');
+      area.innerHTML = buildQuestionHTML(q, `study_${q.id}`);
+
+      // Render solution box content
+      let solHtml = "";
+      if (q.type === 'fill-gaps') {
+        q.correct.forEach((ans, idx) => {
+          solHtml += `<div><span class="text-cisco-accent font-bold">Trou ${idx + 1} :</span> ${ans}</div>`;
+        });
+      } else if (q.type === 'matching') {
+        q.items.forEach(item => {
+          solHtml += `<div><span class="text-slate-400">${item.text}</span> &rarr; <span class="text-cisco-accent font-bold">${item.match}</span></div>`;
+        });
+      } else if (q.type === 'ordering') {
+        q.items.sort((a,b) => a.priority - b.priority).forEach(item => {
+          solHtml += `<div><span class="text-amber-400 font-bold">Priorité ${item.priority} :</span> ${item.text}</div>`;
+        });
+      }
+      document.getElementById('solution-answers-list').innerHTML = solHtml;
+      document.getElementById('solution-mnemonic').innerText = q.mnemonic;
+
+      setupDragAndDropEvents();
+    }
+
+    function toggleMasteredCurrent() {
+      const q = filteredQuestions[currentStudyIndex];
+      const idx = masteredQuestions.indexOf(q.id);
+      if (idx > -1) {
+        masteredQuestions.splice(idx, 1);
+        showToast("Retiré des éléments mémorisés");
+      } else {
+        masteredQuestions.push(q.id);
+        showToast("Marqué comme mémorisé !");
+      }
+      localStorage.setItem('ccnp_mastered', JSON.stringify(masteredQuestions));
+      updateStats();
+      renderStudyCard();
+    }
+
+    function toggleSolution() {
+      const box = document.getElementById('solution-box');
+      const text = document.getElementById('btn-reveal-text');
+      if (box.classList.contains('hidden')) {
+        box.classList.remove('hidden');
+        text.innerText = "Masquer la solution";
+      } else {
+        box.classList.add('hidden');
+        text.innerText = "Révéler la solution et l'astuce mnémotechnique";
+      }
+    }
+
+    function prevCard() {
+      if (currentStudyIndex > 0) {
+        currentStudyIndex--;
+        renderStudyCard();
+      }
+    }
+
+    function nextCard() {
+      if (currentStudyIndex < filteredQuestions.length - 1) {
+        currentStudyIndex++;
+        renderStudyCard();
+      }
+    }
+
+    /* ==========================================================================
+       QUESTION HTML BUILDER ENGINE
+       ========================================================================== */
+    function buildQuestionHTML(q, scopePrefix) {
+      if (q.type === 'fill-gaps') {
+        // Shuffle options for practice
+        const shuffled = [...q.options].sort(() => 0.5 - Math.random());
+        let html = `
+          <div class="space-y-6">
+            <div class="bg-cisco-darkBg/80 p-4 rounded-xl border border-cisco-border text-slate-200">
+              ${q.template}
+            </div>
+
+            <div>
+              <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">Éléments à glisser / cliquer :</div>
+              <div class="flex flex-wrap gap-2.5">
+                ${shuffled.map((opt, i) => `
+                  <div class="draggable-item bg-cisco-cardBg hover:bg-cisco-darkBlue border border-cisco-blue/60 text-cisco-accent px-3 py-2 rounded-lg text-sm font-mono shadow-md flex items-center gap-2"
+                       draggable="true" data-value="${opt}" id="${scopePrefix}_opt_${i}">
+                    <i class="fa-solid fa-grip-vertical text-xs opacity-50"></i> ${opt}
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        `;
+        return html;
+      } 
+      
+      else if (q.type === 'matching') {
+        const shuffledItems = [...q.items].sort(() => 0.5 - Math.random());
+        let html = `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Left Options -->
+            <div class="space-y-3">
+              <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Caractéristiques & Concepts :</div>
+              ${shuffledItems.map((item, idx) => `
+                <div class="draggable-item bg-cisco-navy hover:bg-cisco-darkBlue border border-cisco-blue/40 p-3 rounded-xl text-xs sm:text-sm text-slate-200 shadow-md flex items-center gap-2"
+                     draggable="true" data-value="${item.text}" id="${scopePrefix}_match_${idx}">
+                  <i class="fa-solid fa-grip-vertical text-xs text-cisco-blue"></i> ${item.text}
+                </div>
+              `).join('')}
+            </div>
+
+            <!-- Right Targets -->
+            <div class="space-y-4">
+              <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Catégories d'association :</div>
+              ${q.targets.map((target, idx) => `
+                <div class="bg-cisco-darkBg/90 border border-cisco-border rounded-xl p-3 space-y-2">
+                  <div class="text-xs font-bold text-cisco-accent flex items-center gap-1.5">
+                    <i class="fa-solid fa-folder-open text-xs"></i> ${target}
+                  </div>
+                  <div class="drop-target min-h-[50px] border-2 border-dashed border-cisco-border rounded-lg p-2 bg-cisco-navy/50 space-y-2" data-target="${target}"></div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+        return html;
+      }
+
+      else if (q.type === 'ordering') {
+        const shuffledItems = [...q.items].sort(() => 0.5 - Math.random());
+        let html = `
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Source items -->
+            <div class="space-y-3">
+              <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Méthodes AAA à classer :</div>
+              ${shuffledItems.map((item, idx) => `
+                <div class="draggable-item bg-cisco-navy border border-cisco-blue/40 p-3 rounded-xl text-xs sm:text-sm text-slate-200 shadow-md flex items-center gap-2"
+                     draggable="true" data-value="${item.text}" id="${scopePrefix}_ord_${idx}">
+                  <i class="fa-solid fa-grip-vertical text-xs text-cisco-accent"></i> ${item.text}
+                </div>
+              `).join('')}
+            </div>
+
+            <!-- Priority Targets 1 to 4 -->
+            <div class="space-y-2">
+              <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1">Ordre de Priorité :</div>
+              ${[1, 2, 3, 4].map(prio => `
+                <div class="flex items-center gap-3">
+                  <span class="w-24 text-xs font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2 py-2 rounded-lg text-center">Priorité ${prio}</span>
+                  <div class="drop-target flex-1 min-h-[46px] border-2 border-dashed border-cisco-border rounded-lg p-1.5 bg-cisco-navy/50" data-slot="${prio-1}"></div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+        return html;
+      }
+    }
+
+    /* ==========================================================================
+       DRAG AND DROP & CLICK INTERACTION HANDLERS
+       ========================================================================== */
+    function setupDragAndDropEvents() {
+      const draggables = document.querySelectorAll('.draggable-item');
+      const dropTargets = document.querySelectorAll('.drop-target');
+
+      draggables.forEach(item => {
+        // Drag events
+        item.addEventListener('dragstart', (e) => {
+          e.dataTransfer.setData('text/plain', item.dataset.value);
+          e.dataTransfer.setData('source-id', item.id);
+          item.classList.add('opacity-50');
+        });
+
+        item.addEventListener('dragend', () => {
+          item.classList.remove('opacity-50');
+        });
+
+        // Click selection fallback (for mobile or easy click)
+        item.addEventListener('click', () => {
+          draggables.forEach(d => d.classList.remove('selected'));
+          if (selectedSourceItem === item) {
+            selectedSourceItem = null;
+          } else {
+            selectedSourceItem = item;
+            item.classList.add('selected');
+            showToast("Élément sélectionné ! Cliquez sur un emplacement cible.");
+          }
+        });
+      });
+
+      dropTargets.forEach(target => {
+        target.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          target.classList.add('drag-over');
+        });
+
+        target.addEventListener('dragleave', () => {
+          target.classList.remove('drag-over');
+        });
+
+        target.addEventListener('drop', (e) => {
+          e.preventDefault();
+          target.classList.remove('drag-over');
+          const val = e.dataTransfer.getData('text/plain');
+          const sourceId = e.dataTransfer.getData('source-id');
+          placeItemInTarget(sourceId, val, target);
+        });
+
+        // Click target fallback
+        target.addEventListener('click', () => {
+          if (selectedSourceItem) {
+            placeItemInTarget(selectedSourceItem.id, selectedSourceItem.dataset.value, target);
+            selectedSourceItem.classList.remove('selected');
+            selectedSourceItem = null;
+          }
+        });
+      });
+    }
+
+    function placeItemInTarget(sourceId, val, target) {
+      if (!val) return;
+      const sourceElem = document.getElementById(sourceId);
+
+      // Create placed pill element
+      const pill = document.createElement('div');
+      pill.className = "bg-cisco-blue text-white px-3 py-1.5 rounded-md text-xs sm:text-sm font-semibold flex items-center justify-between gap-2 shadow-sm animate-fade-in my-0.5";
+      pill.innerHTML = `<span>${val}</span> <i class="fa-solid fa-xmark cursor-pointer hover:text-red-300 remove-btn"></i>`;
+      
+      // Remove item event
+      pill.querySelector('.remove-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        pill.remove();
+        if (sourceElem) sourceElem.style.display = 'flex';
+        checkTargetState(target);
+      });
+
+      // If single slot target (fill gaps or ordering), clear current contents
+      if (target.dataset.slot !== undefined) {
+        // Return existing item to pool if any
+        const existingPill = target.querySelector('div');
+        if (existingPill) {
+          const oldVal = existingPill.querySelector('span').innerText;
+          const oldDraggable = Array.from(document.querySelectorAll('.draggable-item')).find(d => d.dataset.value === oldVal);
+          if (oldDraggable) oldDraggable.style.display = 'flex';
+          existingPill.remove();
+        }
+        target.appendChild(pill);
+      } else {
+        // Matching target (multiple allowed)
+        target.appendChild(pill);
+      }
+
+      if (sourceElem) sourceElem.style.display = 'none';
+      checkTargetState(target);
+    }
+
+    function checkTargetState(target) {
+      if (target.children.length > 0) {
+        target.classList.add('filled');
+      } else {
+        target.classList.remove('filled');
+      }
+    }
+
+    /* ==========================================================================
+       MODE EXAMEN (TIMED EXAM & CISCO SCORING ENGINE)
+       ========================================================================== */
+    function startExam() {
+      examCurrentIndex = 0;
+      examTimeLeft = 20 * 60; // 20 minutes
+      examUserAnswers = {};
+
+      document.getElementById('exam-active-container').classList.remove('hidden');
+      document.getElementById('exam-results-container').classList.add('hidden');
+      document.getElementById('exam-total-num').innerText = QUESTIONS.length;
+
+      // Start Countdown Timer
+      clearInterval(examTimerInterval);
+      examTimerInterval = setInterval(updateExamTimer, 1000);
+      updateExamTimer();
+
+      renderExamQuestion();
+    }
+
+    function updateExamTimer() {
+      const minutes = Math.floor(examTimeLeft / 60);
+      const seconds = examTimeLeft % 60;
+      document.getElementById('exam-timer').innerText = 
+        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+      if (examTimeLeft <= 0) {
+        clearInterval(examTimerInterval);
+        finishExam();
+        showToast("Temps écoulé ! Votre examen a été soumis automatiquement.");
+      }
+      examTimeLeft--;
+    }
+
+    function renderExamQuestion() {
+      const q = QUESTIONS[examCurrentIndex];
+      document.getElementById('exam-current-num').innerText = examCurrentIndex + 1;
+      
+      // Update progress bar
+      const pct = ((examCurrentIndex + 1) / QUESTIONS.length) * 100;
+      document.getElementById('exam-progress-bar').style.width = `${pct}%`;
+
+      // Update Nav buttons
+      document.getElementById('exam-btn-prev').disabled = examCurrentIndex === 0;
+
+      const container = document.getElementById('exam-question-render');
+      container.innerHTML = `
+        <div class="mb-6 border-b border-cisco-border pb-4">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="px-2.5 py-1 bg-cisco-blue/20 text-cisco-accent text-xs font-bold rounded-md border border-cisco-blue/30">${q.category}</span>
+            <span class="text-xs text-slate-400 font-mono">${q.id}</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-1">${q.title}</h3>
+          <p class="text-sm text-slate-300">${q.desc}</p>
+        </div>
+        <div class="bg-cisco-navy p-5 rounded-xl border border-cisco-border">
+          ${buildQuestionHTML(q, `exam_${q.id}`)}
+        </div>
+      `;
+
+      setupDragAndDropEvents();
+    }
+
+    function examPrevQuestion() {
+      saveCurrentExamAnswer();
+      if (examCurrentIndex > 0) {
+        examCurrentIndex--;
+        renderExamQuestion();
+      }
+    }
+
+    function examNextQuestion() {
+      saveCurrentExamAnswer();
+      if (examCurrentIndex < QUESTIONS.length - 1) {
+        examCurrentIndex++;
+        renderExamQuestion();
+      } else {
+        showToast("Vous êtes à la dernière question. Cliquez sur 'Soumettre l'Examen' quand prêt.");
+      }
+    }
+
+    function saveCurrentExamAnswer() {
+      const q = QUESTIONS[examCurrentIndex];
+      const targetElems = document.querySelectorAll('#exam-question-render .drop-target');
+      let answers = [];
+
+      if (q.type === 'fill-gaps' || q.type === 'ordering') {
+        targetElems.forEach((t, i) => {
+          const pill = t.querySelector('span');
+          answers[i] = pill ? pill.innerText : null;
+        });
+      } else if (q.type === 'matching') {
+        targetElems.forEach(t => {
+          const targetName = t.dataset.target;
+          const pills = Array.from(t.querySelectorAll('span')).map(s => s.innerText);
+          answers.push({ target: targetName, items: pills });
+        });
+      }
+
+      examUserAnswers[q.id] = answers;
+    }
+
+    function finishExam() {
+      saveCurrentExamAnswer();
+      clearInterval(examTimerInterval);
+
+      document.getElementById('exam-active-container').classList.add('hidden');
+      document.getElementById('exam-results-container').classList.remove('hidden');
+
+      // Calculate score
+      let correctCount = 0;
+      let reviewHtml = "";
+
+      QUESTIONS.forEach((q, idx) => {
+        const userAns = examUserAnswers[q.id];
+        let isCorrect = false;
+
+        if (q.type === 'fill-gaps') {
+          if (userAns && JSON.stringify(userAns) === JSON.stringify(q.correct)) {
+            isCorrect = true;
+          }
+        } else if (q.type === 'matching') {
+          if (userAns) {
+            let matchAll = true;
+            q.items.forEach(item => {
+              const group = userAns.find(g => g.target === item.match);
+              if (!group || !group.items.includes(item.text)) {
+                matchAll = false;
+              }
+            });
+            if (matchAll) isCorrect = true;
+          }
+        } else if (q.type === 'ordering') {
+          if (userAns) {
+            const sortedByPrio = [...q.items].sort((a,b) => a.priority - b.priority);
+            let orderMatch = true;
+            sortedByPrio.forEach((item, i) => {
+              if (userAns[i] !== item.text) orderMatch = false;
+            });
+            if (orderMatch) isCorrect = true;
+          }
         }
 
-        function setLang(lang) {
-            if(lang === 'ht') {
-                document.getElementById('title-quiz').innerText = 'Kesyon Egzamen Pratik (ENCOR 350-401)';
-            } else if(lang === 'fr') {
-                document.getElementById('title-quiz').innerText = 'Questions d\'Examen Pratique (ENCOR 350-401)';
-            } else {
-                document.getElementById('title-quiz').innerText = 'Practice Exam Questions (ENCOR 350-401)';
-            }
-        }
-    </script>
+        if (isCorrect) correctCount++;
+
+        // Build review item
+        reviewHtml += `
+          <div class="bg-cisco-navy border ${isCorrect ? 'border-emerald-500/40' : 'border-rose-500/40'} p-4 rounded-xl space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold font-mono text-slate-400">Question ${idx + 1} (${q.id})</span>
+              <span class="px-2.5 py-0.5 rounded text-xs font-bold ${isCorrect ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}">
+                ${isCorrect ? '<i class="fa-solid fa-check mr-1"></i> Correct' : '<i class="fa-solid fa-xmark mr-1"></i> Incorrect'}
+              </span>
+            </div>
+            <div class="text-sm font-bold text-white">${q.title}</div>
+            <div class="text-xs text-slate-300 italic bg-cisco-darkBg/60 p-2.5 rounded-lg border border-cisco-border">
+              <span class="text-amber-400 font-semibold">Astuce :</span> ${q.mnemonic}
+            </div>
+          </div>
+        `;
+      });
+
+      // Cisco Scaled Score calculation (Scale from 300 to 1000 points)
+      const percent = (correctCount / QUESTIONS.length);
+      const ciscoScore = Math.round(300 + (percent * 700));
+      const passed = ciscoScore >= 825;
+
+      // Update UI results
+      const badgeElem = document.getElementById('exam-result-badge');
+      const statusElem = document.getElementById('exam-result-status');
+
+      if (passed) {
+        badgeElem.className = "inline-flex p-4 rounded-full text-4xl mb-2 bg-emerald-500/20 text-emerald-400 border border-emerald-500/40";
+        badgeElem.innerHTML = `<i class="fa-solid fa-trophy"></i>`;
+        statusElem.innerText = "FÉLICITATIONS ! ADMIS";
+        statusElem.className = "text-3xl font-extrabold text-emerald-400 mb-2";
+      } else {
+        badgeElem.className = "inline-flex p-4 rounded-full text-4xl mb-2 bg-rose-500/20 text-rose-400 border border-rose-500/40";
+        badgeElem.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i>`;
+        statusElem.innerText = "ÉCHEC - À RETRAVAILLER";
+        statusElem.className = "text-3xl font-extrabold text-rose-400 mb-2";
+      }
+
+      document.getElementById('res-score-scaled').innerText = `${ciscoScore} / 1000`;
+      document.getElementById('res-score-percent').innerText = `${Math.round(percent * 100)}%`;
+      document.getElementById('res-score-count').innerText = `${correctCount} / ${QUESTIONS.length}`;
+      document.getElementById('exam-review-list').innerHTML = reviewHtml;
+
+      // Update High Score
+      if (!highScore || ciscoScore > parseInt(highScore)) {
+        highScore = ciscoScore;
+        localStorage.setItem('ccnp_high_score', highScore);
+        updateStats();
+      }
+    }
+
+    function restartExam() {
+      startExam();
+    }
+  </script>
 </body>
 </html>
